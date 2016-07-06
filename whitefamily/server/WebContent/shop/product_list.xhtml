@@ -1,0 +1,215 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="pform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+         <h:commandLink  action="#{goodsBean.gotoAddGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="查看产品品牌" class="btn btn-primary">
+              <i class="fa fa-plus"></i>
+        </h:commandLink>
+         <!--<button type="button" data-toggle="tooltip" title=" echo $button_copy" class="btn btn-default" onclick="$('#form-product').attr('action', ' echo $copy').submit()"><i class="fa fa-copy"></i></button>
+        <button type="button" data-toggle="tooltip" title=" echo $button_delete" class="btn btn-danger" onclick="confirm(' echo $text_confirm') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>-->
+      </div>
+      <h1> 产品管理</h1>
+      <ul class="breadcrumb">
+        <li><a href="product_list.xhtml"> 产品列表</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+   
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> <!-- text --></h3>
+      </div>
+      <div class="panel-body">
+        <div class="well">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">产品名称</label>
+                <input type="text" name="filter_name" value="" placeholder="名称" id="input-name" class="form-control" />
+              </div>
+              <div class="form-group">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+               <label class="control-label" for="input-model">分类</label>
+                <input type="text" name="filter_model" value="" placeholder="请输入分类" id="input-model" class="form-control" />
+              </div>
+              <div class="form-group">
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">可见性</label>
+                     <h:selectOneMenu  class="form-control">
+                            <f:selectItem itemValue="0" itemLabel="店长可见" />
+                            <f:selectItem itemValue="1" itemLabel="配货人员可见" />	   							
+                     </h:selectOneMenu>	
+              </div>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i>过滤</button>
+            </div>
+          </div>
+        </div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td class="text-center">产品</td>
+                  <td class="text-left"> 
+                    <a href="#" class=" echo strtolower($order)"> 名称</a>
+                     </td>
+                  <td class="text-left"> 
+                    <a href="#" class=" echo strtolower($order)">分类</a>
+                     </td>
+                      <td class="text-left"> 
+                    规格
+                     </td>
+                  <td class="text-left"> 
+                    <a href="#" class=" echo strtolower($order)">类型</a>
+                     </td>
+                  <td class="text-right">编辑</td>
+                </tr>
+              </thead>
+              <tbody>
+              
+              <ui:repeat id="g" var="g" value="#{goodsBean.goodsList}" varStatus="itemStatus">
+                <tr>
+                  <td class="text-center">
+                    <input type="checkbox" name="selected[]" value="#{g.id}" />
+                     </td>
+                  <td class="text-center">
+                    <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
+                     </td>
+                  <td class="text-left">#{g.name}</td>
+                  <td class="text-left">#{g.cate.name}</td>
+                   <td class="text-left">#{g.unit}</td>
+                  <td class="text-left"><h:outputText value="#{g.typeDisMessage}" />
+                    <!-- 
+                    <span class="label label-warning"> echo $product['quantity']</span>
+                    <span class="label label-danger"> echo $product['quantity']</span>
+                    <span class="label label-success"> echo $product['quantity']</span>
+                     -->
+                  </td>
+                  <td class="text-right">
+                      <h:commandLink  action="#{goodsBean.viewGoodsBrands}" type="submit"  form="form-product" data-toggle="tooltip" title="查看产品品牌" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />
+                          <i class="fa fa-book"></i>
+                      </h:commandLink>    
+                      <h:outputText value="&#160;" />
+                      <h:commandLink  action="#{goodsBean.gotoAddGoodsBrands}" type="submit"  form="form-product" data-toggle="tooltip" title="添加产品品牌" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />
+                          <i class="fa fa-plus"></i>
+                      </h:commandLink>    
+                      <h:outputText value="&#160;" />
+                       <h:commandLink  action="#{goodsBean.viewGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑产品" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{goodsBean.updateGoodsId}" value="#{g.id}" />
+                          <i class="fa fa-pencil"></i>
+                      </h:commandLink>
+                  </td>
+                </tr>
+                </ui:repeat>
+              </tbody>
+            </table>
+          </div>
+        <div class="row">
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=catalog/product&token= echo $token';
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	var filter_model = $('input[name=\'filter_model\']').val();
+
+	if (filter_model) {
+		url += '&filter_model=' + encodeURIComponent(filter_model);
+	}
+
+	var filter_price = $('input[name=\'filter_price\']').val();
+
+	if (filter_price) {
+		url += '&filter_price=' + encodeURIComponent(filter_price);
+	}
+
+	var filter_quantity = $('input[name=\'filter_quantity\']').val();
+
+	if (filter_quantity) {
+		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status != '*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	location = url;
+});
+//--></script>
+  <script type="text/javascript">
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'filterGoods.ajax?action=filterGoods&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+	}
+});
+
+$('input[name=\'filter_model\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+		    url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_model\']').val(item['label']);
+	}
+});
+</script></div>
+<footer id="footer"><br /></footer></div>
+</body></html>

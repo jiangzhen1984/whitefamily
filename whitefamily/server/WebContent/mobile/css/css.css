@@ -1,0 +1,43 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body{font-size:16px;font-family:'微软雅黑' Arial, Helvetica, sans-serif; color:#000;}
+a{ color:#000;text-decoration:none;}
+a:hover,a:active,a:focus{ color:#000;}
+*{margin:0;padding:0;}
+ul{list-style:none;}
+.clear{clear:both;}
+
+.meiTuan{
+    font-size: 0.8em;
+    color: #a0a0a0;
+    line-height: 1.5em;
+    width: 80%;
+    margin: 10px auto;
+}
+.meiTuan input{
+    font-size: 0.8em;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    background: #eeeeee;
+    margin-bottom: 10px;
+}
+.meiTuan button{
+    background: #21b387;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+    font-family: '微软雅黑';
+    letter-spacing: 1em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+

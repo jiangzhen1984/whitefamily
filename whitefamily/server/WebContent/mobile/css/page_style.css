@@ -1,0 +1,58 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body{
+	font-size:16px;
+	font-family:'微软雅黑' Arial, Helvetica, sans-serif;
+	color:#FFF;
+}
+a{ color:#333;text-decoration:none;}
+a:hover,a:active,a:focus{ color:#333;}
+*{margin:0;padding:0;}
+.clear{clear:both;}
+ul{list-style:none;}
+
+.search{text-align:center;background:#21b387;}
+.search form{text-align:left;border-radius:5px;}
+.search .search_box{width: 50%;border:none;color: #827e7d;border-radius:5px;padding:6px 15px 10px;background: #fff;margin-top: 5px;margin-bottom: 5px;margin-left: 25%;font-size: 1em;letter-spacing: 0px;font-family: '微软雅黑';}
+.content_left{width: 25%;float:left;background:#eeeeee;height:100%;}
+.content_right{float:right;width:75%;}
+.content_left_bg{
+    position: absolute;
+    z-index: -1;
+    background: #eee;
+    width: 25%;
+    height: 100%;
+}
+
+.top{float:center; text-align:center;background:#21b387;padding: 12px 0 12px;color:#fff;font-size: 1em;font-family: '微软雅黑'letter-spacing:2px;}
+
+.bottom{
+   position:fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+}
+.bottom ul li{
+	width:25%;
+	float:left;
+	text-align:center;
+	background-color: #FFF;
+}
+.bottom ul li a{width:100%;height:50px;display:block;margin:5px auto;color:#a0a0a0;letter-spacing:1px;font-size:1.2em;}
+.bottom ul li a .icon{width:100%;height:60px;}
+.bottom ul li a img{display:block;}
+.bottom ul li a:hover{color:#0b7be7;}
+.bottom ul li a.index{background:url(../images/nav_1.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.wine{background:url(../images/nav_2.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.shopping_cart{background:url(../images/nav_3.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.user{background:url(../images/nav_4.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.index:hover{background:url(../images/nav_11.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.wine:hover{background:url(../images/nav_12.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.shopping_cart:hover{background:url(../images/nav_13.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.user:hover{background:url(../images/nav_14.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.index.self{background:url(../images/nav_11.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.wine.self{background:url(../images/nav_12.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.shopping_cart.self{background:url(../images/nav_13.png) top center no-repeat;background-size:44px;}
+.bottom ul li a.user.self{background:url(../images/nav_14.png) top center no-repeat;background-size:44px;}

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="cform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+       <h:commandLink action="#{categoryBean.createCategory}" type="submit" form="form-category" data-toggle="tooltip" title="" class="btn btn-primary"><i class="fa fa-save"></i></h:commandLink>
+        <a href="category_list.xhtml" data-toggle="tooltip" title=" $button_cancel" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <ul class="breadcrumb">
+        <li><a href="category_list.xhtml">分类管理</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+  <c:if test="${not empty categoryBean.errMsg}">
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+  </c:if>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i>添加分类</h3>
+      </div>
+      <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">分类信息</a></li>
+           <!--  <li><a href="#tab-data" data-toggle="tab"> $tab_data</a></li>  -->
+          <!--   <li><a href="#tab-design" data-toggle="tab"> $tab_design</a></li> -->
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+             <h:inputHidden value="#{categoryBean.categoryId}"  ></h:inputHidden>
+            	  <table class="table table-bordered table-hover">
+                  <tbody>
+                    <tr>
+                      <td class="text-left">分类名称</td>
+                      <td class="text-left"><h:inputText value="#{categoryBean.name}" a:placeholder="请输入分类"  class="form-control"></h:inputText></td>
+                    </tr>
+                     <tr>
+                      <td class="text-left">上级分类</td>
+                      <td class="text-left">
+                      <h:inputText   a:placeholder="上级分类"  id="path" class="form-control" ></h:inputText>
+                      <h:inputHidden value="#{categoryBean.parentCategoryId}" id="parent_id" name="parent_id" ></h:inputHidden>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+  <script type="text/javascript"><!--
+$('#input-description-zh').summernote({
+	height: 300
+});
+//--></script> 
+  <script type="text/javascript">
+$('input[name=\'cform:path\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					category_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'cform:path\']').val(item['label']);
+		$('input[name=\'cform:parent_id\']').val(item['value']);
+	}
+});
+</script> 
+  <script type="text/javascript">
+$('input[name=\'filter\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter\']').val('');
+
+		$('#category-filter' + item['value']).remove();
+
+		$('#category-filter').append('<div id="category-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="category_filter[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#category-filter').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+</script> 
+  <script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script></div>
+<footer id="footer"><br /></footer></div>
+</body></html>

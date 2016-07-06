@@ -1,0 +1,144 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--禁止缩放-->
+<meta name="viewport"
+	content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<title>无标题文档</title>
+<link href="css/order_confirm.css" rel="stylesheet" type="text/css" />
+<!--页面所需样式-->
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<link href="css/lrtk.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<div class="content_left_bg"></div>
+	<h:form>
+		<div class="search">
+			<h:inputText id="searchText" class="search_box"
+				value="#{mallBean.searchText}" a:placeholder="输入菜名搜索" />
+			<h:commandLink action="#{shopBean.reportIncoming}" type="button" >搜索</h:commandLink>
+		</div>
+	</h:form>
+	<div class="content">
+
+		<div class="content_left">
+			<h:form id="mform">
+				<!-- 代码 开始 -->
+				<div id="firstpane" class="menu_list">
+					<c:forEach var="g" items="#{mallBean.categoryList}">
+						<h:panelGroup rendered="${g.id == mallBean.cateId}">
+							<h:outputText class="menu_head current" value="#{g.name}" />
+						</h:panelGroup>
+						<h:panelGroup rendered="${g.id ne mallBean.cateId}">
+							<h:commandLink class="menu_head" form="form-product"
+								data-toggle="tooltip" title="查看分类产品">#{g.name}
+									<f:setPropertyActionListener target="#{mallBean.cateId}"
+									value="#{g.id}" />
+							</h:commandLink>
+						</h:panelGroup>
+					</c:forEach>
+
+				</div>
+				<script type="text/javascript">
+        $(document).ready(function(){
+            $("#firstpane .menu_body:eq(0)").show();
+            $("#firstpane a.menu_head").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+            $("#secondpane .menu_body:eq(0)").show();
+            $("#secondpane a.menu_head").mouseover(function(){
+                $(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+            
+        });
+        </script>
+			</h:form>
+			<!-- 代码 结束 -->
+		</div>
+		<div class="content_right">
+
+			<div class="today_sales">
+				<ui:repeat id="g" var="g" value="#{mallBean.goodsList}"
+					varStatus="itemStatus">
+					<dl>
+						<dt>
+							<div class="img">
+								<img src="images/No_Image_Available.png" />
+							</div>
+						</dt>
+						<dd>
+							<div class="today_sales_tit">#{g.name}</div>
+							<div class="today_sales_detail">
+								<div class="today_sales_detail_left">
+									<span class="today_sales_detail_price"><h:outputText
+											value="#{g.goodsDesc}" escape="false" /><br />规格：#{g.unit}</span>
+								</div>
+								<div class="today_sales_detail_right">
+									<input type="image" src="images/1_10.png"
+										onclick="minus(#{g.id})" /><span
+										class="today_sales_detail_num"><font
+										style="color: black">1</font></span><input type="image"
+										src="images/1_12.png" onclick="add(#{g.id})" />
+								</div>
+							</div>
+							<div class="today_sales_num"></div>
+						</dd>
+					</dl>
+				</ui:repeat>
+			</div>
+
+		</div>
+
+
+	</div>
+	<div class="bottom">
+		<ul>
+			<li><a class="index self" href="#"></a></li>
+			<li><a class="wine" href="yingshou.xhtml"></a></li>
+			<li><a class="shopping_cart" href="damage_report.xhtml"></a></li>
+			<li><a class="user" href="inventory_report_detail.xhtml"></a></li>
+
+		</ul>
+		<div class="clear"></div>
+	</div>
+
+
+	<SCRIPT type="text/javascript">
+		function add(gid) {
+			 $.ajax({
+        		url: 'mall.ajax?action=cartAction+'&amp;'+subaction=plus+'&amp;'+goodscount=1+'&amp;'+goodsid='+gid,
+        	success :function(data) {
+        		alert("添加成功");
+        	},
+        	});
+		}
+		
+		
+		function minus(gid) {
+		  $.ajax({
+        	url: 'mall.ajax?action=cartAction+'&amp;'+subaction=minus+'&amp;'+goodscount=1+'&amp;'+goodsid='+gid,
+        	success :function(data) {
+        		alert("取消成功");
+        	},
+        });
+      
+		}
+	
+	</SCRIPT>
+</body>
+
+</html>

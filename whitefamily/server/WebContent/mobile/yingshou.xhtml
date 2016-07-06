@@ -1,0 +1,868 @@
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!--禁止缩放-->
+<meta name="viewport"
+	content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<title>无标题文档</title>
+
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="css/lrtk.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+<style>
+</style>
+</head>
+
+<body>
+
+	<div class="content_left_bg"></div>
+	<div class="top">营收明细  <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" >提交</h:commandLink></h:form></div></div>
+	<div class="content">
+		<h:form>
+			<div class="content_left">
+				<!-- 代码 开始 -->
+				<div id="firstpane" class="menu_list">
+					<h:panelGroup rendered="${shopBean.iType == '1'}">
+						<a class="menu_head current">店内营收</a>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType != '1'}">
+						<h:commandLink
+							action="#{shopBean.gotoViewShopInventoryRequestList}"
+							type="submit" form="form-product" data-toggle="tooltip"
+							title="配货" class="menu_head ">
+							<f:setPropertyActionListener target="#{shopBean.iType}" value="1" />
+							<i class="fa fa-bars"> 店内营收</i>
+						</h:commandLink>
+					</h:panelGroup>
+
+					<h:panelGroup rendered="${shopBean.iType == '2'}">
+						<h:commandLink type="submit" form="form-product"
+							data-toggle="tooltip" class="menu_head current">
+							<f:setPropertyActionListener target="#{shopBean.iType}" value="2" />
+						店内支出
+					</h:commandLink>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType != '2'}">
+						<h:commandLink type="submit" form="form-product"
+							data-toggle="tooltip" class="menu_head ">
+							<f:setPropertyActionListener target="#{shopBean.iType}" value="2" />
+						店内支出
+					</h:commandLink>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType == '3'}">
+						<a href="#" class="menu_head">团购明细</a>
+						<div class="menu_body">
+							<h:panelGroup rendered="${shopBean.subType == '1'}">
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />糯米 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '2'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />糯米 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '3'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="3" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />糯米 </h:commandLink>
+							</h:panelGroup>
+
+							<h:panelGroup
+								rendered="${shopBean.subType != '1' and shopBean.subType != '2' and shopBean.subType != '3'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />糯米 </h:commandLink>
+							</h:panelGroup>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType != '3'}">
+						<h:commandLink type="submit" form="form-product"
+							data-toggle="tooltip" class="menu_head">
+							<f:setPropertyActionListener target="#{shopBean.iType}" value="3" />
+							<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />
+					   团购明细
+					   </h:commandLink>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType == '4'}">
+						<a href="#" class="menu_head">外卖明细</a>
+						<div class="menu_body">
+							<h:panelGroup rendered="${shopBean.subType == '1'}">
+
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="5" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />饿了吗 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />百度 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="4" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="5" />口碑 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '2'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />饿了吗 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />百度 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="4" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="5" />口碑 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '3'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />饿了吗 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />百度 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="4" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="5" />口碑 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '4'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />饿了吗 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />百度 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head ">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="4" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="5" />口碑 </h:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="${shopBean.subType == '5'}">
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="1" />饿了吗 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="2" />百度 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head ">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="3" />大众 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="4" />美团 </h:commandLink>
+								<h:commandLink type="submit" class="menu_head current">
+									<f:setPropertyActionListener target="#{shopBean.iType}"
+										value="4" />
+									<f:setPropertyActionListener target="#{shopBean.subType}"
+										value="5" />口碑 </h:commandLink>
+							</h:panelGroup>
+						</div>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.iType != '4'}">
+						<h:commandLink type="submit" class="menu_head">
+							<f:setPropertyActionListener target="#{shopBean.subType}" value="1" />
+							<f:setPropertyActionListener target="#{shopBean.iType}" value="4" />外卖明细
+					   </h:commandLink>
+					</h:panelGroup>
+
+				</div>
+				<script type="text/javascript">
+        $(document).ready(function(){
+/*            $("#firstpane .menu_body:eq(0)").show();*/
+            $("#firstpane a.menu_head").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+			$("#firstpane .menu_body a").click(function(){
+                $(this).addClass("current").next("div.menu_body").slideToggle(300).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+            $("#secondpane .menu_body:eq(0)").show();
+            $("#secondpane a.menu_head").mouseover(function(){
+                $(this).addClass("current").next("div.menu_body").slideDown(500).siblings("div.menu_body").slideUp("slow");
+                $(this).siblings().removeClass("current");
+            });
+            
+        });
+        </script>
+				<!-- 代码 结束 -->
+			</div>
+		</h:form>
+		<div class="content_right">
+			<h:form class="meiTuan">
+				<h:panelGroup rendered="${shopBean.iType == '1'}">
+					<tbody>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">现金</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.cash}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">微信</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.weixin}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">团购</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.groupon}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">外卖</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.delivery}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">支付宝</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.ali}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">糯米</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.nuomi}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">大众点评</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.dazhong}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">其他</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.other}" a:placeholder="请输入金额"
+									class="form-control" /></td>
+						</tr>
+					</tbody>
+				</h:panelGroup>
+				<h:panelGroup rendered="${shopBean.iType == '2'}">
+					<tbody>
+
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">现金</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">微信</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">团购</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">外卖</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">支付宝</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">糯米</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">大众点评</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">其他</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									class="form-control" /></td>
+						</tr>
+
+					</tbody>
+				</h:panelGroup>
+
+
+				<h:panelGroup rendered="${shopBean.iType == '3'}">
+					<h:panelGroup rendered="${shopBean.subType == '1'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">数量</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdCount}" a:placeholder="请输入数量"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">代金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="请输入代金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">购买额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdGme}" a:placeholder="购买额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">差额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdCe}" a:placeholder="差额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">实际金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdSjje}" a:placeholder="实际金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">其他</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdOther}" a:placeholder="其他"
+										class="form-control" /></td>
+							</tr>
+						</tbody>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '2'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">数量</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmCount}" a:placeholder="请输入数量"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">代金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmDje}" a:placeholder="请输入代金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">购买额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmGme}" a:placeholder="购买额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">差额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmCe}" a:placeholder="差额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">实际金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmSjje}" a:placeholder="实际金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">其他</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gmOther}" a:placeholder="其他"
+										class="form-control" /></td>
+							</tr>
+						</tbody>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '3'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">数量</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdCount}" a:placeholder="请输入数量"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">代金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gnDje}" a:placeholder="请输入代金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">购买额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gnGme}" a:placeholder="购买额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">差额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gnCe}" a:placeholder="差额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">实际金额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gnSjje}" a:placeholder="实际金额"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">其他</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gnOther}" a:placeholder="其他"
+										class="form-control" /></td>
+							</tr>
+						</tbody>
+					</h:panelGroup>
+				</h:panelGroup>
+
+				<h:panelGroup rendered="${shopBean.iType == '4'}">
+					<h:panelGroup rendered="${shopBean.subType == '1'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">营业额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.deTotalSum}"
+										a:placeholder="营业额" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">在线支付</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.deOnlinePaymentSum}"
+										a:placeholder="在线支付" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">平台补助</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dePlatformRefund}"
+										a:placeholder="平台补助" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">餐厅补贴</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.deResturantRefund}"
+										a:placeholder="餐厅补贴" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">有效订单</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">服务费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.deServiceFee}"
+										a:placeholder="服务费" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.deDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
+
+						</tbody>
+
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '2'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">营业额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbTotalSum}"
+										a:placeholder="营业额" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">在线支付</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbOnlinePaymentSum}"
+										a:placeholder="在线支付" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">平台补助</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbPlatformRefund}"
+										a:placeholder="平台补助" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">餐厅补贴</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbResturantRefund}"
+										a:placeholder="餐厅补贴" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">有效订单</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">服务费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbServiceFee}"
+										a:placeholder="服务费" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dbDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
+
+						</tbody>
+
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '3'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">营业额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmTotalSum}"
+										a:placeholder="营业额" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">在线支付</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmOnlinePaymentSum}"
+										a:placeholder="在线支付" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">平台补助</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmPlatformRefund}"
+										a:placeholder="平台补助" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">餐厅补贴</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmResturantRefund}"
+										a:placeholder="餐厅补贴" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">有效订单</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">服务费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmServiceFee}"
+										a:placeholder="服务费" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dmDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
+
+						</tbody>
+
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '4'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">营业额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddTotalSum}"
+										a:placeholder="营业额" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">在线支付</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddOnlinePaymentSum}"
+										a:placeholder="在线支付" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">平台补助</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddPlatformRefund}"
+										a:placeholder="平台补助" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">餐厅补贴</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddResturantRefund}"
+										a:placeholder="餐厅补贴" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">有效订单</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">服务费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddServiceFee}"
+										a:placeholder="服务费" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.ddDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
+
+						</tbody>
+					</h:panelGroup>
+					<h:panelGroup rendered="${shopBean.subType == '5'}">
+						<tbody>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">营业额</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkTotalSum}"
+										a:placeholder="营业额" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">在线支付</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkOnlinePaymentSum}"
+										a:placeholder="在线支付" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">平台补助</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkPlatformRefund}"
+										a:placeholder="平台补助" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">餐厅补贴</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkResturantRefund}"
+										a:placeholder="餐厅补贴" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">有效订单</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">服务费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkServiceFee}"
+										a:placeholder="服务费" class="form-control" /></td>
+							</tr>
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
+
+						</tbody>
+					</h:panelGroup>
+				</h:panelGroup>
+				<button type="submit">保存</button>
+			</h:form>
+		</div>
+
+
+	</div>
+	<div class="bottom">
+		<ul>
+			<li><a class="index" href="index.xhtml"></a></li>
+			<li><a class="wine self" href="#"></a></li>
+			<li><a class="shopping_cart" href="damage_report.xhtml"></a></li>
+			<li><a class="user" href="inventory_report_detail.xhtml"></a></li>
+
+		</ul>
+		<div class="clear"></div>
+	</div>
+
+</body>
+
+</html>

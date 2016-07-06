@@ -1,0 +1,144 @@
+.navigation{
+	position:fixed;
+	background-color:#FFFFFF;
+	height:70px;
+	width:100%;
+	border-top:solid 1px #cacaca;
+	bottom:0px;
+}
+
+.navigation-clear{
+	height:90px;
+}
+
+.navigation-wrapper{
+	width:300px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.navigation-wrapper a:first-child{
+	margin-left:0px;
+}
+
+.navigation-wrapper a:last-child{
+	margin-right:0px;
+}
+
+.navigation-wrapper{
+	margin-top:10px;
+}
+
+.nav-item{
+	margin-left:7px;
+	margin-right:7px;
+	float:left;
+	background-size:48px 48px;
+	background-repeat:no-repeat;
+	width:48px;
+	height:48px;
+	display:block;		
+}
+
+
+.home-nav{
+	background-image:url(../images/misc/nav_home.png);
+}
+
+.home-nav-selected{
+	background-image:url(../images/misc/nav_homes.png);
+}
+
+.blog-nav{
+	background-image:url(../images/misc/nav_write.png);
+}
+
+.blog-nav-selected{
+	background-image:url(../images/misc/nav_writes.png);
+}
+
+.contact-nav{
+	background-image:url(../images/misc/nav_mail.png);	
+}
+
+.contact-nav-selected{
+	background-image:url(../images/misc/nav_mails.png);	
+}
+
+.star-nav{
+	background-image:url(../images/misc/nav_star.png);
+}
+
+.star-nav-selected{
+	background-image:url(../images/misc/nav_stars.png);
+}
+
+.camera-nav{
+	background-image:url(../images/misc/nav_camera.png);
+}
+
+.camera-nav-selected{
+	background-image:url(../images/misc/nav_cameras.png);
+}
+
+.foot-menu {
+    font-size: 0;
+    border-top: 1px solid #eee;
+    position: fixed;
+    bottom: 0;
+    background-color: #f8faf7;
+    width: 100%;
+    padding: 0
+}
+.foot-menu .foot-tab {
+    display: inline-block;
+    width: 20%;
+    float: left;
+    margin: 0;
+    padding: 6px 0;
+    text-align: center
+}
+.foot-menu .foot-tab a {
+    display: inline-block;
+    width: 100%;
+    color: #999;
+    font-size: 11px
+}
+.foot-menu .foot-tab span {
+    font-size: 20px
+}
+.foot-menu .foot-tab .tab-text {
+    margin-top: 4px
+}
+.foot-menu .foot-tab .active {
+    color: #1db489
+}
+.foot-menu .selected-info-box {
+    position: fixed;
+    bottom: 46px;
+    left: 33%;
+    width: 75%;
+    text-align: center;
+    display: none
+}
+.foot-menu .selected-info-box .bubble {
+    padding: 0 8px;
+    border-radius: 10px;
+    background-color: #FF6048;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 20px;
+    color: #fff
+}
+.foot-menu .selected-info-box .point-box {
+    position: relative
+}
+.foot-menu .selected-info-box .point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 8px;
+    background-color: #FF6048;
+    margin-left: 6px;
+    left: 50%
+}

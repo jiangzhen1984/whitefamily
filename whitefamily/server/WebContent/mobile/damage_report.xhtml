@@ -1,0 +1,183 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<body>
+	<div id="container">
+		<div id="content">
+			<h:form id="pform">
+				<div class="page-header">
+					<div class="container-fluid">
+						<div class="pull-right">
+							<h:commandLink action="#{shopBean.reportDamage}" type="submit"
+								form="form-product" data-toggle="tooltip"
+								title="echo $button_save" class="btn btn-primary">
+								<i class="fa fa-save"></i>
+							</h:commandLink>
+							<a href="index.xhtml" data-toggle="tooltip" title="取消"
+								class="btn btn-default"><i class="fa fa-reply"></i></a>
+						</div>
+						<h1>店铺管理-报损</h1>
+						<ul class="breadcrumb">
+							<li><a href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="container-fluid">
+					<c:if test="${not empty shopBean.errMsg}">
+						<div class="alert alert-danger">
+							<i class="fa fa-exclamation-circle"></i>
+							<h:outputText value="#{shopBean.errMsg}"></h:outputText>
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+					</c:if>
+					<div class="panel panel-default">
+						<div class="panel-heading">报损</div>
+						<div class="panel-body">
+							<table id="item_box" class="table table-striped  table-hover">
+								<tbody>
+									<ui:repeat var="o" value="#{shopBean.report.itemList}"
+										varStatus="status">
+										<tr id="it_row#{status.index}">
+											<td class="text-left"><label class="control-label"
+												for="input-name">产品</label></td>
+											<td class="text-right"><input type="text"
+												name="goodsname" value="#{o.goods.name}" placeholder="请输入产品"
+												id="goodsname#{status.index}" class="form-control" /> <input
+												type="hidden" name="goodsname_id"
+												id="goodsname_id#{status.index}" value="#{o.goods.id}"
+												class="form-control" /></td>
+											<td class="text-left"><label class="control-label"
+												for="input-model">数量</label></td>
+											<td class="text-right"><input type="text"
+												name="goodscount" value="#{o.count}" placeholder="请输入数量"
+												id="goodscount#{status.index}" class="form-control" /></td>
+											<td class="text-left"><button type="button"
+													onclick="$('#it_row#{status.index}').remove();"
+													data-toggle="tooltip" title="移除条目" class="btn btn-danger">
+													<i class="fa fa-minus-circle"></i>
+												</button></td>
+										</tr>
+									</ui:repeat>
+								</tbody>
+
+							</table>
+						</div>
+						<div class="panel-body">
+							<h:commandLink action="#{shopBean.reportDamage}" type="submit"
+								form="form-product" data-toggle="tooltip" title="提交"
+								class="btn btn-primary">
+								<i class="fa fa-save"></i>提交</h:commandLink>
+							<button type="button" class="btn btn-primary"
+								onclick="addItem();">
+								<i class="fa fa-plus"></i>添加条目
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</h:form>
+		</div>
+	<div class="bottom">
+		<ul>
+			<li><a class="index" href="index.xhtml"></a></li>
+			<li><a class="wine " href="yingshou.xhtml"></a></li>
+			<li><a class="shopping_cart self" href="damage_report.xhtml"></a></li>
+			<li><a class="user" href="inventory_report_detail.xhtml"></a></li>
+
+		</ul>
+		<div class="clear"></div>
+	</div>
+
+	</div>
+
+
+	<script type="text/javascript">
+var item_row = 0;
+
+function addItem() {
+	html =' <tr id="it_row'+item_row+'">';
+	html +='	<td class="text-left"><label class="control-label" for="input-name">产品</label></td>';
+	html +='	<td class="text-right"><input	type="text" name="goodsname" value="" placeholder="请输入报损产品"	id="goodsname'+item_row+'" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id'+item_row+'"   class="form-control" /></td>';
+	html +='	 <td class="text-left"><label class="control-label" for="input-model">数量</label></td>';
+	html +='	  <td class="text-right"><input type="text" name="goodscount" value="" placeholder="请输入报损数量" id="goodscount'+item_row+'" class="form-control" /></td>';
+	html +='	<td class="text-left"><button type="button" onclick="$(\'#it_row'+item_row+'\').remove();" data-toggle="tooltip" title="echo $button_remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html +=' </tr>';
+
+	$('#item_box tbody').append(html);
+	
+	
+	var el = $("input[name=\'goodsname\']:last");
+	var id_el = $("input[name=\'goodsname_id\']:last");
+	el.autocomplete({
+	'source': f_auto_complete_source_goods,
+	'select': function(item) {
+		el.val(item['label']);
+		id_el.val(item['value']);
+	    }
+    });
+
+	item_row++;
+}
+</script>
+
+
+	<script type="text/javascript">
+  
+  
+       function f_auto_complete_source_type(type, request, response, param) {
+    		$.ajax({
+			url: type+'.ajax?action='+type+'&amp;'+'filter=' +  encodeURIComponent(request),
+			data : param,
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					goods_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+    
+    }
+    
+
+
+  function f_auto_complete_source_goods(request, response) {
+         f_auto_complete_source_type('filterGoods', request, response, '');
+    }
+
+   var g_el_ar = $('input[name=\'goodsname\']');
+   var g_id_el_ar = $('input[name=\'goodsname_id\']');
+   var len = g_el_ar.length;
+   var i = 0;
+   //<![CDATA[
+   for ( i= 0; i < len; i++) {
+     var g_el = $('#'+g_el_ar[i].id);
+     var g_id_el = $('#'+g_id_el_ar[i].id);
+     g_el.autocomplete({
+	    'source': f_auto_complete_source_goods,
+	    'select': function(item) {
+		  g_el.val(item['label']);
+		  g_id_el.val(item['value']);
+	   }
+     });
+   }
+    //]]>
+
+  </script>
+
+
+</body>
+</html>

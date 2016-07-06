@@ -1,0 +1,35 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body{font-size:16px;font-family:'微软雅黑' Arial, Helvetica, sans-serif; color:#000;}
+a{ color:#000;text-decoration:none;}
+a:hover,a:active,a:focus{ color:#000;}
+*{margin:0;padding:0;}
+ul{list-style:none;}
+.clear{clear:both;}
+
+.sales_tit h1{width:32%;font-size:1.7em;margin-left:10px;float:left;font-weight:300;padding-bottom:6px;margin-top:5px;margin-bottom:5px;display:block;background:url(../images/1_11.jpg) left top no-repeat;padding-left:10px;}
+.today_sales dl{width:100%;display:block;float:left;border-bottom: 1px solid #eee;}
+.today_sales dt{width: 20%;display:block;float:left;margin-bottom:10px;margin-top: 10px;margin-left: 10px;}
+.today_sales dt img{width: 100%;}
+.today_sales dt .img{}
+.today_sales dt .img .tip{color:#ff3b35;position:absolute;font-size:1em;z-index:99;bottom:10px;right:10px;}
+.today_sales dd{width: 75%;display:block;float:right;padding-bottom: 10px;}
+.today_sales_tit{font-size: 1em;margin-top:3px;margin-bottom:2px;color: #000;font-family: '微软雅黑';margin-left: 5px;}
+.today_sales_detail_left{width:90%;float:left;font-size:1em;margin-top:0.3em;}
+.today_sales_detail_price{display:block;font-size: 1.3em;color:#ff5c2c;}
+.today_sales_detail_num{font-size:1.5em;padding-left:5px;padding-right:5px;}
+.today_sales_detail_left input{width: 1.5em;}
+
+.today_sales_detail_left{width: 60%;float:left;font-size:1em;margin-top:0.3em;}
+.today_sales_detail_price{display:block;font-size: 0.8em;color: #827e7d;letter-spacing: 0;font-family: '宋体';margin-left: 5px;}
+del {color: #bbb;
+    font-size: 1.3em;}
+.today_sales_detail_num{font-size: 1em;padding-left: 2px;padding-right: 2px;}
+.today_sales_detail_right input{width: 1.5em;margin-bottom: -3px;}
+.sales_del{width:2em;margin-bottom:5px;}
+.sales_choice{margin:0px;margin-left:7px;}
+.today_sales_detail_right{width: 32%;float:right;margin-right:10px;margin-top: 0.4em;}
+.today_sales_detail_right a.no_sales_btn{width:100%;height:25px;line-height: 25px;text-align:center;background:#505050;color:#fff;display:block;float:right;border-radius:3px;}
+
+.sales_service{color:#3c3c3c;font-size:0.8em;line-height: 1.8em;padding: 1em 1em;}

@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<header id="header" class="navbar navbar-static-top">
+<h:form>
+  <div class="navbar-header">
+  
+    <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
+
+    <a href="" class="navbar-brand"><img src="../view/image/logo.png" alt="" title="" /></a></div>
+
+  <ul class="nav pull-right">
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><span class="label label-danger pull-left"></span> <i class="fa fa-bell fa-lg"></i></a>
+      <ul class="dropdown-menu dropdown-menu-right alerts-dropdown">
+        <li class="dropdown-header"></li>
+        <li><a href="" style="display: block; overflow: auto;"><span class="label label-warning pull-right"></span></a></li>
+        <li><a href=""><span class="label label-success pull-right"></span></a></li>
+        <li><a href=""><span class="label label-danger pull-right"></span></a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header"></li>
+        <li><a href=""><span class="label label-success pull-right"></span></a></li>
+        <li><a href=""><span class="label label-danger pull-right"></span></a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header"></li>
+        <li><a href=""><span class="label label-danger pull-right"></span></a></li>
+        <li><a href=""><span class="label label-danger pull-right"></span></a></li>
+        <li class="divider"></li>
+        <li class="dropdown-header"></li>
+        <li><a href=""><span class="label label-danger pull-right"></span></a></li>
+      </ul>
+    </li>
+    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-life-ring fa-lg"></i></a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="dropdown-header"> <i class="fa fa-shopping-cart"></i></li>
+       
+        <li><a href="" target="_blank"></a></li>
+      
+        <li class="divider"></li>
+        <li class="dropdown-header"> <i class="fa fa-life-ring"></i></li>
+        <li><a href="http://www.opencart.com" target="_blank"></a></li>
+        <li><a href="http://docs.opencart.com" target="_blank"></a></li>
+        <li><a href="http://forum.opencart.com" target="_blank"></a></li>
+      </ul>
+    </li>
+    <li>
+      <h:commandLink action="#{userBean.logout}" type="submit"
+					form="form-product" data-toggle="tooltip" title="保存用户"
+					>
+					<span class="hidden-xs hidden-sm hidden-md"></span>
+					<i class="fa fa-sign-out fa-lg"></i>
+	  </h:commandLink>
+    </li>
+  </ul>
+</h:form>
+</header>
+</ui:composition>

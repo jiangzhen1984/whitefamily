@@ -1,0 +1,315 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="pform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="button" data-toggle="tooltip" title=" echo $button_delete" class="btn btn-default" ><i class="fa fa-reply"></i></button>
+      </div>
+      <h1> 店铺管理</h1>
+      <ul class="breadcrumb">
+        <li><a href="product_list.xhtml"> 店铺营收</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+   
+        <div class="well">
+          <div class="row">
+              <div class="input-group date">
+								<h:inputText type="text"
+									value="#{shopBean.viewShopIncomingDate}" a:placeholder="选择日期"
+									a:data-date-format="YYYY-MM-DD" a:id="input-date-available"
+									a:class="form-control">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:inputText>
+								<span class="input-group-btn">
+                     <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                </span>
+                  <span class="input-group-btn">
+                         <h:commandLink  type="submit" form="form-product" data-toggle="tooltip" class="btn btn-primary pull-right"><i class="fa fa-search"></i>查看</h:commandLink>
+                  </span>
+               </div>
+          </div>
+        </div>
+        
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa">营业收入</i></h3>
+      </div>
+      <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td class="text-center">现金</td>
+                  <td class="text-center">微信</td>
+                  <td class="text-center">支付宝</td>
+                  <td class="text-center">大众闪惠</td>
+                  <td class="text-center">糯米闪惠</td>
+                  <td class="text-center">其他</td>
+                </tr>
+              </thead>
+              <tbody>
+               <tr>
+                  <td class="text-center">#{shopBean.shopIncoming.cash}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.weixin}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ali}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dazhong}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.nuomi}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.other}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    
+    <!--  
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa">营业支出</i></h3>
+      </div>
+      <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td class="text-center"></td>
+                  <td class="text-center">微信</td>
+                  <td class="text-center">支付宝</td>
+                  <td class="text-center">大众闪惠</td>
+                  <td class="text-center">糯米闪惠</td>
+                  <td class="text-center">其他</td>
+                </tr>
+              </thead>
+              <tbody>
+               <tr>
+                  <td class="text-center">现金</td>
+                  <td class="text-center">微信</td>
+                  <td class="text-center">支付宝</td>
+                  <td class="text-center">大众闪惠</td>
+                  <td class="text-center">糯米闪惠</td>
+                  <td class="text-center">其他</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    -->
+    
+     <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa">团购</i></h3>
+      </div>
+      <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td class="text-center">平台</td>
+                  <td class="text-center">数量</td>
+                  <td class="text-center">代金额</td>
+                  <td class="text-center">购买额</td>
+                  <td class="text-center">差额</td>
+                  <td class="text-center">实际额</td>
+                  <td class="text-center">其他</td>
+                </tr>
+              </thead>
+              <tbody>
+               <tr>
+                  <td class="text-center">大众</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdCount}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdDje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdGme}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdCe}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdSjje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gdOther}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">美团</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmCount}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmDje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmGme}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmCe}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmSjje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gmOther}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">糯米</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnCount}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnDje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnGme}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnCe}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnSjje}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.gnOther}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    
+    
+     <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa">外卖</i></h3>
+      </div>
+      <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td class="text-center">平台</td>
+                  <td class="text-center">营业额</td>
+                  <td class="text-center">在线支付</td>
+                  <td class="text-center">平台补助</td>
+                  <td class="text-center">餐厅补贴</td>
+                  <td class="text-center">有效订单</td>
+                  <td class="text-center">服务费</td>
+                  <td class="text-center">配送费</td>
+                </tr>
+              </thead>
+              <tbody>
+               <tr>
+                  <td class="text-center">饿了吗</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deTotalSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deOnlinePaymentSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dePlatformRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deResturantRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deServiceFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deDeliverFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.deValid}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">美团</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmTotalSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmOnlinePaymentSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmPlatformRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmResturantRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmServiceFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmDeliverFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dmValid}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">百度</td>
+                    <td class="text-center">#{shopBean.shopIncoming.dbTotalSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbOnlinePaymentSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbPlatformRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbResturantRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbServiceFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbDeliverFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dbValid}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">大众</td>
+                    <td class="text-center">#{shopBean.shopIncoming.ddTotalSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddOnlinePaymentSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddPlatformRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddResturantRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddServiceFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddDeliverFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.ddValid}</td>
+                </tr>
+                 <tr>
+                  <td class="text-center">口碑</td>
+                    <td class="text-center">#{shopBean.shopIncoming.dkTotalSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkOnlinePaymentSum}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkPlatformRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkResturantRefund}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkServiceFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkDeliverFee}</td>
+                  <td class="text-center">#{shopBean.shopIncoming.dkValid}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    
+    
+  </div>
+  </h:form>
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=catalog/product&token= echo $token';
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	var filter_model = $('input[name=\'filter_model\']').val();
+
+	if (filter_model) {
+		url += '&filter_model=' + encodeURIComponent(filter_model);
+	}
+
+	var filter_price = $('input[name=\'filter_price\']').val();
+
+	if (filter_price) {
+		url += '&filter_price=' + encodeURIComponent(filter_price);
+	}
+
+	var filter_quantity = $('input[name=\'filter_quantity\']').val();
+
+	if (filter_quantity) {
+		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status != '*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	location = url;
+});
+//--></script>
+  <script type="text/javascript"><!--
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&token= echo $token&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+	}
+});
+
+
+//--></script>
+<script type="text/javascript"><!--
+ $('.date').datetimepicker({
+         pickTime: false
+ });
+ //-->
+</script>
+
+</div>
+<footer id="footer"><br /></footer></div>
+</body></html>

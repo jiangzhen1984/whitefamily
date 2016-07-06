@@ -1,0 +1,5 @@
+.menu_head{display:block;height:47px;line-height:47px;font-size: 1em;color:#525252;cursor:pointer;border-bottom: 1px solid #fff;position:relative;margin:0px;font-weight:bold;background: #eeeeee;letter-spacing: 2px;text-align: center;}
+.menu_list .current{background: #21b387 url(../images/1_03.jpg) right center no-repeat;background-size: 7px;color: #fff;}
+.menu_body{height:auto;overflow:hidden;line-height:38px;border-left:1px solid #e1e1e1;backguound:#fff;border-right:1px solid #e1e1e1;}
+.menu_body a{display:block;height:38px;line-height:38px;padding-left:38px;}
+.menu_body a:hover{text-decoration:none;}

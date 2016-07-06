@@ -1,0 +1,115 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link rel="stylesheet" href="css/meicai.css" />
+<link rel="stylesheet" href="css/normal.css" />
+
+<body>
+	<h:form id="mform">
+		<div
+			style="padding: 5px 10px; background-color: #21b387; overflow: auto;"
+			class="js-search-bar">
+			<div class="logo">
+				<img width="45px" height="24px" src="" />
+			</div>
+			<div class="js-search-input-width logo-div">
+			   <h:inputText  id="searchText"  value="#{mallBean.searchText}" a:placeholder="输入菜名搜索" class="js-search search js-search-input-width" style="float: left;" />
+			</div>
+			<div class="js-search-btn"
+				style="float: left; display: inline-block;">
+				<input type="submit" value="搜索" class="btn" id="search-btn" />
+			</div>
+		</div>
+
+
+		<div class="js-content" style="height: 901px;">
+			<div id="subCategoryBlock" class="fl leftSider scroll-y"
+				style="height: 100%; width: 25%; position: relative;">
+				<ul class="js-category" style="margin-bottom: 80px;">
+					<c:forEach var="g" items="#{mallBean.categoryList}">
+						<h:panelGroup rendered="${g.id == mallBean.cateId}">
+							<li class="cp active" style="word-wrap: break-word"><h:outputText
+									value="#{g.name}" /> <i class="menu-triangle"
+								style="display: inline-block;"></i></li>
+						</h:panelGroup>
+						<h:panelGroup rendered="${g.id ne mallBean.cateId}">
+							<li class="cp" style="word-wrap: break-word"><h:commandLink
+									 form="form-product" data-toggle="tooltip"
+									title="查看分类产品" >#{g.name}
+									<f:setPropertyActionListener target="#{mallBean.cateId}"
+										value="#{g.id}" />
+								</h:commandLink> <i class="menu-triangle" style="display: none;"></i></li>
+						</h:panelGroup>
+					</c:forEach>
+				</ul>
+			</div>
+			<div id="mainListBlock" class="fl scroll-y"
+				style="position: relative; height: 100%; width: 75%;">
+				<table class="table table-condensed" style="margin-bottom: 80px;">
+					<tbody class="js-category-detail ul-bottom-line">
+						<ui:repeat id="g" var="g" value="#{mallBean.goodsList}"
+							varStatus="itemStatus">
+							<tr class="calculate">
+								<td class="ci_id_info"
+									style="padding-left: 15px; word-wrap: break-word; word-break: break-all; position: relative;"><div
+										class="title-con n-cang">
+										<span class="js-c-name">#{g.name}</span>
+									</div>
+									<div class="js-subject"><h:outputText value="#{g.goodsDesc}" escape="false" /></div>
+									<div
+										style="position: absolute; top: 0; left: 0; background: rgba(0, 0, 0, 0.5); color: #fff; text-align: center;"
+										class="hide js-td1-mask"></div>
+									<div class="price-des">
+										<span class="js-price price"> <!-- pr -->
+										</span><span class="js-format"></span>
+										<div class="js-price-ref"></div>
+									</div><a
+									style="font-size: 0.8em; position: relative; bottom: 3px"
+									href="javascript:void(0);"
+									onclick="popupDialog(&#39;#{g.goodsDesc}&#39;,null)">详情</a><input
+									type="hidden" id="isNextDay" value="false" /></td>
+								<td class="v-m" style="width: 43%; text-align: center;"><div
+										class="ml10 product-img-wrapper">
+									<!--  <img class=""
+											data-src="http://img.yunshanmeicai.com/32380ebc2d6584c5b702900d7200a28e_thumb.png"
+											data-srcoriginal="http://img.yunshanmeicai.com/32380ebc2d6584c5b702900d7200a28e.png"
+											src="http://img.yunshanmeicai.com/32380ebc2d6584c5b702900d7200a28e_thumb.png" />
+											-->	
+									</div>
+									<div class="modifydiv"
+										style="height: 40px; line-height: 40px; font-size: 16px;">
+										<a class="js-minus cp font20"
+											style="color: #86a744; font-weight: bold; border: 1px solid;"
+											gid="#{g.id}">－</a> <a
+											class="js-plus cp font20"
+											style="color: #21b387; font-weight: bold; border: 1px solid;"
+											gid="#{g.id}" >＋</a>
+									</div>
+									</td>
+							</tr>
+						</ui:repeat>
+					</tbody>
+				</table>
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+	</h:form>
+	
+	<SCRIPT src="js/mall.js"></SCRIPT>
+	<div class="navigation">
+    	<div class="navigation-wrapper">
+            <a href="mall.xhtml" class="nav-item home-nav-selected"></a>
+            <a href="incoming_report.xhtml" class="nav-item star-nav"></a>
+            <a href="damage_report.xhtml" class="nav-item blog-nav"></a>
+            <a href="inventory_report_detail.xhtml" class="nav-item contact-nav"></a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+   http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+
+    
+    <navigation-rule>
+		<from-view-id>/shop/*</from-view-id>
+		<navigation-case>
+			<from-action>#{userBean.logout}</from-action>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/shop/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+
+	<navigation-rule>
+		<from-view-id>/shop/category_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{categoryBean.createCategory}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/category_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{categoryBean.createCategory}</from-action>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/shop/category_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/category_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{categoryBean.editCategory}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/category_list.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{categoryBean.editCategory}</from-action>
+			<from-outcome>editcate</from-outcome>
+			<to-view-id>/shop/category_form.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+
+	<navigation-rule>
+		<from-view-id>/shop/product_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{goodsBean.createGoods}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/product_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.createGoods}</from-action>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/shop/product_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/product_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{goodsBean.viewGoodsBrands}</from-action>
+			<from-outcome>viewbrands</from-outcome>
+			<to-view-id>/shop/brand_list.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.gotoAddGoodsBrands}</from-action>
+			<from-outcome>addbrands</from-outcome>
+			<to-view-id>/shop/brand_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.createGoodsBrand}</from-action>
+			<from-outcome>brandcreatefailed</from-outcome>
+			<to-view-id>/shop/brand_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.viewGoods}</from-action>
+			<from-outcome>updategoods</from-outcome>
+			<to-view-id>/shop/product_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.gotoAddGoods}</from-action>
+			<from-outcome>gotoaddgoods</from-outcome>
+			<to-view-id>/shop/product_form.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+
+
+
+	<navigation-rule>
+		<from-view-id>/shop/brand_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{goodsBean.createGoodsBrand}</from-action>
+			<from-outcome>brandcreatefailed</from-outcome>
+			<to-view-id>/shop/brand_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{goodsBean.createGoodsBrand}</from-action>
+			<from-outcome>brandlist</from-outcome>
+			<to-view-id>/shop/brand_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/shop_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.gotoAddShop}</from-action>
+			<from-outcome>gotoaddshop</from-outcome>
+			<to-view-id>/shop/shop_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.gotoUpdateShop}</from-action>
+			<from-outcome>gotoupdateshop</from-outcome>
+			<to-view-id>/shop/shop_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.gotoViewShopIncoming}</from-action>
+			<from-outcome>gotoviewshopincoming</from-outcome>
+			<to-view-id>/shop/shop_incoming.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.gotoViewShopInventoryRequestList}</from-action>
+			<from-outcome>gotoViewshopinventoryrequestlist</from-outcome>
+			<to-view-id>/shop/shop_inventory_request_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/shop/shop_inventory_request_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.gotoViewShopInventoryRequestDetail}</from-action>
+			<from-outcome>gotoViewshopinventoryrequestdetail</from-outcome>
+			<to-view-id>/shop/shop_inventory_request_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/shop_inventory_request_all_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.gotoViewShopInventoryRequestDetail}</from-action>
+			<from-outcome>gotoViewshopinventoryrequestdetail</from-outcome>
+			<to-view-id>/shop/shop_inventory_request_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/shop_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.saveOrUpdateShop}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/shop_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.saveOrUpdateShop}</from-action>
+			<from-outcome>shoplist</from-outcome>
+			<to-view-id>/shop/shop_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{userBean.login}</from-action>
+			<from-outcome>loginfailed</from-outcome>
+			<to-view-id>/shop/login.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{userBean.login}</from-action>
+			<from-outcome>dashboard</from-outcome>
+			<to-view-id>/mobile/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{userBean.login}</from-action>
+			<from-outcome>mobiledashboard</from-outcome>
+			<to-view-id>/shop/dashboard.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/shop/inventory_update_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{inventoryBean.createInventory}</from-action>
+			<from-outcome>createinventoryfailed</from-outcome>
+			<to-view-id>/shop/inventory_update_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{inventoryBean.createInventory}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/shop/inventory_update_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	
+	<navigation-rule>
+		<from-view-id>/shop/inventory_update_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{inventoryBean.gotoInventoryDetail}</from-action>
+			<from-outcome>gotoinventorydetail</from-outcome>
+			<to-view-id>/shop/inventory_update_list_goods_list.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/shop/user_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{userManagementBean.createOrUpdateUser}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/user_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{userManagementBean.createOrUpdateUser}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/shop/user_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/user_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{userManagementBean.gotoCreateUser}</from-action>
+			<from-outcome>gotocreateuser</from-outcome>
+			<to-view-id>/shop/user_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{userManagementBean.gotoUpdateUser}</from-action>
+			<from-outcome>gotoupdateuser</from-outcome>
+			<to-view-id>/shop/user_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/mobile/damage_report.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.reportDamage}</from-action>
+			<from-outcome>damageReportfailed</from-outcome>
+			<to-view-id>/mobile/damage_report.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.reportDamage}</from-action>
+			<from-outcome>damageReportsuccess</from-outcome>
+			<to-view-id>/mobile/damage_report_result.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/damage_report_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.gotoDamageReportDetail}</from-action>
+			<from-outcome>gotodamagereportdetail</from-outcome>
+			<to-view-id>/shop/damage_report_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/mobile/inventory_report_detail.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.requestInventory}</from-action>
+			<from-outcome>inventoryrequestfailed</from-outcome>
+			<to-view-id>/mobile/inventory_report_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.requestInventory}</from-action>
+			<from-outcome>inventoryrequestsuccess</from-outcome>
+			<to-view-id>/mobile/inventory_report_detail_result.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+		<navigation-rule>
+		<from-view-id>/mobile/yingshou.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.reportIncoming}</from-action>
+			<from-outcome>reportincomingfailed</from-outcome>
+			<to-view-id>/shop/login.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.reportIncoming}</from-action>
+			<from-outcome>reportincomingsuccess</from-outcome>
+			<to-view-id>/mobile/yingshou.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+
+</faces-config>

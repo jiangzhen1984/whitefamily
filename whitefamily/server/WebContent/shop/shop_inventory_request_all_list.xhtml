@@ -1,0 +1,76 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="pform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1> 店铺管理</h1>
+      <ul class="breadcrumb">
+        <li><a href="product_list.xhtml"> 店铺备货记录</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+   
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> </h3>
+      </div>
+      <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td class="text-center">店铺</td>
+                  <td class="text-center">地址</td>
+                  <td class="text-center"> 
+                    <a href="#" >订货日期</a>
+                     </td>
+                  <td class="text-center"> 
+                    <a href="#" >地址</a>
+                     </td>
+                  <td class="text-center">状态</td>
+                   <td class="text-center">编辑</td>
+                </tr>
+              </thead>
+              <tbody>
+              
+              <ui:repeat id="g" var="g" value="#{shopBean.inventoryAllList}" varStatus="itemStatus">
+                <tr>
+                  <td class="text-center">#{g.shop.name}</td>
+                  <td class="text-center">#{g.shop.address}</td>
+                  <td class="text-center">#{g.datetime}</td>
+                  <td class="text-center">#{g.operator.name}</td>
+                   <td class="text-center">#{g.is}</td>
+                  <td class="text-right">
+                      <h:commandLink  action="#{shopBean.gotoViewShopInventoryRequestDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="产品详情" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{shopBean.inventoryRequestDetailIdxFromAll}" value="#{itemStatus.index}" />
+                           <i class="fa fa-book">产品详情</i>
+                      </h:commandLink><h:outputText value="&#160;" />
+                       <h:commandLink  action="#{shopBean.showForm}" type="submit"  form="form-product" data-toggle="tooltip" title="生成发货单" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{shopBean.inventoryRequestFormAllIdx}" value="#{itemStatus.index}" />
+                          <i class="fa fa-pencil">生成发货单</i>
+                      </h:commandLink>
+                  </td>
+                </tr>
+                </ui:repeat>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+</div>
+<footer id="footer"><br /></footer></div>
+</body></html>

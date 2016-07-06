@@ -1,0 +1,17 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body{ background:#f8f8f8; color:#333;}
+a{ color:#333;}
+a:hover,a:active,a:focus{ color:#333;}
+
+.shangpin_list_box{ overflow:hidden; margin-top:10px; margin-bottom:4px;}
+.shangpin_list_box ul{ margin-right:1px;}
+.shangpin_list_box li{ width: 33.3%; float:left; overflow:hidden;}
+.shangpin_list_box li a{ background:#fff; display:block; margin-left:1px; margin-bottom:1px; border:0px; border-radius:4px; overflow:hidden;}
+.shangpin_list_box li a:active{ border:1px solid #f90;}
+.shangpin_list_box li .shangpin_pro_nr{ overflow:hidden;}
+.shangpin_list_box li .shangpin_pro_nr .p_img{margin:20%; overflow:hidden; border-radius:4px 4px 0 0; background-position: center center; background-repeat:no-repeat; background-size:cover;}
+.shangpin_list_box li .shangpin_pro_nr .p_img img{width:100%;}
+.shangpin_list_box li .shangpin_pro_nr .p_tit{font-size:12px; margin:4px 4px; height:36px; line-height:18px; overflow:hidden;}
+

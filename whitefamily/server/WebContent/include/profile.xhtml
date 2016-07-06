@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<div id="profile">
+  <div>
+        <i class="fa fa-opencart"></i>
+      </div>
+  <div>
+    <h4><h:outputText value="#{userBean.user.name}" /></h4>
+    <small><h:outputText value="#{userBean.user.role.value}" /></small>
+  </div>
+</div>
+</ui:composition>

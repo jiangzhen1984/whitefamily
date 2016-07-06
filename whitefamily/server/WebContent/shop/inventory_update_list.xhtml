@@ -1,0 +1,81 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+		
+		<div id="content">
+			<div class="page-header">
+				<div class="container-fluid">
+					<div class="pull-right">
+						<a href="inventory_update_form.xhtml" data-toggle="tooltip" title=""
+							class="btn btn-primary"><i class="fa fa-plus"></i></a> 
+							<a href="inventory_update_list.xhtml"
+							data-toggle="tooltip" title="刷新"
+							class="btn btn-default"><i class="fa fa-refresh"></i></a>
+					</div>
+					<ul class="breadcrumb">
+						<li><a href=" $breadcrumb['href']">库存管理</a></li>
+					</ul>
+				</div>
+			</div>
+			<h:form>
+			<div class="container-fluid">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<i class="fa fa-list"></i> 库存更新列表
+						</h3>
+					</div>
+					<div class="panel-body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<td class="text-left"><a href=" $sort_name"
+												class=" strtolower($order)">更新时间</a></td>
+											<td class="text-right">类型</td>
+											<td class="text-right">操作用户</td>
+											<td class="text-right">查询更新产品</td>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat id="invo" var="invo"
+											value="#{inventoryBean.inventoryList}" varStatus="itemStatus">
+											<tr>
+												<td class="text-left">#{invo.datetime}</td>
+												<td class="text-right">#{invo.it.value}</td>
+												<td class="text-right">#{invo.operator.name}</td>
+												<td class="text-right">
+												 <h:commandLink  action="#{inventoryBean.gotoInventoryDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="查看更新产品列表" class="btn btn-primary">
+												     <f:setPropertyActionListener target="#{inventoryBean.detailInventoryId}" value="#{invo.id}" />
+												       <i class="fa fa-eraser">查看入库明细</i>
+                                                 </h:commandLink></td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+							</div>
+						<div class="row">
+							<div class="col-sm-6 text-left">$pagination</div>
+							<div class="col-sm-6 text-right">$results</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</h:form>
+		</div>
+		
+		<footer id="footer">
+			<br />
+		</footer>
+	</div>
+</body>
+</html>

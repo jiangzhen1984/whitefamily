@@ -1,0 +1,41 @@
+package com.whitefamily.service;
+
+import java.util.Date;
+import java.util.List;
+
+import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.service.vo.WFInventory;
+import com.whitefamily.service.vo.WFInventoryRequest;
+
+public interface IInventoryService {
+	
+	
+	public void createInventory(WFInventory inventory);
+	
+	
+	public Result createInventoryRequest(WFInventoryRequest request);
+	
+	public Result prepareInventoryRequest(WFInventoryRequest req);
+	
+	public Result deliveryInventoryRequest(WFInventoryRequest req);
+	
+	public Result finishInventoryRequest(WFInventoryRequest req);
+	
+	
+    public List<WFInventoryRequest> queryWFInventoryRequest(int start, int count);
+    
+    public List<WFInventoryRequest> queryWFInventoryRequest(int start, int count, InventoryStatus is);
+    
+    public List<WFInventoryRequest> queryWFInventoryRequest(int start, int count, InventoryStatus[] isArr);
+	
+	public void queryInventoryRequestDetail(WFInventoryRequest wf);
+	
+	
+	public List<WFInventory> queryInventory(int start, int count);
+	
+	public List<WFInventory> queryInventory(Date startDate, Date endDate, int start, int count);
+	
+	public void queryInventoryDetail(WFInventory wf);
+	
+
+}
