@@ -100,7 +100,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 	
 	public WFGoods getGoods(long id) {
 		if (goodsCache == null || goodsCache.size() <=0) {
-			queryGoods(0, 300);
+			queryGoods(0, 300, -1);
 		}
 		return goodsCache.get(Long.valueOf(id));
 	}
@@ -145,7 +145,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 	
 	
 	
-	public List<WFGoods> queryGoods(int start, int count) {
+	public List<WFGoods> queryGoods(int start, int count, int type) {
 //		int newStart = start;
 //		int newCount = start + count;
 //		if (cacheGoods.start <= start && cacheGoods.end >= newCount) {
@@ -221,9 +221,13 @@ public class GoodsService extends BaseService implements IGoodsService {
 //			cacheGoods.caches.addAll(wfList);
 //		}
 		
-		Query query = sess.createQuery(" from Goods order by id ");
+		String sql = type == -1 ? "from Goods order by id" : "from Goods g where g.type = ? order by id ";
+		Query query = sess.createQuery(sql);
 //		query.setFirstResult(start);
 //		query.setMaxResults(start - count);
+		if (type != -1) {
+			query.setInteger(0, type);
+		}
 		List<Goods> list = query.list();
 		List<WFGoods> wfList = new ArrayList<WFGoods>(list.size());
 		for (Goods g : list) {
@@ -241,26 +245,30 @@ public class GoodsService extends BaseService implements IGoodsService {
 		
 	}
 	
-	public List<WFGoods> queryGoods(WFCategory cate, int start, int count) {
+	public List<WFGoods> queryGoods(WFCategory cate, int start, int count, int type) {
 		List<WFCategory> list = new ArrayList<WFCategory>(1);
 		list.add(cate);
-		return queryGoods(list, start, count);
+		return queryGoods(list, start, count, type);
 	}
 	
 	
-	public List<WFGoods> queryGoods(List<WFCategory> cates, int start, int count) {
+	public List<WFGoods> queryGoods(List<WFCategory> cates, int start, int count, int type) {
 		if (cates == null || cates.size() <= 0 ) {
 			return null;
 		}
 		StringBuffer hsql = new StringBuffer();
-		hsql.append(" from Goods g where ");
+		hsql.append(" from Goods g where ( ");
 		int len =  cates.size();
 		while(--len >= 0) {
 			if (len == 0) {
-				hsql.append(" g.cate = ? ");
+				hsql.append("  g.cate = ? ) ");
 			} else {
 				hsql.append(" g.cate = ? or ");
 			}
+		}
+		
+		if (type != -1) {
+			hsql.append(" and g.type = ? ");
 		}
 		
 		hsql.append(" order by id ");
@@ -270,6 +278,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		while(--len >= 0) {
 			WFCategory wf = cates.get(len);
 			query.setLong(len, wf.getId());
+		}
+		if (type != -1) {
+			query.setInteger(cates.size(), type);
 		}
 		query.setFirstResult(start);
 		query.setMaxResults(count);

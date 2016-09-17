@@ -63,7 +63,7 @@ public class GoodsBean {
 	
 	
 	public List<WFGoods> getGoodsList() {
-		return goodsService.queryGoods((pageNo - 1) * PAGE_COUNT, PAGE_COUNT);
+		return goodsService.queryGoods((pageNo - 1) * PAGE_COUNT, PAGE_COUNT, -1);
 	}
 
 

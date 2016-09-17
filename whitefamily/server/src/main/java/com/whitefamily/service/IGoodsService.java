@@ -39,12 +39,12 @@ public interface IGoodsService {
 	public void updateGoodsInventory(WFGoods goods, WFBrand brand, float price, int count, InventoryType it, User opter);
 	
 	
-	public List<WFGoods> queryGoods(int start, int count);
+	public List<WFGoods> queryGoods(int start, int count, int type);
 	
 	
-	public List<WFGoods> queryGoods(WFCategory cate, int start, int count);
+	public List<WFGoods> queryGoods(WFCategory cate, int start, int count, int type);
 	
-	public List<WFGoods> queryGoods(List<WFCategory> cate, int start, int count);
+	public List<WFGoods> queryGoods(List<WFCategory> cate, int start, int count, int type);
 	
 	
 	

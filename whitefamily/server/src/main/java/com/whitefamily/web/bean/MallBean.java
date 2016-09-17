@@ -40,7 +40,7 @@ public class MallBean {
 		sortedList = cateservice.getSortedCategory();
 		
 		if (categoryList.size() > 0) {
-			currentCate = categoryList.get(0);
+			currentCate = sortedList.get(0);
 			cateId = currentCate.getId();
 		}
 		
@@ -50,7 +50,7 @@ public class MallBean {
 	
 	
 	private void updateGoodsList(WFCategory cate) {
-		goodsList = goodsService.queryGoods(getAllSubCates(cate), 0, 200);
+		goodsList = goodsService.queryGoods(getAllSubCates(cate), 0, 200, 0);
 	}
 	
 	
@@ -144,7 +144,7 @@ public class MallBean {
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
-		goodsList = goodsService.queryGoods(0, 200);
+		goodsList = goodsService.queryGoods(0, 200, 0);
 	
 		List<WFGoods> list = new ArrayList<WFGoods>(100);
 		if (this.searchText != null || !this.searchText.isEmpty()) {
