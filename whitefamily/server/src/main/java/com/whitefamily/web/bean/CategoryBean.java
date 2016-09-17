@@ -27,7 +27,7 @@ public class CategoryBean {
 	public CategoryBean() {
 		super();
 		service = ServiceFactory.getCategoryService();
-		categoryList = service.getSortedCategory();
+		categoryList = service.getAllCategory();
 	}
 
 	public List<WFCategory> getCategoryList() {

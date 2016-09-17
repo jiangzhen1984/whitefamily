@@ -23,6 +23,9 @@ public interface ICategoryService {
 	public List<WFCategory> getSortedCategory();
 	
 	
+	public List<WFCategory> getAllCategory();
+	
+	
 }
 
 

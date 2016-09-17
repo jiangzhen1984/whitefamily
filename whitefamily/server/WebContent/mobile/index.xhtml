@@ -13,7 +13,7 @@
 <!--禁止缩放-->
 <meta name="viewport"
 	content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
-<title>无标题文档</title>
+<title>配货选择</title>
 <link href="css/order_confirm.css" rel="stylesheet" type="text/css" />
 <!--页面所需样式-->
 <link href="css/page_style.css" rel="stylesheet" type="text/css" />
@@ -118,26 +118,28 @@
 
 
 	<SCRIPT type="text/javascript">
+ //<![CDATA[
 		function add(gid) {
+		    var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount=1&goodsid='+gid;
 			 $.ajax({
-        		url: 'mall.ajax?action=cartAction+'&amp;'+subaction=plus+'&amp;'+goodscount=1+'&amp;'+goodsid='+gid,
+        		url: rq,
         	success :function(data) {
         		alert("添加成功");
-        	},
+        	}
         	});
 		}
 		
 		
 		function minus(gid) {
 		  $.ajax({
-        	url: 'mall.ajax?action=cartAction+'&amp;'+subaction=minus+'&amp;'+goodscount=1+'&amp;'+goodsid='+gid,
+        	url: 'mall.ajax?action=cartAction&subaction=minus&goodscount=1&goodsid='+gid,
         	success :function(data) {
         		alert("取消成功");
         	},
         });
       
 		}
-	
+	 //]]>
 	</SCRIPT>
 </body>
 

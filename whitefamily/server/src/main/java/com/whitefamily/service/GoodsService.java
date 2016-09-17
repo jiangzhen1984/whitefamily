@@ -99,6 +99,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 	}
 	
 	public WFGoods getGoods(long id) {
+		if (goodsCache == null || goodsCache.size() <=0) {
+			queryGoods(0, 300);
+		}
 		return goodsCache.get(Long.valueOf(id));
 	}
 	

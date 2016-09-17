@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.whitefamily.po.customer.Role;
 import com.whitefamily.service.IUserService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFUser;
@@ -97,16 +98,18 @@ public class UserBean {
 		
 		isLogined = true;
 		
-		String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");
-		if (agent == null || agent.isEmpty()) {
+	//	String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");
+		if (user.getRole() != Role.MANAGER) {
 			return "dashboard";
+		}  else {
+			return  "mobiledashboard";
 		}
-		boolean client = Pattern.matches("(micromessenger/)", agent);
-		if (client) {
-			return "mobiledashboard";
-		} else {
-			return "dashboard";
-		}
+//		boolean client = Pattern.matches("(micromessenger/)", agent);
+//		if (client) {
+//			return "mobiledashboard";
+//		} else {
+//			return "dashboard";
+//		}
 	}
 	
 	public String logout() {

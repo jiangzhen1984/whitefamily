@@ -188,13 +188,13 @@
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{userBean.login}</from-action>
-			<from-outcome>dashboard</from-outcome>
+			<from-outcome>mobiledashboard</from-outcome>
 			<to-view-id>/mobile/index.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
 			<from-action>#{userBean.login}</from-action>
-			<from-outcome>mobiledashboard</from-outcome>
+			<from-outcome>dashboard</from-outcome>
 			<to-view-id>/shop/dashboard.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>

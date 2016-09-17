@@ -17,6 +17,8 @@ public class CategoryService extends BaseService implements ICategoryService {
 	
 	private static Map<Long, WFCategory> cateCache;
 	private static List<WFCategory> orderCategoryList;
+	private static List<WFCategory> allCategoryList;
+	
 	
 	
 	
@@ -52,8 +54,11 @@ public class CategoryService extends BaseService implements ICategoryService {
 			wfParent.addSubCategory(ca);
 			ca.setParent(wfParent);
 		} else {
-			orderCategoryList.add(ca);
+			if (orderCategoryList != null) {
+				orderCategoryList.add(ca);
+			}
 		}
+		allCategoryList.add(ca);
 		return ca;
 	}
 
@@ -76,6 +81,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 				wfCache.getParent().removeSubCategory(wfCache);
 			}
 		}
+		allCategoryList.remove(wfCache);
 
 	}
 
@@ -146,12 +152,28 @@ public class CategoryService extends BaseService implements ICategoryService {
 		sess.close();
 		return newList;
 	}
+	
+	
+	
+	public List<WFCategory> getAllCategory() {
+		if (allCategoryList == null) {
+			getSortedCategory();
+		}
+		return allCategoryList;
+	}
+	
+	
 
 	@Override
 	public List<WFCategory> getSortedCategory() {
 		if (orderCategoryList != null) {
 			return orderCategoryList;
 		} 
+		
+
+		if (allCategoryList == null) {
+			allCategoryList = new ArrayList<WFCategory>(100); 
+		}
 		Session sess = openSession();
 		Query query = sess.createQuery(" from Category order by level");
 		
@@ -161,6 +183,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 		int topLevel = 0;
 		for (Category c : list) {
 			WFCategory wfc = new WFCategory(c);
+			allCategoryList.add(wfc);
 			cateCache.put(Long.valueOf(wfc.getId()), wfc);
 			if (levelList.size() <= wfc.getLevel()) {
 				List<WFCategory> newList =  new ArrayList<WFCategory>(10);
@@ -180,6 +203,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 					break;
 				}
 			}
+			
 		}
 		sess.close();
 		orderCategoryList = (levelList.size() > topLevel ?  levelList.get(topLevel) : null);
