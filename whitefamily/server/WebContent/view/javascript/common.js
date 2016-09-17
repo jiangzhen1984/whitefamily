@@ -68,7 +68,7 @@ $(document).ready(function() {
 	$('#button-menu').on('click', function() {
 		// Checks if the left column is active or not.
 		if ($('#column-left').hasClass('active')) {
-			localStorage.setItem('column-left', '');
+			//localStorage.setItem('column-left', '');
 
 			$('#button-menu i').replaceWith('<i class="fa fa-indent fa-lg"></i>');
 
@@ -77,7 +77,7 @@ $(document).ready(function() {
 			$('#menu > li > ul').removeClass('in collapse');
 			$('#menu > li > ul').removeAttr('style');
 		} else {
-			localStorage.setItem('column-left', 'active');
+			//localStorage.setItem('column-left', 'active');
 
 			$('#button-menu i').replaceWith('<i class="fa fa-dedent fa-lg"></i>');
 
