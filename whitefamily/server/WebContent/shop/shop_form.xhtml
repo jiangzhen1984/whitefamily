@@ -43,7 +43,7 @@
                 <table class="table table-bordered table-hover">
                    <tbody>
                     <tr>
-                         <td class="text-left">产品名称</td>
+                         <td class="text-left">店铺名称</td>
                          <td class="text-left"> <h:inputText   a:placeholder="请输入店铺名称" value="#{shopBean.name}" class="form-control" ></h:inputText>
                          <c:if test="${not empty shopBean.nameRequire}" >
                               <div class="text-danger"><h:outputText value="#{shopBean.nameRequire}"  /></div>
@@ -51,7 +51,7 @@
                          </td>
                    </tr>
                    <tr>
-                         <td class="text-left">产品分类</td>
+                         <td class="text-left">店铺地址</td>
                          <td class="text-left"> 
                               <h:inputText   a:placeholder="店铺地址"  id="category" value="#{shopBean.address}" class="form-control" ></h:inputText>
                          </td>

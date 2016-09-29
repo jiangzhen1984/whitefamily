@@ -7,7 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.whitefamily.po.ManagerShop;
+import com.whitefamily.po.customer.AccountType;
 import com.whitefamily.po.customer.Role;
 import com.whitefamily.po.customer.User;
 import com.whitefamily.service.vo.WFManager;
@@ -91,7 +91,16 @@ public class UserService extends BaseService implements IUserService {
 		if (u.getRole() == Role.MANAGER) {
 			WFManager m = new WFManager();
 			m.setId(u.getId());
-			m.setShop(shopService.getShop((WFManager) m));
+			m.setAccountType(AccountType.NORMAL);
+			m.setName(u.getName());
+			m.setRole(Role.MANAGER);
+			if (u.getShopId() > 0) {
+				WFShop shop = new WFShop();
+				shop.setId(u.getShopId());
+				shop.setAddress(u.getShopAddress());
+				shop.setName(u.getName());
+				m.setShop(shop);
+			}
 			wfu = m;
 		} else {
 			wfu = new WFUser();
@@ -128,16 +137,11 @@ public class UserService extends BaseService implements IUserService {
 		u.setAccountType(user.getAccountType());
 		u.setRole(user.getRole());
 		u.setName(user.getName());
+		u.setShopId(user.getShopId());
+		u.setShopName(user.getShopName());
+		u.setShopAddress(user.getShopAddress());
 		sess.save(u);
 		sess.flush();
-		if (user.getRole() == Role.MANAGER) {
-			ManagerShop ms = new ManagerShop();
-			ms.setManager(u);
-			ms.setShop(((WFManager)user).getShop());
-			sess.save(ms);
-		}
-		
-		
 		tr.commit();
 		
 		user.setId(u.getId());
@@ -171,19 +175,23 @@ public class UserService extends BaseService implements IUserService {
 		q.setLong(0, user.getId());
 		q.executeUpdate();
 		
-		if (user.getRole() == Role.MANAGER) {
-			ManagerShop ms = new ManagerShop();
-			ms.setManager(user);
-			ms.setShop(((WFManager)user).getShop());
-			sess.save(ms);
-		}
-		
 		sess.update(u);
 		tr.commit();
 		
 		return Result.SUCCESS;
 	}
 	
+	
+	
+	public Result deleteUser(long id) {
+		Session sess = getSession();
+		User u = (User)sess.get(User.class, id);
+		Transaction tr = sess.beginTransaction();
+		sess.delete(u);
+		tr.commit();
+		 
+		return Result.SUCCESS;
+	}
 	
 	public List<WFUser> queryUser(int start, int count) {
 		Session sess = getSession();

@@ -28,7 +28,12 @@
     </div>
   </div>
   <div class="container-fluid">
-   
+    <c:if test="${not empty goodsBean.errMsg}">
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{goodsBean.errMsg}" ></h:outputText>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    </c:if>
+    
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-list"></i> <!-- text --></h3>
@@ -119,6 +124,11 @@
                        <h:commandLink  action="#{goodsBean.viewGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑产品" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{goodsBean.updateGoodsId}" value="#{g.id}" />
                           <i class="fa fa-pencil"></i>
+                      </h:commandLink>
+                       <h:outputText value="&#160;" />
+                       <h:commandLink  action="#{goodsBean.removeGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="删除产品" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />
+                          <i class="fa fa-trash"></i>
                       </h:commandLink>
                   </td>
                 </tr>

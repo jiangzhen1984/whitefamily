@@ -57,7 +57,6 @@
 		<mapping class="com.whitefamily.po.customer.User" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryUpdateRecord" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryGoods" ></mapping>
-		<mapping class="com.whitefamily.po.ManagerShop" ></mapping>
 		<mapping class="com.whitefamily.po.DamageReportRecord" ></mapping>
 		<mapping class="com.whitefamily.po.DamageReportGoods" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.Incoming" ></mapping>

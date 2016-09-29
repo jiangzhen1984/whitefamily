@@ -17,7 +17,7 @@ public interface IGoodsService {
 	public void updateGoods(WFGoods wfg);
 	
 	
-	public void removeGoods(WFGoods wfg);
+	public Result removeGoods(WFGoods wfg);
 	
 	
 	public WFGoods getGoods(long id);
@@ -30,7 +30,6 @@ public interface IGoodsService {
 	
 	
 	public void removeGoodsBrand(WFGoods goods, WFBrand brand);
-	
 	
 	
 	public void updateGoodsPrice(WFGoods goods, User opter);

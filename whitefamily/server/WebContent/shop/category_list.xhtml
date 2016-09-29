@@ -14,6 +14,12 @@
 		<div id="content">
 			<div class="page-header">
 				<div class="container-fluid">
+				    
+				     <c:if test="${not empty goodsBean.errMsg}">
+					    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
+					      <button type="button" class="close" data-dismiss="alert">&times;</button>
+					    </div>
+					    </c:if>
 					<div class="pull-right">
 						<a href="category_form.xhtml" data-toggle="tooltip" title=""
 							class="btn btn-primary"><i class="fa fa-plus"></i></a> 
@@ -75,7 +81,17 @@
 													data-toggle="tooltip" title="编辑 #{cate.name}	"
 													class="btn btn-primary"><i class="fa fa-pencil"></i>
       													<f:param id="id" name="id" value="#{cate.id}"></f:param>
-													</h:commandLink></td>
+													</h:commandLink>
+													
+													    <h:outputText value="&#160;" />
+								                       <h:commandLink  action="#{categoryBean.removeCategory}" type="submit"  form="form-product" data-toggle="tooltip" title="删除品类" class="btn btn-primary">
+								                          <f:setPropertyActionListener target="#{categoryBean.categoryId}" value="#{cate.id}" />
+								                          <i class="fa fa-trash"></i>
+								                      </h:commandLink>
+													
+												</td>
+													
+													
 											</tr>
 										</ui:repeat>
 									</tbody>

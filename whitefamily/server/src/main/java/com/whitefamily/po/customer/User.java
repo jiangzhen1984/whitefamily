@@ -31,6 +31,15 @@ public class User {
 	
 	@Enumerated(EnumType.ORDINAL)
 	private AccountType accountType;
+	
+	@Column(name = "WF_SHOP_NAME", columnDefinition = "VARCHAR(100)")
+	private String shopName;
+	
+	@Column(name = "WF_SHOP_ADDRESS", columnDefinition = "VARCHAR(400)")
+	private String shopAddress;
+	
+	@Column(name = "WF_SHOP_ID")
+	private Long  shopId;
 
 	public long getId() {
 		return id;
@@ -78,6 +87,30 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getShopName() {
+		return shopName;
+	}
+
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
+	}
+
+	public String getShopAddress() {
+		return shopAddress;
+	}
+
+	public void setShopAddress(String shopAddress) {
+		this.shopAddress = shopAddress;
+	}
+
+	public long getShopId() {
+		return shopId == null ? 0 : shopId;
+	}
+
+	public void setShopId(long shopId) {
+		this.shopId = shopId;
 	}
 	
 

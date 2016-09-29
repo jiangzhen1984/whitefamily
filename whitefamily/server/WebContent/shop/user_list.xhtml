@@ -72,6 +72,11 @@
                           <f:setPropertyActionListener target="#{userManagementBean.userId}" value="#{u.id}" />
                           <i class="fa fa-pencil"></i>
                       </h:commandLink>    
+                      
+                       <h:commandLink  action="#{userManagementBean.deleteUser}" type="submit"  form="form-product" data-toggle="tooltip" title="删除用户" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{userManagementBean.userId}" value="#{u.id}" />
+                          <i class="fa fa-trash"></i>
+                      </h:commandLink>  
                   </td>
                 </tr>
                 </ui:repeat>

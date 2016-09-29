@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import com.whitefamily.service.IGoodsService;
+import com.whitefamily.service.Result;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
@@ -356,6 +357,27 @@ public class GoodsBean {
 		return "list";
 	}
 	
+	
+	public void removeGoods() {
+		Result ret = goodsService.removeGoods(goodsService.getGoods(goodsId));
+		switch (ret) {
+		case ERR_EXIST_DAMAGE_RECORD:
+			errMsg = "该产品存在报损记录，无法删除";
+			break;
+		case ERR_EXIST_INVENTORY_RECORD:
+			errMsg = "该产品存在补货记录，无法删除";
+			break;
+		case ERR_EXIST_INVENTORY_REQUEST_RECORD:
+			errMsg = "该产品存在店铺补货申请记录，无法删除";
+			break;
+		case SUCCESS:
+			errMsg = "删除成功";
+			break;
+		default:
+			errMsg = "删除错误";
+			break;
+		}
+	}
 	
 	
 	

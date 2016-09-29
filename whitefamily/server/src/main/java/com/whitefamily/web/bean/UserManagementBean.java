@@ -183,6 +183,11 @@ public class UserManagementBean {
 		return "gotoupdateuser";
 	}
 	
+	
+	public void deleteUser() {
+		userService.deleteUser(userId);
+	}
+	
 
 	public String createOrUpdateUser() {
 		errMsg = null;
@@ -247,6 +252,12 @@ public class UserManagementBean {
 		user.setPassword(password);
 		user.setRole(role);
 		user.setAccountType(AccountType.NORMAL);
+		if (role == Role.MANAGER) {
+			WFShop shop = shopService.getShop(shopId);
+			user.setShopId(shop.getId());
+			user.setShopName(shop.getName());
+			user.setShopAddress(shop.getAddress());
+		}
 		if (userId > 0) {
 			res = userService.updateUser(user);
 		} else {

@@ -29,6 +29,9 @@ public class CategoryService extends BaseService implements ICategoryService {
 	}
 
 	public WFCategory getCategory(long cateId) {
+		if (cateCache.isEmpty()) {
+			this.getSortedCategory();
+		}
 		return cateCache.get(Long.valueOf(cateId));
 	}
 
@@ -63,17 +66,32 @@ public class CategoryService extends BaseService implements ICategoryService {
 	}
 
 	@Override
-	public void removeCategory(WFCategory ca) {
+	public Result removeCategory(WFCategory ca) {
 		if (ca == null) {
-			return;
+			return Result.SUCCESS;
 		}
-		Category cate = new Category();
+		
+		
 		Session sess = openSession();
-		sess.persist(cate);
+		Query query = sess.createQuery(" select count(*) from Goods where cate.id = ? ");
+		query.setLong(0, ca.getId());
+		int count =((Long) query.uniqueResult()).intValue();
+		if (count > 0) {
+			return Result.ERR_EXIST_GOODS;
+		}
+		
+		
+		query = sess.createQuery(" select count(*) from Category where parentId = ? ");
+		query.setLong(0, ca.getId());
+		count =((Long) query.uniqueResult()).intValue();
+		if (count > 0) {
+			return Result.ERR_EXIST_PARENT_CATEGORY;
+		}
+		
+		Category cate = (Category)sess.get(Category.class, ca.getId());
 		Transaction tr = sess.beginTransaction();
 		sess.delete(cate);
 		tr.commit();
-		sess.close();
 		
 		WFCategory wfCache = cateCache.remove(ca.getId());
 		if (wfCache != null) {
@@ -82,6 +100,8 @@ public class CategoryService extends BaseService implements ICategoryService {
 			}
 		}
 		allCategoryList.remove(wfCache);
+		
+		return Result.SUCCESS;
 
 	}
 
@@ -99,7 +119,6 @@ public class CategoryService extends BaseService implements ICategoryService {
 		Transaction tr = sess.beginTransaction();
 		sess.update(cate);
 		tr.commit();
-		sess.close();
 	}
 
 	@Override
@@ -149,7 +168,6 @@ public class CategoryService extends BaseService implements ICategoryService {
 			WFCategory wfc = new WFCategory(c);
 			newList.add(wfc);
 		}
-		sess.close();
 		return newList;
 	}
 	
@@ -205,7 +223,6 @@ public class CategoryService extends BaseService implements ICategoryService {
 			}
 			
 		}
-		sess.close();
 		orderCategoryList = (levelList.size() > topLevel ?  levelList.get(topLevel) : null);
 		return orderCategoryList;
 	}

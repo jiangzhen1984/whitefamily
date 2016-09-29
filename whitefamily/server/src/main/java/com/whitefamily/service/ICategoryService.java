@@ -11,7 +11,7 @@ public interface ICategoryService {
 
 	public WFCategory addCategory(WFCategory ca);
 
-	public void removeCategory(WFCategory ca);
+	public Result removeCategory(WFCategory ca);
 
 	public void updateCategory(WFCategory ca);
 

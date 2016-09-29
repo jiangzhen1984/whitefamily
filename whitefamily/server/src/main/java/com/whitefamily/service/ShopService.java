@@ -1,7 +1,6 @@
 package com.whitefamily.service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,7 +32,6 @@ import com.whitefamily.po.DamageStatus;
 import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
-import com.whitefamily.po.ManagerShop;
 import com.whitefamily.po.Shop;
 import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
@@ -136,21 +134,21 @@ public class ShopService extends BaseService implements IShopService {
 
 	@Override
 	public void removeShop(WFShop shop) {
-		// TODO Auto-generated method stub
-
+		Session sess = getSession();
+		Shop s = (Shop)sess.get(Shop.class, shop.getId());
+		Transaction tr = sess.beginTransaction();
+		sess.delete(s);
+		tr.commit();
+		shopCache.remove(s.getId());
 	}
 	
 	
 	public WFShop getShop(WFManager wfm) {
-		Session sess = getSession();
-		Query query = sess.createQuery(" from ManagerShop where manager.id = ?");
-		query.setLong(0, wfm.getId());
-		List<ManagerShop> list = query.list();
-		WFShop wfshop =  null;
-		if (list.size() > 0) {
-			wfshop = this.getShop(list.iterator().next().getShop().getId());
-		}
-		return wfshop;
+		WFShop wfs = new WFShop();
+		wfs.setId(wfm.getShopId());
+		wfs.setName(wfm.getShopName());
+		wfs.setAddress(wfm.getShopAddress());
+		return wfs;
 	}
 
 
@@ -446,7 +444,7 @@ public class ShopService extends BaseService implements IShopService {
 		StringBuffer hqlBuf = new StringBuffer();
 		hqlBuf.append(" from InventoryRequestRecord where 1 = 1 ");
 		if (shop != null) {
-			hqlBuf.append(" and shop.id = ? ");
+			hqlBuf.append(" and shopId = ? ");
 		}
 		
 		if (specificDate) {
@@ -495,9 +493,9 @@ public class ShopService extends BaseService implements IShopService {
 			WFInventoryRequest wf = new WFInventoryRequest();
 			wf.setId(irq.getId());
 			wf.setDatetime(irq.getDatetime());
-			wf.setOperator(userService.getUser(irq.getOperator().getId()));
+			wf.setOperator(irq.getOperator());
 			wf.setIs(irq.getStatus());
-			wf.setShop(getShop(irq.getShop().getId()));
+			wf.setShop(new WFShop(irq.getShop()));
 			wflist.add(wf);
 		}
 		
@@ -517,7 +515,6 @@ public class ShopService extends BaseService implements IShopService {
 		for (InventoryRequestGoods g : goodsList) {
 			ir.addInventoryItem(goodsService.getGoods(g.getGoods().getId()), g.getCount(), true);
 		}
-		sess.close();
 		ir.setLoadItem(true);
 		return Result.SUCCESS;
 	}

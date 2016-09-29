@@ -8,6 +8,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.whitefamily.service.ICategoryService;
+import com.whitefamily.service.Result;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFCategory;
 
@@ -115,7 +116,8 @@ public class CategoryBean {
 	public String editCategory() {
 		errMsg = null;
 
-		Long id = Long.parseLong(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id"));
+		Long id = Long.parseLong(FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterMap().get("id"));
 
 		WFCategory cate = findCategory(categoryList, id);
 		if (cate == null) {
@@ -128,6 +130,24 @@ public class CategoryBean {
 		parentCategoryId = cate.getParentId();
 		//
 		return "editcate";
+	}
+
+	public void removeCategory() {
+		Result ret = service.removeCategory(service.getCategory(categoryId));
+		switch (ret) {
+		case ERR_EXIST_GOODS:
+			errMsg = " 该产品分类下存在产品， 无法删除分类，请先删除该分类下产品后，再删除品类";
+			break;
+		case ERR_EXIST_PARENT_CATEGORY:
+			errMsg = "存在下属分类， 无法删除";
+			break;
+		case SUCCESS:
+			errMsg = "删除成功";
+			break;
+		default:
+			errMsg = "删除错误";
+		}
+		categoryId = 0;
 	}
 
 	private WFCategory findCategory(List<WFCategory> list, long cateId) {

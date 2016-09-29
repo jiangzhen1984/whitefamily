@@ -66,7 +66,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Transaction tr = sess.beginTransaction();
 		sess.save(good);
 		tr.commit();
-		sess.close();
 		goods.setId(good.getId());
 		goodsCache.put(Long.valueOf(goods.getId()), goods);
 		cacheList.add(goods);
@@ -89,12 +88,47 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Transaction tr = sess.beginTransaction();
 		sess.save(good);
 		tr.commit();
-		sess.close();
 	}
 
 	@Override
-	public void removeGoods(WFGoods wfg) {
-		// TODO Auto-generated method stub
+	public Result removeGoods(WFGoods wfg) {
+		Session sess = getSession();
+		Query query = sess.createQuery(" select count(*) from InventoryGoods where goods.id = ? ");
+		query.setLong(0, wfg.getId());
+		int count =((Long) query.uniqueResult()).intValue();
+		if (count > 0) {
+			return Result.ERR_EXIST_INVENTORY_RECORD;
+		}
+		
+		query = sess.createQuery(" select count(*) from DamageReportGoods where goods.id = ? ");
+		query.setLong(0, wfg.getId());
+		count =((Long) query.uniqueResult()).intValue();
+		if (count > 0) {
+			return Result.ERR_EXIST_DAMAGE_RECORD;
+		}
+		
+		
+		query = sess.createQuery(" select count(*) from InventoryRequestGoods where goods.id = ? ");
+		query.setLong(0, wfg.getId());
+		count =((Long) query.uniqueResult()).intValue();
+		if (count > 0) {
+			return Result.ERR_EXIST_INVENTORY_REQUEST_RECORD;
+		}
+		
+		Transaction tr = sess.beginTransaction();
+		Goods g = (Goods)sess.get(Goods.class, wfg.getId());
+		Query bq = sess.createQuery(" from Brand where goods.id= ? ");
+		bq.setLong(0, g.getId());
+		List<Brand> brandList = bq.list();
+		for (Brand b : brandList) {
+			sess.delete(b);
+		}
+		sess.delete(g);
+		tr.commit();
+		
+		goodsCache.remove(wfg.getId());
+		cacheList.remove(wfg);
+		return Result.SUCCESS;
 
 	}
 	
@@ -120,7 +154,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Transaction tr = sess.beginTransaction();
 		sess.save(br);
 		tr.commit();
-		sess.close();
 		goods.addBrand(brand);
 
 	}
@@ -237,7 +270,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 			goodsCache.put(wf.getId(), wf);
 		}
 //		
-		sess.close();
 //		int size = cacheGoods.caches.size();
 //		return cacheGoods.caches.subList(start, size > start + count ? start + count : size);
 		cacheList = wfList;
@@ -293,7 +325,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 			wfList.add(wf);
 		}
 		
-		sess.close();
 		return wfList;
 	}
 	

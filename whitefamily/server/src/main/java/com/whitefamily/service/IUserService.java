@@ -17,6 +17,8 @@ public interface IUserService {
 	
 	public Result updateUser(WFUser user);
 	
+	public Result deleteUser(long id);
+	
 	
 	public List<WFUser> queryUser(int start, int count);
 	

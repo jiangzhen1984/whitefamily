@@ -91,6 +91,10 @@
                           <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
                           <i class="fa fa-pencil"> 编辑</i>
                       </h:commandLink>
+                       <h:commandLink  action="#{shopBean.deleteShop}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
+                          <i class="fa fa-trash"> 删除</i>
+                      </h:commandLink>
                   </td>
                 </tr>
                 </ui:repeat>

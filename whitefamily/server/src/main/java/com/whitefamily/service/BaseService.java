@@ -3,11 +3,14 @@ package com.whitefamily.service;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.jboss.logging.Logger;
 
 public class BaseService {
 
 	private static ThreadLocal<Session> sessionLocal = new ThreadLocal<Session>();
 	protected SessionFactory sessionFactory = null;
+	private Logger  logger = LoggerFactory.logger(getClass());
 
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -32,7 +35,7 @@ public class BaseService {
 			sess = getSessionFactory().openSession();
 			sessionLocal.set(sess);
 		}
-		
+		logger.info("===> session open "+ sess);
 		return sess;
 	}
 
@@ -48,6 +51,7 @@ public class BaseService {
 			}
 			sessionLocal.remove();
 		}
+		logger.info("===> session closed "+ sess);
 	}
 
 }

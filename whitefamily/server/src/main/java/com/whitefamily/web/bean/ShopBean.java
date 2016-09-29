@@ -395,6 +395,12 @@ public class ShopBean {
 
 		return "shoplist";
 	}
+	
+	
+	public void deleteShop() {
+		WFShop wfs = shopService.getShop(shopId);
+		shopService.removeShop(wfs);
+	}
 
 	public String gotoDamageReportDetail() {
 		return "gotodamagereportdetail";
