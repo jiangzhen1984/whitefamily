@@ -37,8 +37,8 @@
       <div class="panel-body">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" data-toggle="tab">基本</a></li>
-            <li><a href="#tab-data" data-toggle="tab">产品额外信息</a></li>
-            <li><a href="#tab-image" data-toggle="tab">产品图片</a></li>
+            <!-- <li><a href="#tab-data" data-toggle="tab">产品额外信息</a></li>
+            <li><a href="#tab-image" data-toggle="tab">产品图片</a></li> -->
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab-general">
@@ -68,7 +68,9 @@
                          <td class="text-left"> 
                              <h:selectOneMenu value="#{goodsBean.type}"   class="form-control">
                                  <f:selectItem itemValue="0" itemLabel="店长可见" />
-                                 <f:selectItem itemValue="1" itemLabel="配货人员可见" />	   							
+                                 <f:selectItem itemValue="1" itemLabel="配货人员可见" />
+                                 <f:selectItem itemValue="2" itemLabel="市场可见" />
+                                 <f:selectItem itemValue="3" itemLabel="管理员可见" />                                 
                              </h:selectOneMenu>	
                          </td>
                    </tr>
@@ -83,7 +85,7 @@
 
                   <tr>
                          <td class="text-left"> 产品描述 </td>
-                         <td class="text-left"> <div class="col-sm-10"><h:inputTextarea value="#{goodsBean.goodsDesc}" id="input-descriptioncn" ></h:inputTextarea> </div>
+                         <td class="text-left"><h:inputText value="#{goodsBean.goodsDesc}" class="form-control" ></h:inputText>
                          </td>
                   </tr>
 
