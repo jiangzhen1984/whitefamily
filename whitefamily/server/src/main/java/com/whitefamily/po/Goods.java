@@ -41,7 +41,7 @@ public class Goods {
 	@Column(name = "WF_CTE_DESC", columnDefinition = "TEXT")
 	protected String goodsDesc;
 	
-	@Column(name = "WF_PRICE", columnDefinition = "NUMERIC(6,2) ")
+	@Column(name = "WF_PRICE", columnDefinition = "NUMERIC(9,2) ")
 	protected Float price;
 
 	public long getId() {
