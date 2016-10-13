@@ -39,6 +39,8 @@ public class GoodsBean {
 	
 	private String goodsDesc;
 	
+	private float  goodsPrice;
+	
 	private String goodsNameRequired;
 	
 	private String goodsCategoryRequired;
@@ -291,6 +293,20 @@ public class GoodsBean {
 	public void setGoodsUnit(String goodsUnit) {
 		this.goodsUnit = goodsUnit;
 	}
+	
+	
+
+
+
+	public float getGoodsPrice() {
+		return goodsPrice;
+	}
+
+
+
+	public void setGoodsPrice(float goodsPrice) {
+		this.goodsPrice = goodsPrice;
+	}
 
 
 
@@ -334,6 +350,7 @@ public class GoodsBean {
 			goods.setType(type);
 			goods.setGoodsDesc(goodsDesc);
 			goods.setUnit(goodsUnit);
+			goods.setPrice(goodsPrice);
 			goodsService.updateGoods(goods);
 		} else {
 			WFGoods goods = new WFGoods();
@@ -341,6 +358,7 @@ public class GoodsBean {
 			goods.setCate(findCategory(getCategoryList(), categoryId));
 			goods.setType(type);
 			goods.setUnit(goodsUnit);
+			goods.setPrice(goodsPrice);
 			goods.setGoodsDesc(goodsDesc);
 			goodsService.addGoods(goods);
 		}
@@ -352,6 +370,7 @@ public class GoodsBean {
 		goodsNameRequired =null;
 		categoryId = 0;
 		updateGoodsId = 0;
+		goodsPrice = 0;
 		categoryName = null;
 		goodsUnit = null;
 		return "list";
@@ -427,6 +446,8 @@ public class GoodsBean {
 		categoryName = "";
 		goodsDesc = "";
 		type = 0;
+		goodsPrice = 0;
+		goodsUnit = "";
 		updateGoodsId = 0;
 		return "gotoaddgoods";
 	}
@@ -437,6 +458,8 @@ public class GoodsBean {
 		categoryId = wfg.getCate().getId();
 		categoryName = wfg.getCate().getName();
 		goodsDesc = wfg.getGoodsDesc();
+		goodsPrice = wfg.getPrice();
+		goodsUnit = wfg.getUnit();
 		return "updategoods";
 	}
 	

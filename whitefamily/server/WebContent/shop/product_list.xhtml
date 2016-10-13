@@ -81,9 +81,8 @@
                   <td class="text-left"> 
                     <a href="#" class=" echo strtolower($order)">分类</a>
                      </td>
-                      <td class="text-left"> 
-                    规格
-                     </td>
+                      <td class="text-left">规格</td>
+                       <td class="text-left">出货价</td>
                   <td class="text-left"> 
                     <a href="#" class=" echo strtolower($order)">类型</a>
                      </td>
@@ -102,7 +101,8 @@
                      </td>
                   <td class="text-left">#{g.name}</td>
                   <td class="text-left">#{g.cate.name}</td>
-                   <td class="text-left">#{g.unit}</td>
+                  <td class="text-left">#{g.unit}</td>
+                  <td class="text-left">#{g.price}</td>
                   <td class="text-left"><h:outputText value="#{g.typeDisMessage}" />
                     <!-- 
                     <span class="label label-warning"> echo $product['quantity']</span>

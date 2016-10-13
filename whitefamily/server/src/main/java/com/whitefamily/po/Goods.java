@@ -40,6 +40,9 @@ public class Goods {
 	
 	@Column(name = "WF_CTE_DESC", columnDefinition = "TEXT")
 	protected String goodsDesc;
+	
+	@Column(name = "WF_PRICE", columnDefinition = "NUMERIC(6,2) ")
+	protected Float price;
 
 	public long getId() {
 		return id;
@@ -97,6 +100,14 @@ public class Goods {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public float getPrice() {
+		return price == null? 0:price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
 	}
 	
 	

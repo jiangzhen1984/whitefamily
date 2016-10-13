@@ -57,8 +57,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		good.setName(goods.getName());
 		good.setType(goods.getType());
 		good.setUnit(goods.getUnit());
-		goods.setAbbr(PinyinHelper.getShortPinyin(goods.getName()));
 		good.setGoodsDesc(goods.getGoodsDesc());
+		good.setPrice(goods.getPrice());
+		goods.setAbbr(PinyinHelper.getShortPinyin(goods.getName()));
 		Category cate = new Category();
 		cate.setId(goods.getCate().getId());
 		good.setCate(cate);
@@ -80,6 +81,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		good.setName(wfg.getName());
 		good.setType(wfg.getType());
 		good.setUnit(wfg.getUnit());
+		good.setPrice(wfg.getPrice());
 		good.setGoodsDesc(wfg.getGoodsDesc());
 		Category cate = new Category();
 		cate.setId(wfg.getCate().getId());
