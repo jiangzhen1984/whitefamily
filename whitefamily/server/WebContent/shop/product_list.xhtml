@@ -4,6 +4,7 @@
 <html xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:h="http://java.sun.com/jsf/html">
 <ui:include src="../include/header.xhtml" />
 <body>
@@ -44,7 +45,7 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label" for="input-name">产品名称</label>
-                <input type="text" name="filter_name" value="" placeholder="名称" id="input-name" class="form-control" />
+                <h:inputText  a:placeholder="筛选名称" name="filterGoodsName"  id="filterGoodsName" value="#{goodsBean.filterGoodsName}" class="form-control" ></h:inputText>
               </div>
               <div class="form-group">
               </div>
@@ -52,7 +53,8 @@
             <div class="col-sm-4">
               <div class="form-group">
                <label class="control-label" for="input-model">分类</label>
-                <input type="text" name="filter_model" value="" placeholder="请输入分类" id="input-model" class="form-control" />
+               <h:inputText  a:placeholder="筛选分类" name="filterCateName"   id="filterCateName"  value="#{goodsBean.filterCateName}" class="form-control" ></h:inputText>
+                <h:inputHidden value="#{goodsBean.filterCateId}" id="filterCateId" name="filterCateId" ></h:inputHidden>
               </div>
               <div class="form-group">
               </div>
@@ -65,7 +67,9 @@
                             <f:selectItem itemValue="1" itemLabel="配货人员可见" />	   							
                      </h:selectOneMenu>	
               </div>
-              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i>过滤</button>
+                 <h:commandLink  action="#{goodsBean.filterGoods}"  class="btn btn-primary pull-right" onclick="console.log('333');if ($('input[name=\'pform:filterCateName\']').val() == '') {console.log('2222');$('input[name=\'pform:filterCateId\']').val('0');}" ><i class="fa fa-search"></i>过滤
+                 </h:commandLink>
+              
             </div>
           </div>
         </div>
@@ -143,45 +147,9 @@
     </div>
   </div>
   </h:form>
-  <script type="text/javascript"><!--
-$('#button-filter').on('click', function() {
-	var url = 'index.php?route=catalog/product&token= echo $token';
 
-	var filter_name = $('input[name=\'filter_name\']').val();
-
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-
-	var filter_model = $('input[name=\'filter_model\']').val();
-
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}
-
-	var filter_price = $('input[name=\'filter_price\']').val();
-
-	if (filter_price) {
-		url += '&filter_price=' + encodeURIComponent(filter_price);
-	}
-
-	var filter_quantity = $('input[name=\'filter_quantity\']').val();
-
-	if (filter_quantity) {
-		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-	}
-
-	var filter_status = $('select[name=\'filter_status\']').val();
-
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status);
-	}
-
-	location = url;
-});
-//--></script>
   <script type="text/javascript">
-$('input[name=\'filter_name\']').autocomplete({
+$('input[name=\'pform:filterGoodsName\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
 			url: 'filterGoods.ajax?action=filterGoods&amp;filter=' +  encodeURIComponent(request),
@@ -190,18 +158,18 @@ $('input[name=\'filter_name\']').autocomplete({
 				response($.map(json, function(item) {
 					return {
 						label: item['name'],
-						value: item['product_id']
+						value: item['id']
 					}
 				}));
 			}
 		});
 	},
 	'select': function(item) {
-		$('input[name=\'filter_name\']').val(item['label']);
+		$('input[name=\'pform:filterGoodsName\']').val(item['label']);
 	}
 });
 
-$('input[name=\'filter_model\']').autocomplete({
+$('input[name=\'pform:filterCateName\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
 		    url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
@@ -210,14 +178,15 @@ $('input[name=\'filter_model\']').autocomplete({
 				response($.map(json, function(item) {
 					return {
 						label: item['name'],
-						value: item['category_id']
+						value: item['id']
 					}
 				}));
 			}
 		});
 	},
 	'select': function(item) {
-		$('input[name=\'filter_model\']').val(item['label']);
+		$('input[name=\'pform:filterCateId\']').val(item['value']);
+		$('input[name=\'pform:filterCateName\']').val(item['label']);
 	}
 });
 </script></div>

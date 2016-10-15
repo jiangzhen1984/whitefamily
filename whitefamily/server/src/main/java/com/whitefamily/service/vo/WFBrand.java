@@ -13,6 +13,10 @@ public class WFBrand extends Brand {
 		this.setId(br.getId());
 		this.setName(br.getName());
 		this.setStyle(br.getStyle());
+		this.setSubCount(br.getSubCount());
+		this.setSubUnit(br.getSubUnit());
+		this.setUnit(br.getUnit());
+		this.setCalculation(br.getCalculation());
 	}
 
 	

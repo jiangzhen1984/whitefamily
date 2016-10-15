@@ -16,8 +16,9 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-         <h:commandLink action="#{goodsBean.createGoodsBrand}" type="submit" form="form-product" data-toggle="tooltip" title="echo $button_save" class="btn btn-primary"><i class="fa fa-save"></i></h:commandLink>
-        <a href="product_list.xhtml" data-toggle="tooltip" title="取消" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+         <h:commandLink action="#{goodsBean.createOrSaveGoodsBrand}" type="submit" form="form-product" data-toggle="tooltip" title="保存" class="btn btn-primary">
+         <i class="fa fa-save"></i></h:commandLink>
+        <a href="brand_list.xhtml" data-toggle="tooltip" title="取消" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1>产品管理</h1>
       <ul class="breadcrumb">
         <li><a href="#">产品品牌添加</a></li>
@@ -54,8 +55,20 @@
                    </tbody>
 
                   <tr>
-                         <td class="text-left"> 产品描述 </td>
-                         <td class="text-left"> <div class="col-sm-10"><h:inputTextarea value="#{goodsBean.goodsDesc}" id="input-descriptioncn" /> </div>
+                         <td class="text-left"> 品牌规格 </td>
+                         <td class="text-left"> <h:inputText   a:placeholder="请输入规格" value="#{goodsBean.brandUnit}" class="form-control" ></h:inputText>
+                         </td>
+                  </tr>
+                  
+                  <tr>
+                         <td class="text-left"> 分装规格 </td>
+                         <td class="text-left"> <h:inputText   a:placeholder="请输入分装规格" value="#{goodsBean.brandSubUnit}" class="form-control" ></h:inputText>
+                         </td>
+                  </tr>
+                  
+                  <tr>
+                         <td class="text-left"> 分装数量 </td>
+                         <td class="text-left"> <h:inputText   a:placeholder="请输入分装数量" value="#{goodsBean.brandSubCount}" class="form-control" maxlength="3"> <f:convertNumber integerOnly="true" type="number" /></h:inputText>
                          </td>
                   </tr>
 
@@ -67,9 +80,7 @@
   </div>
   </h:form>
   
-  <script type="text/javascript"><!--
-$('#gform\\:input-descriptioncn').summernote({height: 300});
-//--></script>
+
 </div>
 <footer id="footer"><br /></footer></div>
 </body></html>

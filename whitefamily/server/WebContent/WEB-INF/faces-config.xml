@@ -100,17 +100,27 @@
 	<navigation-rule>
 		<from-view-id>/shop/brand_form.xhtml</from-view-id>
 		<navigation-case>
-			<from-action>#{goodsBean.createGoodsBrand}</from-action>
+			<from-action>#{goodsBean.createOrSaveGoodsBrand}</from-action>
 			<from-outcome>brandcreatefailed</from-outcome>
 			<to-view-id>/shop/brand_form.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-action>#{goodsBean.createGoodsBrand}</from-action>
+			<from-action>#{goodsBean.createOrSaveGoodsBrand}</from-action>
 			<from-outcome>brandlist</from-outcome>
 			<to-view-id>/shop/brand_list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/brand_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{goodsBean.gotoUpdateBrands}</from-action>
+			<from-outcome>gotoUpdateBrands</from-outcome>
+			<to-view-id>/shop/brand_form.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 
 
 	<navigation-rule>

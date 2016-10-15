@@ -6,7 +6,8 @@ public enum Role {
 	MANAGER,
 	DELIVER_STAFF,
 	MARKETING,
-	INVENTORY_STAFF;
+	INVENTORY_STAFF,
+	VEGETABLE_SUPPLIER;
 	
 	public String getValue() {
 		switch (this) {
@@ -20,8 +21,14 @@ public enum Role {
 			return "店长";
 		case MARKETING:
 			return "市场分析";
+		case VEGETABLE_SUPPLIER:
+			return "菜商";
 		default:
 			return "未知";
 		}
+	}
+	
+	public String getStrValue() {
+		return this.ordinal()+"";
 	}
 }

@@ -48,7 +48,7 @@
                     <tr>
                       <td class="text-left">产品</td>
                       <td class="text-right">品牌</td>
-                      <td class="text-right">价格</td>
+                      <td class="text-right">单价</td>
                       <td class="text-right">数量</td>
                       
                       <td></td>
@@ -59,7 +59,7 @@
                     <tr id="image-row#{status.index}">
                       <td class="text-left"><input type="text" id="goodsname#{status.index}" name="goodsname" value="#{o.goods.name}"  placeholder="请输入产品名称" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id#{status.index}" value="#{o.goods.id}"  class="form-control" /></td>
                       <td class="text-right"><input type="text" id="brandname#{status.index}"  value="#{o.brand.name}"  name="brandname"  placeholder="请输入产品品牌" class="form-control" /><input type="hidden" name="brandname_id" id="brandname_id#{status.index}" value="#{o.brand.id}" class="form-control" /></td>
-                      <td class="text-right"><input type="text" name="prs"  value="#{o.price}" placeholder="请输入产品价格" class="form-control" /></td>
+                      <td class="text-right"><input type="text" name="prs"  value="#{o.price}" placeholder="请输入产品单价" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="count" value="#{o.count}" placeholder="请输入库存数量" class="form-control" /></td>
                       <td class="text-left"><button type="button" onclick="$('#image-row#{status.index}').remove();" data-toggle="tooltip" title="echo $button_remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                     </tr>

@@ -31,6 +31,8 @@ public interface IGoodsService {
 	
 	public void removeGoodsBrand(WFGoods goods, WFBrand brand);
 	
+	public Result updateGoodsBrand(WFGoods goods, WFBrand brand);
+	
 	
 	public void updateGoodsPrice(WFGoods goods, User opter);
 	

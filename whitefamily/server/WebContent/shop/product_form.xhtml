@@ -55,8 +55,8 @@
                    <tr>
                          <td class="text-left">产品分类</td>
                          <td class="text-left"> 
-                              <h:inputText   a:placeholder="请选择分类"  id="category" value="#{goodsBean.categoryName}" class="form-control" ></h:inputText>
-                              <h:inputHidden value="#{goodsBean.categoryId}" id="category_id" name="category_id" ></h:inputHidden>
+                              <h:inputText   a:placeholder="请选择分类"  id="category" value="#{goodsBean.filterCateName}" class="form-control" ></h:inputText>
+                              <h:inputHidden value="#{goodsBean.filterCateId}" id="category_id" ></h:inputHidden>
                               <c:if test="${not empty goodsBean.goodsCategoryRequired}" >
                                    <div class="text-danger"><h:outputText value="#{goodsBean.goodsCategoryRequired}" /></div>
                               </c:if>

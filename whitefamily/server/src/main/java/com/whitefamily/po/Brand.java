@@ -28,6 +28,17 @@ public class Brand {
 	@Column(name="WF_BR_STYLE", columnDefinition="VARCHAR(500)")
 	protected String style;
 	
+	@Column(name="WF_BR_UNIT", columnDefinition="VARCHAR(100)")
+	protected String unit;
+	
+	@Column(name="WF_BR_SUB_UNIT", columnDefinition="VARCHAR(100)")
+	protected String subUnit;
+	
+	@Column(name="WF_BR_SUB_Count", columnDefinition="NUMERIC(4,0)")
+	protected Integer subCount;
+	
+	@Column(name="WF_BR_CALCULATION", columnDefinition="VARCHAR(200)")
+	protected String calculation;
 
 	public long getId() {
 		return id;
@@ -66,6 +77,46 @@ public class Brand {
 
 	public void setGoods(Goods goods) {
 		this.goods = goods;
+	}
+
+
+	public String getUnit() {
+		return unit;
+	}
+
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+
+	public String getSubUnit() {
+		return subUnit;
+	}
+
+
+	public void setSubUnit(String subUnit) {
+		this.subUnit = subUnit;
+	}
+
+
+	public int getSubCount() {
+		return subCount == null? 0 : subCount;
+	}
+
+
+	public void setSubCount(int subCount) {
+		this.subCount = subCount;
+	}
+
+
+	public String getCalculation() {
+		return calculation;
+	}
+
+
+	public void setCalculation(String calculation) {
+		this.calculation = calculation;
 	}
 
 

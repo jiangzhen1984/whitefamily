@@ -5,73 +5,46 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <ul id="menu">
+  
+  <c:if  test="${userBean.user.role == 'ADMIN'}">
   <li id="dashboard"><a href="dashboard.xhtml"><i class="fa fa-dashboard fa-fw"></i> <span></span></a></li>
+  </c:if>
+   <c:if  test="${userBean.user.role == 'ADMIN'}">
   <li id="catalog"><a class="parent"><i class="fa fa-tags fa-fw"></i> <span>产品管理</span></a>
     <ul>
       <li><a href="category_list.xhtml">产品分类</a></li>
       <li><a href="product_list.xhtml">产品列表</a></li>
     </ul>
   </li>
+   </c:if>
+   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'}">
   <li id="extension"><a class="parent"><i class="fa fa-puzzle-piece fa-fw"></i> <span>店铺管理</span></a>
     <ul>
+       <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="shop_list.xhtml">店铺列表</a></li>
-      <li><a href="damage_report_list.xhtml">店铺报损列表</a></li>
+       <c:if  test="${userBean.user.role == 'ADMIN' or userBean.user.role == 'DELIVER_STAFF'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺补货申请</a></li>
-      <!-- 
-      <li><a class="parent">text_openbay_extension</a>
-        <ul>
-          <li><a href="openbay_link_extension">text_openbay_dashboard</a></li>
-          <li><a href="openbay_link_orders">text_openbay_orders</a></li>
-          <li><a href="openbay_link_items">text_openbay_items</a></li>
-          <li><a class="parent">text_openbay_ebay</a>
-            <ul>
-              <li><a href="openbay_link_ebay">text_openbay_dashboard</a></li>
-              <li><a href="openbay_link_ebay_settings">text_openbay_settings</a></li>
-              <li><a href="openbay_link_ebay_links">text_openbay_links</a></li>
-              <li><a href="openbay_link_ebay_orderimport">text_openbay_order_import</a></li>
-            </ul>
-          </li>
-          <li><a class="parent">text_openbay_amazon</a>
-            <ul>
-              <li><a href="openbay_link_amazon">text_openbay_dashboard</a></li>
-              <li><a href="openbay_link_amazon_settings">text_openbay_settings</a></li>
-              <li><a href="openbay_link_amazon_links">text_openbay_links</a></li>
-            </ul>
-          </li>
-          <li><a class="parent">text_openbay_amazonus</a>
-            <ul>
-              <li><a href="openbay_link_amazonus">text_openbay_dashboard</a></li>
-              <li><a href="openbay_link_amazonus_settings">text_openbay_settings</a></li>
-              <li><a href="openbay_link_amazonus_links">text_openbay_links</a></li>
-            </ul>
-          </li>
-          <li><a class="parent">text_openbay_etsy</a>
-            <ul>
-              <li><a href="openbay_link_etsy">text_openbay_dashboard</a></li>
-              <li><a href="openbay_link_etsy_settings">text_openbay_settings</a></li>
-              <li><a href="openbay_link_etsy_links">text_openbay_links</a></li>
-            </ul>
-          </li> 
-        </ul>
-      </li>
-         -->
+      </c:if>
+      <li><a href="damage_report_list.xhtml">店铺报损列表</a></li>
+      </c:if>
     </ul>
   </li>
-  
+   </c:if>
+   <c:if test="${userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'ADMIN'}" >
   <li id="reports"><a class="parent"><i class="fa fa-bar-chart-o fa-fw"></i> <span>库存管理</span></a>
-  
     <ul>
       <li><a href="inventory_update_form.xhtml">更新库存</a></li>
       <li><a href="inventory_update_list.xhtml">库存更新记录</a></li>
     </ul>
   </li>
-  
-  
+   </c:if>
+   <c:if  test="${userBean.user.role == 'ADMIN'}">
   <li id="customer"><a class="parent"><i class="fa fa-user fa-fw"></i> <span>用户管理</span></a>
   
     <ul>
       <li><a href="user_list.xhtml">用户列表</a></li>
     </ul>
   </li>
+   </c:if>
 </ul>
 </ui:composition>

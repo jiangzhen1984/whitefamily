@@ -22,4 +22,7 @@ public enum Result {
 	//Remove Category error
 	ERR_EXIST_GOODS,
 	ERR_EXIST_PARENT_CATEGORY,
+	
+	//Update Brand error
+	ERR_NO_SUCH_BRAND,
 }

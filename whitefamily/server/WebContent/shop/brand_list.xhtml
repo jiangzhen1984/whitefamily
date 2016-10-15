@@ -15,8 +15,7 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right"><a href="brand_form.xhtml" data-toggle="tooltip" title=" echo $button_add" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-        <button type="button" data-toggle="tooltip" title=" echo $button_copy" class="btn btn-default" onclick="$('#form-product').attr('action', ' echo $copy').submit()"><i class="fa fa-copy"></i></button>
-        <button type="button" data-toggle="tooltip" title=" echo $button_delete" class="btn btn-danger" onclick="confirm(' echo $text_confirm') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>
+        <a href="product_list.xhtml" data-toggle="tooltip" title="返回" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1> 产品管理</h1>
       <ul class="breadcrumb">
@@ -37,11 +36,11 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-center">产品</td>
-                  <td class="text-left"> 
-                    <a href="#" class=" echo strtolower($order)"> 名称</a>
-                     </td>
+                  <td class="text-center">品牌</td>
+                  <td class="text-center">规则</td>
+                  <td class="text-center">分装规格</td>
+                  <td class="text-center">分装数量</td>
+                  <td class="text-center">出货单价计算公式</td>
                   <td class="text-right">编辑</td>
                 </tr>
               </thead>
@@ -49,14 +48,18 @@
               
               <ui:repeat id="b" var="b" value="#{goodsBean.goodsBrand}" varStatus="itemStatus">
                 <tr>
-                  <td class="text-center">
-                    <input type="checkbox" name="selected[]" value="#{g.id}" />
-                     </td>
-                  <td class="text-center">
-                    <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
-                     </td>
                   <td class="text-left">#{b.name}</td>
+                  <td class="text-left">#{b.unit}</td>
+                  <td class="text-left">#{b.subUnit}</td>
+                  <td class="text-left">#{b.subCount}</td>
+                  <td class="text-left">#{b.calculation}</td>
+                  
                   <td class="text-right">
+                   <h:commandLink action="#{goodsBean.gotoUpdateBrands}" 
+													data-toggle="tooltip" title="编辑 #{b.name}"
+													class="btn btn-primary"><i class="fa fa-pencil"></i>
+                   <f:setPropertyActionListener target="#{goodsBean.brandId}" value="#{b.id}" />
+                  </h:commandLink>
                   </td>
                 </tr>
                 </ui:repeat>
@@ -64,90 +67,13 @@
             </table>
           </div>
         <div class="row">
-          <div class="col-sm-6 text-left"> echo $pagination</div>
-          <div class="col-sm-6 text-right"> echo $results</div>
+          <div class="col-sm-6 text-left"></div>
+          <div class="col-sm-6 text-right"></div>
         </div>
       </div>
     </div>
   </div>
   </h:form>
-  <script type="text/javascript"><!--
-$('#button-filter').on('click', function() {
-	var url = 'index.php?route=catalog/product&token= echo $token';
-
-	var filter_name = $('input[name=\'filter_name\']').val();
-
-	if (filter_name) {
-		url += '&filter_name=' + encodeURIComponent(filter_name);
-	}
-
-	var filter_model = $('input[name=\'filter_model\']').val();
-
-	if (filter_model) {
-		url += '&filter_model=' + encodeURIComponent(filter_model);
-	}
-
-	var filter_price = $('input[name=\'filter_price\']').val();
-
-	if (filter_price) {
-		url += '&filter_price=' + encodeURIComponent(filter_price);
-	}
-
-	var filter_quantity = $('input[name=\'filter_quantity\']').val();
-
-	if (filter_quantity) {
-		url += '&filter_quantity=' + encodeURIComponent(filter_quantity);
-	}
-
-	var filter_status = $('select[name=\'filter_status\']').val();
-
-	if (filter_status != '*') {
-		url += '&filter_status=' + encodeURIComponent(filter_status);
-	}
-
-	location = url;
-});
-//--></script>
-  <script type="text/javascript"><!--
-$('input[name=\'filter_name\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token= echo $token&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_name\']').val(item['label']);
-	}
-});
-
-$('input[name=\'filter_model\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token= echo $token&filter_model=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['model'],
-						value: item['product_id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'filter_model\']').val(item['label']);
-	}
-});
-//--></script></div>
+</div>
 <footer id="footer"><br /></footer></div>
 </body></html>

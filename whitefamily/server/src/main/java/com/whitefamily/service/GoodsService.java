@@ -151,6 +151,10 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Brand br = new Brand();
 		br.setName(brand.getName());
 		br.setStyle(brand.getStyle());
+		br.setSubCount(brand.getSubCount());
+		br.setSubUnit(brand.getSubUnit());
+		br.setUnit(brand.getUnit());
+		br.setCalculation(brand.getCalculation());
 		br.setGoods(goods);
 		Session sess = getSession();
 		Transaction tr = sess.beginTransaction();
@@ -164,6 +168,26 @@ public class GoodsService extends BaseService implements IGoodsService {
 	public void removeGoodsBrand(WFGoods goods, WFBrand brand) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	
+	public Result updateGoodsBrand(WFGoods goods, WFBrand brand) {
+		Session sess = getSession();
+		Brand br = (Brand)sess.get(Brand.class, brand.getId());
+		if (br == null) {
+			return Result.ERR_NO_SUCH_BRAND;
+		}
+		br.setName(brand.getName());
+		br.setStyle(brand.getStyle());
+		br.setSubCount(brand.getSubCount());
+		br.setSubUnit(brand.getSubUnit());
+		br.setUnit(brand.getUnit());
+		br.setCalculation(brand.getCalculation());
+		br.setGoods(goods);
+		Transaction tr = sess.beginTransaction();
+		sess.update(br);
+		tr.commit();
+		return Result.SUCCESS;
 	}
 
 	@Override
