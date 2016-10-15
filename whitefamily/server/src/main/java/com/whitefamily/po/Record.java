@@ -12,6 +12,8 @@ public abstract class Record {
 	
 	
 	protected User operator;
+	
+	protected Long parentId;
 
 
 	public long getId() {
@@ -41,6 +43,16 @@ public abstract class Record {
 
 	public void setOperator(User operator) {
 		this.operator = operator;
+	}
+
+
+	public long getParentId() {
+		return parentId == null? 0 : parentId;
+	}
+
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 	
 	

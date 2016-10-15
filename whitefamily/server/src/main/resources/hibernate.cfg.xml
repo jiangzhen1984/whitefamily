@@ -64,6 +64,7 @@
 		<mapping class="com.whitefamily.po.incoming.Delivery" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryRequestRecord" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryRequestGoods" />
+		<mapping class="com.whitefamily.po.delivery.DeliverySupplierConfiguration" />
 
 	</session-factory>
 

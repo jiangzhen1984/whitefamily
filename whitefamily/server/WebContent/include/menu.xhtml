@@ -22,9 +22,11 @@
     <ul>
        <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="shop_list.xhtml">店铺列表</a></li>
-       <c:if  test="${userBean.user.role == 'ADMIN' or userBean.user.role == 'DELIVER_STAFF'}">
+      </c:if>
+      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺补货申请</a></li>
       </c:if>
+      <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="damage_report_list.xhtml">店铺报损列表</a></li>
       </c:if>
     </ul>

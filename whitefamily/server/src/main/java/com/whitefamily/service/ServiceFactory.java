@@ -14,6 +14,8 @@ public class ServiceFactory {
 	
 	private static IUserService iusReal;
 	
+	private static ISupplierService isupsReal;
+	
 	
 	public static ICategoryService ics;
 	
@@ -24,6 +26,8 @@ public class ServiceFactory {
 	public static IInventoryService  iis;
 	
 	public static IUserService ius;
+	
+	public static ISupplierService isups;
 	
 	public static SessionFactory sessionFactory;
 	
@@ -49,6 +53,7 @@ public class ServiceFactory {
 		if (iss == null) {
 			((ShopService)getRealShopService()).setGoodsService(getRealGoodsService());
 			((ShopService)getRealShopService()).setUserService(getRealUserService());
+			((ShopService)getRealShopService()).setSupplierService(getRealSupplierService());
 			iss = (IShopService)getProxy(IShopService.class.getClassLoader(), IShopService.class, getRealShopService());
 		}
 		return iss;
@@ -59,6 +64,7 @@ public class ServiceFactory {
 		if (iis == null) {
 			IInventoryService  service = new InventoryService();
 			((InventoryService)service).setGoodsService(getRealGoodsService());
+			((InventoryService)service).setSupplierService(getRealSupplierService());
 			iis = (IInventoryService)getProxy(IInventoryService.class.getClassLoader(), IInventoryService.class, service);
 		}
 		return iis;
@@ -71,6 +77,14 @@ public class ServiceFactory {
 			ius = (IUserService)getProxy(IUserService.class.getClassLoader(), IUserService.class, getRealUserService());
 		}
 		return ius;
+	}
+	
+	
+	public static ISupplierService  getSupplierService() {
+		if (isups == null) {
+			isups = (ISupplierService)getProxy(ISupplierService.class.getClassLoader(), ISupplierService.class, getRealSupplierService());
+		}
+		return isups;
 	}
 	
 	
@@ -103,6 +117,14 @@ public class ServiceFactory {
 			icsReal = new CategoryService();
 		}
 		return icsReal;
+	}
+	
+	
+	private static synchronized ISupplierService getRealSupplierService() {
+		if (isupsReal == null) {
+			isupsReal = new SupplierService();
+		}
+		return isupsReal;
 	}
 	
 	private static Object getProxy(ClassLoader loder, Class cls, Object obj) {

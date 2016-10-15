@@ -33,16 +33,21 @@ import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.Shop;
+import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
 import com.whitefamily.po.incoming.Incoming;
+import com.whitefamily.service.InventoryService.LocalMappingSubRecord;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
+import com.whitefamily.service.vo.WFCategory;
+import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFUser;
 
 public class ShopService extends BaseService implements IShopService {
@@ -53,7 +58,8 @@ public class ShopService extends BaseService implements IShopService {
 
 	private IGoodsService goodsService;
 	private IUserService userService;
-
+	private ISupplierService supplierService;
+	
 
 	public IGoodsService getGoodsService() {
 		return goodsService;
@@ -64,6 +70,13 @@ public class ShopService extends BaseService implements IShopService {
 	}
 
 	
+	public ISupplierService getSupplierService() {
+		return supplierService;
+	}
+
+	public void setSupplierService(ISupplierService supplierService) {
+		this.supplierService = supplierService;
+	}
 	
 	
 	public IUserService getUserService() {
@@ -333,8 +346,14 @@ public class ShopService extends BaseService implements IShopService {
 		record.setOperator(manager);
 		record.setStatus(InventoryStatus.REQUEST);
 		record.setShop(shop);
+		
+		
 
 		Session sess = getSession();
+		
+		List<WFSupplierMapping> mappingList = supplierService.getMappingList();
+		Map<WFSupplierMapping, LocalMappingSubRecord> mapping = new HashMap<WFSupplierMapping, LocalMappingSubRecord>();
+		
 		Transaction tr = sess.beginTransaction();
 		sess.save(record);
 		sess.flush();
@@ -345,12 +364,22 @@ public class ShopService extends BaseService implements IShopService {
 			if (wi.isPersisted()) {
 				continue;
 			}
+			
+			WFGoods wfg = goodsService.getGoods(wi.getGoods().getId());
+			//check 
+			handleSubRecordsGoods(record, mapping, wfg, mappingList,wi);
+			
+			
 			ig = new InventoryRequestGoods();
-			ig.setGoods(goodsService.getGoods(wi.getGoods().getId()));
+			ig.setGoods(wfg);
 			ig.setCount(wi.getCount());
 			ig.setRecord(record);
 			sess.save(ig);
 			wi.setPersisted(true);
+		}
+		
+		for (LocalMappingSubRecord lmsr : mapping.values()) {
+			saveSubRecord(lmsr);
 		}
 
 		tr.commit();
@@ -358,6 +387,80 @@ public class ShopService extends BaseService implements IShopService {
 		return Result.SUCCESS;
 	}
 	
+	
+	
+	private void handleSubRecordsGoods(InventoryRequestRecord parent, Map<WFSupplierMapping, LocalMappingSubRecord> map, WFGoods wfg, List<WFSupplierMapping> ml, WFInventoryRequest.Item item) {
+		for (WFSupplierMapping wfs : ml) {
+			if (wfg.getId() == wfs.getMappingId() && wfs.getMc() == DeliverySupplierConfiguration.MC.GOODS) {
+				LocalMappingSubRecord lmsr = map.get(wfs);
+				if (lmsr == null) {
+					lmsr = new LocalMappingSubRecord();
+					lmsr.parent = parent;
+					map.put(wfs, lmsr);
+				}
+				lmsr.addWFGoods(wfg, item);
+			} else if (wfs.getMc() == DeliverySupplierConfiguration.MC.CATE) {
+				WFCategory wf = (WFCategory)wfg.getCate();
+				while (wf != null) {
+					if (wf.getId() == wfs.getMappingId()) {
+						LocalMappingSubRecord lmsr = map.get(wfs);
+						if (lmsr == null) {
+							lmsr = new LocalMappingSubRecord();
+							lmsr.parent = parent;
+							map.put(wfs, lmsr);
+						}
+						lmsr.addWFGoods(wfg, item);
+						break;
+					} 
+					
+					wf = wf.getParent();
+				}
+			}
+		}
+	}
+	
+	
+	private void saveSubRecord(LocalMappingSubRecord subRecord) {
+		Session sess = getSession();
+		
+		InventoryRequestRecord record = new InventoryRequestRecord();
+		record.setDatetime(subRecord.parent.getDatetime());
+		record.setOperator(subRecord.parent.getOperator());
+		record.setShop(subRecord.parent.getShop());
+		record.setParent(subRecord.parent);
+		sess.save(record);
+		sess.flush();
+		
+		int len = subRecord.items.size();
+		for (int i = 0; i < len; i++) {
+			WFGoods wfg = subRecord.goodsList.get(i);
+			WFInventoryRequest.Item wi = subRecord.items.get(i);
+			
+			InventoryRequestGoods ig = new InventoryRequestGoods();
+			ig = new InventoryRequestGoods();
+			ig.setGoods(wfg);
+			ig.setCount(wi.getCount());
+			ig.setRecord(record);
+			sess.save(ig);
+		}
+	}
+
+	
+	final static class LocalMappingSubRecord {
+		InventoryRequestRecord parent;
+		WFSupplierMapping wfm;
+		List<WFInventoryRequest.Item> items;
+		List<WFGoods> goodsList;
+		
+		public void addWFGoods(WFGoods wfg, WFInventoryRequest.Item item) {
+			if (goodsList == null || items == null) {
+				goodsList = new ArrayList<WFGoods>(20);
+				items = new ArrayList<WFInventoryRequest.Item>(20);
+			}
+			goodsList.add(wfg);
+			items.add(item);
+		}
+	}
 	
 	
 	

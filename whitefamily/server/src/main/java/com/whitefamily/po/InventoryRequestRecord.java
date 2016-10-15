@@ -1,6 +1,7 @@
 package com.whitefamily.po;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +38,16 @@ public class InventoryRequestRecord extends Record {
 
 	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
 	private String userName;
+	
+	@Transient
+	protected List<InventoryRequestRecord> subRecords;
+	
+	@Transient
+	protected boolean loadSubRecord;
+	
+	@Transient
+	protected InventoryRequestRecord parent;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -100,6 +111,20 @@ public class InventoryRequestRecord extends Record {
 			this.shopAddress = shop.getAddress();
 		}
 	}
+	
+	
+	
+
+	@Override
+	@Column(name = "WF_PARENT_REC__ID")
+	public long getParentId() {
+		return super.getParentId();
+	}
+
+	@Override
+	public void setParentId(Long parentId) {
+		super.setParentId(parentId);
+	}
 
 	public InventoryStatus getStatus() {
 		return status;
@@ -147,6 +172,33 @@ public class InventoryRequestRecord extends Record {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	@Transient
+	public List<InventoryRequestRecord> getSubRecords() {
+		return subRecords;
+	}
+
+	public void setSubRecords(List<InventoryRequestRecord> subRecords) {
+		this.subRecords = subRecords;
+	}
+
+	public boolean isLoadSubRecord() {
+		return loadSubRecord;
+	}
+
+	public void setLoadSubRecord(boolean loadSubRecord) {
+		this.loadSubRecord = loadSubRecord;
+	}
+
+	@Transient
+	public InventoryRequestRecord getParent() {
+		return parent;
+	}
+
+	public void setParent(InventoryRequestRecord parent) {
+		this.parent = parent;
+		this.setParentId(this.parent == null ? 0 : this.parent.getId());
 	}
 
 	
