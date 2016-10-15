@@ -15,7 +15,6 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
-         <h:commandLink action="#{shopBean.prepareDelivery}" type="submit" form="form-product" data-toggle="tooltip" title="处理配送" class="btn btn-primary">处理配送</h:commandLink>
          <a href="shop_inventory_request_all_list.xhtml" data-toggle="tooltip" title="返回" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1> 店铺管理</h1>
@@ -28,14 +27,14 @@
    
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-list"></i> #{shopBean.inventoryRequestdetail.datetime} -- #{shopBean.inventoryRequestdetail.shop.name}</h3>
+        <h3 class="panel-title"><i class="fa fa-list"></i> #{supplierBean.inventoryRequestdetail.datetime} -- #{supplierBean.inventoryRequestdetail.shop.name}</h3>
       </div>
       <div class="panel-body">
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><INPUT type="checkbox" id="ck"/></td>
+                  <td style="width: 1px;" class="text-center"></td>
                   <td class="text-center"> 
                     <a href="#" >产品</a>
                      </td>
@@ -44,11 +43,12 @@
                      </td>
                 </tr>
               </thead>
-              <tbody id="ct">
+              <tbody>
               
-              <ui:repeat id="item" var="item" value="#{shopBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
+              <ui:repeat id="item" var="item" value="#{supplierBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
                 <tr>
-                  <td class="text-center"><INPUT type="checkbox" name="g_id" value="#{item.goods.id}" /></td>
+                  <td class="text-center">
+                  </td>
                   <td class="text-center">#{item.goods.name}</td>
                   <td class="text-center">#{item.count}</td>
                 </tr>
@@ -61,10 +61,5 @@
   </div>
   </h:form>
 </div>
-<script type="text/javascript">
- $('#ck' ).click( function () {
-    $( '#ct input[type="checkbox"]' ).prop('checked', this.checked);
-  })
-</script>
 <footer id="footer"><br /></footer></div>
 </body></html>

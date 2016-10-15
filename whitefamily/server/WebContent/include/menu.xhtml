@@ -17,7 +17,7 @@
     </ul>
   </li>
    </c:if>
-   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'}">
+   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER'}">
   <li id="extension"><a class="parent"><i class="fa fa-puzzle-piece fa-fw"></i> <span>店铺管理</span></a>
     <ul>
        <c:if  test="${userBean.user.role == 'ADMIN'}">
@@ -25,6 +25,9 @@
       </c:if>
       <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺补货申请</a></li>
+      </c:if>
+      <c:if test="${userBean.user.role == 'VEGETABLE_SUPPLIER'}">
+       <li><a href="shop_inventory_request_veg_list.xhtml">店铺补货申请</a></li>
       </c:if>
       <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="damage_report_list.xhtml">店铺报损列表</a></li>

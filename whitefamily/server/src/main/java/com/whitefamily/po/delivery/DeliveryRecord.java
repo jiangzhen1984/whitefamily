@@ -1,4 +1,4 @@
-package com.whitefamily.po;
+package com.whitefamily.po.delivery;
 
 import java.util.Date;
 import java.util.List;
@@ -13,17 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.po.Record;
+import com.whitefamily.po.Shop;
 import com.whitefamily.po.customer.User;
 
 @Entity
-@Table(name = "WF_INVENTORY_REQUEST_RECORD")
-public class InventoryRequestRecord extends Record {
+@Table(name = "WF_DELIVERY_RECORD")
+public class DeliveryRecord extends Record {
 	
 	
-	public static final int TYPE_IS_SUPPLIER = 1;
-	
-	public static final int TYPE_NOT_SUPPLIER = 0;
-
 	private Shop shop;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -45,16 +44,13 @@ public class InventoryRequestRecord extends Record {
 	private String userName;
 	
 	@Transient
-	protected List<InventoryRequestRecord> subRecords;
+	protected List<DeliveryRecord> subRecords;
 	
 	@Transient
 	protected boolean loadSubRecord;
 	
 	@Transient
-	protected InventoryRequestRecord parent;
-	
-	@Column(name = "WF_IS_SUPPLIER_REC",  columnDefinition = "NUMBERIC(1)")
-	protected int supplierRecd;
+	protected DeliveryRecord parent;
 	
 	
 
@@ -184,11 +180,11 @@ public class InventoryRequestRecord extends Record {
 	}
 
 	@Transient
-	public List<InventoryRequestRecord> getSubRecords() {
+	public List<DeliveryRecord> getSubRecords() {
 		return subRecords;
 	}
 
-	public void setSubRecords(List<InventoryRequestRecord> subRecords) {
+	public void setSubRecords(List<DeliveryRecord> subRecords) {
 		this.subRecords = subRecords;
 	}
 
@@ -201,21 +197,13 @@ public class InventoryRequestRecord extends Record {
 	}
 
 	@Transient
-	public InventoryRequestRecord getParent() {
+	public DeliveryRecord getParent() {
 		return parent;
 	}
 
-	public void setParent(InventoryRequestRecord parent) {
+	public void setParent(DeliveryRecord parent) {
 		this.parent = parent;
 		this.setParentId(this.parent == null ? 0 : this.parent.getId());
-	}
-
-	public int getSupplierRecd() {
-		return supplierRecd;
-	}
-
-	public void setSupplierRecd(int supplierRecd) {
-		this.supplierRecd = supplierRecd;
 	}
 
 }

@@ -100,7 +100,11 @@ public class UserBean {
 		
 	//	String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");
 		if (user.getRole() != Role.MANAGER) {
-			return "dashboard";
+			if (user.getRole() == Role.VEGETABLE_SUPPLIER) {
+				return "veg";
+			} else {
+				return "dashboard";
+			}
 		}  else {
 			return  "mobiledashboard";
 		}

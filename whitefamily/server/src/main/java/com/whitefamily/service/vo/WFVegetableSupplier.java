@@ -1,5 +1,5 @@
 package com.whitefamily.service.vo;
 
-public class WFVegetableSupplier extends WFUser {
+public class WFVegetableSupplier extends WFSupplier {
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.whitefamily.po.DamageStatus;
 import com.whitefamily.service.vo.WFDamageReport;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
@@ -58,5 +59,10 @@ public interface IShopService {
 	public Result queryInventoryRequestGoods(WFInventoryRequest ir);
 	
 	public File generateDeliveryForm(WFInventoryRequest ir);
+	
+	
+	public File generateDeliveryForm(WFDelivery de);
+	
+	public Result prepareDelivery(WFDelivery de, WFUser user);
 
 }

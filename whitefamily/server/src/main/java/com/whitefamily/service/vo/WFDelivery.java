@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.customer.User;
 
-public class WFInventoryRequest {
+public class WFDelivery {
 
 	protected long id;
 
@@ -17,21 +16,10 @@ public class WFInventoryRequest {
 	
 	protected WFShop shop;
 
-	protected InventoryStatus is;
-
 	protected List<Item> itemList;
 	
 	protected boolean isLoadItem;
 
-
-	public InventoryStatus getIs() {
-		return is;
-	}
-	
-
-	public void setIs(InventoryStatus is) {
-		this.is = is;
-	}
 
 	public long getId() {
 		return id;
@@ -77,7 +65,7 @@ public class WFInventoryRequest {
 		this.isLoadItem = isLoadItem;
 	}
 
-	public void addInventoryItem(WFGoods goods, float count, boolean persiste) {
+	public void addItem(WFGoods goods, float count, boolean persiste) {
 		if (itemList == null) {
 			itemList = new ArrayList<Item>(10);
 		}
@@ -85,7 +73,7 @@ public class WFInventoryRequest {
 	}
 	
 	
-	public void addInventoryItem(WFGoods goods, float count, float realCount, float pr, boolean persiste) {
+	public void addItem(WFGoods goods, float count, float realCount, float pr, boolean persiste) {
 		if (itemList == null) {
 			itemList = new ArrayList<Item>(10);
 		}
@@ -93,13 +81,12 @@ public class WFInventoryRequest {
 	}
 	
 	
-	public void updateInventoryItem(WFGoods goods, float realCount, float pr) {
+	public void updateItem(WFGoods goods, float realCount) {
 		int size = itemList == null ? 0 : itemList.size();
 		Item item;
 		for (int i = 0; i < size; i++) {
 			item = itemList.get(i);
 			if (goods.getId() == item.getGoods().getId()) {
-				item.price = pr;
 				item.realCount = realCount;
 			}
 		}

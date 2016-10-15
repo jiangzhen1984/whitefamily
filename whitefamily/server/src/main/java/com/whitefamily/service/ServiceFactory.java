@@ -51,7 +51,13 @@ public class ServiceFactory {
 	
 	public static IShopService  getShopService() {
 		if (iss == null) {
+			if (igs == null) {
+				getGoodsService();
+			}
 			((ShopService)getRealShopService()).setGoodsService(getRealGoodsService());
+			if (ius == null) {
+				getUserService();
+			}
 			((ShopService)getRealShopService()).setUserService(getRealUserService());
 			((ShopService)getRealShopService()).setSupplierService(getRealSupplierService());
 			iss = (IShopService)getProxy(IShopService.class.getClassLoader(), IShopService.class, getRealShopService());
@@ -82,6 +88,9 @@ public class ServiceFactory {
 	
 	public static ISupplierService  getSupplierService() {
 		if (isups == null) {
+			if (iis == null) {
+				getInventoryService();
+			}
 			isups = (ISupplierService)getProxy(ISupplierService.class.getClassLoader(), ISupplierService.class, getRealSupplierService());
 		}
 		return isups;

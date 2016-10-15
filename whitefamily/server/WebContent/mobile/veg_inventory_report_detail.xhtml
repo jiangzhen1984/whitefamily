@@ -1,0 +1,154 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<title>补货清单</title>
+<body>
+	<div id="container">
+		<div id="content">
+			<h:form id="pform">
+				<div class="page-header">
+					<div class="container-fluid">
+						<h1>店铺管理-送货清单</h1>
+						<ul class="breadcrumb">
+							<li><a href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="container-fluid">
+					<c:if test="${not empty shopBean.errMsg}">
+						<div class="alert alert-danger">
+							<i class="fa fa-exclamation-circle"></i>
+							<h:outputText value="#{shopBean.errMsg}"></h:outputText>
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+					</c:if>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<table id="item_box" class="table table-striped">
+								<tbody>
+								<tr id="it_row#{status.index}">
+										  <td class="text-center" style="color:#000000;">店铺</td>
+                                          <td class="text-center" style="color:#000000;">地址</td>
+                                          <td class="text-center" style="color:#000000;">时间</td>
+                                          <td class="text-center" style="color:#000000;">进度</td>
+										  <td class="text-center" style="color:#000000;">查看菜品明细</td>
+										</tr>
+									  <ui:repeat id="g" var="g" value="#{supplierBean.inventoryAllList}" varStatus="itemStatus">
+										<tr id="it_row#{status.index}">
+										  <td class="text-center" style="color:#000000;">#{g.shop.name}</td>
+                                          <td class="text-center" style="color:#000000;">#{g.shop.address}</td>
+                                          <td class="text-center" style="color:#000000;">#{g.datetime}</td>
+                                          <td class="text-center" style="color:#000000;">#{g.is.value}</td>
+										  <td class="text-center">
+										       <h:commandLink  action="#{supplierBean.gotoViewShopInventoryRequestDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="产品详情" class="btn btn-primary">
+										       <f:setPropertyActionListener target="#{supplierBean.inventoryRequestDetailIdxFromAll}" value="#{itemStatus.index}" />
+													<i class="fa fa-pencil"></i>
+											   </h:commandLink>
+										  </td>
+										</tr>
+									</ui:repeat>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</h:form>
+		</div>
+			<div class="bottom">
+		<div class="clear"></div>
+	</div>
+	</div>
+
+
+	<script type="text/javascript">
+var item_row = 0;
+
+function addItem() {
+	html =' <tr id="it_row'+item_row+'">';
+	html +='	<td class="text-left"><label class="control-label" for="input-name">产品</label></td>';
+	html +='	<td class="text-right"><input	type="text" name="goodsname" value="" placeholder="请输入报损产品"	id="goodsname'+item_row+'" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id'+item_row+'"   class="form-control" /></td>';
+	html +='	 <td class="text-left"><label class="control-label" for="input-model">数量</label></td>';
+	html +='	  <td class="text-right"><input type="text" name="goodscount" value="" placeholder="请输入报损数量" id="goodscount'+item_row+'" class="form-control" /></td>';
+	html +='	<td class="text-left"><button type="button" onclick="$(\'#it_row'+item_row+'\').remove();" data-toggle="tooltip" title="echo $button_remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html +=' </tr>';
+
+	$('#item_box tbody').append(html);
+	
+	
+	var el = $("input[name=\'goodsname\']:last");
+	var id_el = $("input[name=\'goodsname_id\']:last");
+	el.autocomplete({
+	'source': f_auto_complete_source_goods,
+	'select': function(item) {
+		el.val(item['label']);
+		id_el.val(item['value']);
+	    }
+    });
+
+	item_row++;
+}
+</script>
+
+
+	<script type="text/javascript">
+  
+  
+       function f_auto_complete_source_type(type, request, response, param) {
+    		$.ajax({
+			url: type+'.ajax?action='+type+'&amp;'+'filter=' +  encodeURIComponent(request),
+			data : param,
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					goods_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+    
+    }
+    
+
+
+  function f_auto_complete_source_goods(request, response) {
+         f_auto_complete_source_type('filterGoods', request, response, '');
+    }
+
+   var g_el_ar = $('input[name=\'goodsname\']');
+   var g_id_el_ar = $('input[name=\'goodsname_id\']');
+   var len = g_el_ar.length;
+   var i = 0;
+   //<![CDATA[
+   for ( i= 0; i < len; i++) {
+     var g_el = $('#'+g_el_ar[i].id);
+     var g_id_el = $('#'+g_id_el_ar[i].id);
+     g_el.autocomplete({
+	    'source': f_auto_complete_source_goods,
+	    'select': function(item) {
+		  g_el.val(item['label']);
+		  g_id_el.val(item['value']);
+	   }
+     });
+   }
+    //]]>
+
+  </script>
+
+
+</body>
+</html>

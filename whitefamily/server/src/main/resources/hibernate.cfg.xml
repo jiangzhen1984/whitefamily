@@ -65,7 +65,8 @@
 		<mapping class="com.whitefamily.po.InventoryRequestRecord" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryRequestGoods" />
 		<mapping class="com.whitefamily.po.delivery.DeliverySupplierConfiguration" />
-
+		<mapping class="com.whitefamily.po.delivery.DeliveryRecord" />
+		<mapping class="com.whitefamily.po.delivery.DeliveryRecordGoods" />
 	</session-factory>
 
 </hibernate-configuration>

@@ -1,17 +1,28 @@
 package com.whitefamily.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.whitefamily.po.InventoryGoods;
+import com.whitefamily.po.InventoryRequestRecord;
+import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.po.InventoryType;
+import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
+import com.whitefamily.service.vo.WFInventory;
+import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFSupplier;
 import com.whitefamily.service.vo.WFSupplierMapping;
 
 public class SupplierService extends BaseService implements ISupplierService {
 	
+
 	private List<WFSupplierMapping> cacheList = new ArrayList<WFSupplierMapping>(20);
 	
 	
@@ -53,6 +64,98 @@ public class SupplierService extends BaseService implements ISupplierService {
 			}
 		}
 		return cacheList;
+	}
+
+	
+	@Override
+	public List<WFInventoryRequest> querySupplierDeliveryRequest(WFSupplier suppler, Date date) {
+		StringBuffer hqlBuf = new StringBuffer();
+		hqlBuf.append(" from InventoryRequestRecord where supplierRecd = ? ");
+		
+		hqlBuf.append(" order by status, datetime asc ");
+		
+		Session sess = getSession();
+		Query query = sess.createQuery(hqlBuf.toString());
+		query.setInteger(0, InventoryRequestRecord.TYPE_IS_SUPPLIER);
+		
+		List<InventoryRequestRecord>  list = query.list();
+		List<WFInventoryRequest> wflist = new ArrayList<WFInventoryRequest>(list.size());
+		for (InventoryRequestRecord irq : list) {
+			WFInventoryRequest wf = new WFInventoryRequest();
+			wf.setId(irq.getId());
+			wf.setDatetime(irq.getDatetime());
+			wf.setOperator(irq.getOperator());
+			wf.setIs(irq.getStatus());
+			wf.setShop(new WFShop(irq.getShop()));
+			wflist.add(wf);
+		}
+		
+		sess.close();
+		return wflist;
+	}
+	
+	
+	
+	public Result prepareInventoryRequest(WFInventoryRequest req, WFSupplier supplier) {
+
+		Session sess = getSession();
+		
+		
+		InventoryRequestRecord irr = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, req.getId());
+		if (irr == null) {
+			return Result.ERR_EXIST_INVENTORY_RECORD;
+		}
+		irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
+		
+		
+		WFInventory inventory =  new WFInventory();
+		inventory.setDatetime(new Date());
+		inventory.setIt(InventoryType.IN);
+		inventory.setOperator(supplier);
+		
+		for (WFInventoryRequest.Item wfi : req.getItemList()) {
+			inventory.addInventoryItem(wfi.getGoods(), null, wfi.getRealCount(), wfi.getPrice(), false);
+		}
+		
+		Transaction tr = sess.beginTransaction();
+		createInventory(sess, inventory);
+		
+		sess.update(irr);
+		tr.commit();
+		
+		return Result.SUCCESS;
+	}
+	
+	
+	
+	
+	private void createInventory(Session sess, WFInventory inventory) {
+		InventoryUpdateRecord record = new InventoryUpdateRecord();
+		record.setIt(inventory.getIt());
+		record.setDatetime(inventory.getDatetime());
+		record.setOperator(inventory.getOperator());
+		record.setIt(InventoryType.IN);
+
+		sess.save(record);
+		sess.flush();
+		int count = inventory.getItemCount();
+		InventoryGoods ig = null;
+		for (int i = 0; i < count; i++) {
+			WFInventory.Item wi = inventory.getItem(i);
+			if (wi.isPersisted()) {
+				continue;
+			}
+			ig = new InventoryGoods();
+			
+			ig.setGoods(wi.getGoods());
+			ig.setCount(wi.getCount());
+			ig.setPrice(wi.getPrice());
+			ig.setRecord(record);
+			sess.save(ig);
+			wi.setPersisted(true);
+		}
+
+		sess.flush();
 	}
 
 }

@@ -33,17 +33,19 @@ import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.Shop;
+import com.whitefamily.po.delivery.DeliveryRecord;
+import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
 import com.whitefamily.po.incoming.Incoming;
-import com.whitefamily.service.InventoryService.LocalMappingSubRecord;
+import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDamageReport;
+import com.whitefamily.service.vo.WFDelivery;
+import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
-import com.whitefamily.service.vo.WFCategory;
-import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFShop;
@@ -428,6 +430,8 @@ public class ShopService extends BaseService implements IShopService {
 		record.setOperator(subRecord.parent.getOperator());
 		record.setShop(subRecord.parent.getShop());
 		record.setParent(subRecord.parent);
+		record.setStatus(InventoryStatus.REQUEST);
+		record.setSupplierRecd(InventoryRequestRecord.TYPE_IS_SUPPLIER);
 		sess.save(record);
 		sess.flush();
 		
@@ -724,5 +728,148 @@ public class ShopService extends BaseService implements IShopService {
         
         return file;
        
+	}
+	
+	
+	
+	public File generateDeliveryForm(WFDelivery wf) {
+		if (wf == null) {
+			throw new NullPointerException("wf is null ");
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String rootDir = ServerConstants.getInstance().getDeliveryFormPath()
+				+ File.separator + sdf.format(wf.getDatetime())
+				+ File.separator;
+		String fileName =  "shop_" + wf.getShop().getId() + "_ir_"
+				+ wf.getId()+".pdf";
+		File dir = new File(rootDir);
+		if (!dir.exists()) {
+			if (!dir.mkdirs()) {
+				throw new RuntimeException(" can not make dir:"+ rootDir);
+			}
+		}
+		
+		File file = new File(rootDir + fileName);
+		if (file.exists()) {
+			return file;
+		}
+		
+		
+		Document document = new Document();
+		BaseFont bf;
+        try {
+			PdfWriter.getInstance(document, new FileOutputStream(file));
+			document.open();
+		    bf= BaseFont.createFont("hxb-meixinti.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} 
+       
+	
+        Font chapterFont = new Font(bf, 16);
+        Chunk chunk = new Chunk("", chapterFont);
+        Chapter chapter = new Chapter(new Paragraph(chunk), 0);
+        chapter.setNumberDepth(0);
+        Paragraph title = new Paragraph("出货单 \n", chapterFont);
+        title.setAlignment(Paragraph.ALIGN_CENTER);
+        chapter.add(title);
+        chapter.add(new Paragraph("店铺： "+wf.getShop().getName()+" \n", chapterFont));
+        chapter.add(new Paragraph("日期： "+sdf1.format(wf.getDatetime())+"\n", chapterFont));
+        chapter.add(new Paragraph("地址： "+wf.getShop().getAddress()+ " \n\n", chapterFont));
+        
+        Font chapterFont1 = new Font(bf, 13);
+        Paragraph detail = new Paragraph("产品明细 \n\n", chapterFont1);
+        detail.setAlignment(Paragraph.ALIGN_CENTER);
+        chapter.add(detail);
+        
+        
+        PdfPTable table = new PdfPTable(7);
+        table.addCell( new PdfPCell( new Phrase("序号", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("品名", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("品类", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("规格", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("数量", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("单价", chapterFont1)));
+        table.addCell( new PdfPCell( new Phrase("小计", chapterFont1)));
+        
+        
+        int count = wf.getItemCount();
+        double sum = 0;
+        for(int aw = 0; aw < count; aw++){
+        	WFDelivery.Item  item = wf.getItem(aw);
+        	table.addCell(new PdfPCell( new Phrase((aw)+"", chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase("23.4", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase("", chapterFont1)));
+        	sum += item.getCount();
+        }   
+       
+        
+        chapter.add(table);
+        
+        PdfPTable table1 = new PdfPTable(1);
+        table1.addCell(new Phrase("总计： " + sum, chapterFont1));
+        chapter.add(table1);
+        
+        Chapter chapterbottom = new Chapter(new Paragraph(""), 0);
+        chapterbottom.setNumberDepth(0);
+        Paragraph p1 = new Paragraph("出单人：__________"   +" 配送人:___________" +"店长：______________", chapterFont);
+        p1.setAlignment(Paragraph.ALIGN_CENTER);
+        chapter.add(p1);
+        
+        try {
+			document.add(chapter);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} finally {
+			 document.close();
+		}
+        
+        return file;
+       
+	}
+	
+	
+	
+	
+	
+	
+	@Override
+	public Result prepareDelivery(WFDelivery de, WFUser user) {
+		Session sess = getSession();
+		
+		DeliveryRecord dr = new DeliveryRecord();
+		dr.setShop(de.getShop());
+		dr.setDatetime(de.getDatetime());
+		dr.setOperator(user);
+		dr.setShopAddress(de.getShop().getAddress());
+		dr.setShopName(de.getShop().getName());
+		dr.setStatus(InventoryStatus.DELIVERING);
+		Transaction tr = sess.beginTransaction();
+		sess.save(dr);
+		sess.flush();
+		
+		for (WFDelivery.Item di : de.getItemList()) {
+			if (di.getRealCount() <= 0) {
+				continue;
+			}
+			DeliveryRecordGoods g = new DeliveryRecordGoods();
+			g.setCount(di.getCount());
+			g.setGoods(di.getGoods());
+			g.setRecord(dr);
+			sess.save(g);
+		}
+		
+		tr.commit();
+		
+		return Result.SUCCESS;
+		
+		
 	}
 }

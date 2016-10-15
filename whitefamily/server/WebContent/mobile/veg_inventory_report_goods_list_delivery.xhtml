@@ -1,0 +1,79 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<title>补货清单</title>
+<body>
+	<div id="container">
+		<div id="content">
+			<h:form id="pform">
+				<div class="page-header">
+					<div class="container-fluid">
+						<h1>店铺管理-送货清单</h1>
+						<ul class="breadcrumb">
+							<li><a href="#"></a></li>
+						</ul>
+						 <div class="pull-right">
+				         <a href="veg_inventory_report_detail.xhtml" data-toggle="tooltip"  class="btn btn-default"><i class="fa fa-reply"></i></a>
+				      </div>
+					</div>
+				</div>
+				<div class="container-fluid">eeeeee
+					<c:if test="${not empty supplierBean.errMsg}">
+						<div class="alert alert-danger">
+							<i class="fa fa-exclamation-circle"></i>
+							<h:outputText value="#{supplierBean.errMsg}">eeee</h:outputText>
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+					</c:if>
+					<div class="panel panel-default">
+					    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-list"></i>#{supplierBean.inventoryRequestdetail.shop.name}  -  #{supplierBean.inventoryRequestdetail.shop.address}</h3></div>
+						<div class="panel-body">
+							<table id="item_box" class="table table-striped">
+								<tbody>
+								<tr id="it_row#{status.index}">
+									<td class="text-center" style="color:#000000;">菜品</td>
+                                    <td class="text-center" style="color:#000000;">订货数量</td>
+                                    <td class="text-center" style="color:#000000;">实际数量</td>
+                                    <td class="text-center" style="color:#000000;">单价</td>
+								</tr>
+								<ui:repeat id="item" var="item" value="#{supplierBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
+								<input type="hidden" name="gi" value="#{item.goods.id}"/>
+								<tr id="it_row#{status.index}">
+									<td class="text-center" style="color:#000000;">#{item.goods.name}</td>
+                                     <td class="text-center" style="color:#000000;">#{item.count}</td>
+                                     <td class="text-center" style="color:#000000;"><input type="text" name="rc" value="#{item.realCount}" placeholder="请输入数量"  class="form-control" maxlenght="7"/></td>
+                                     <td class="text-center" style="color:#000000;"><input type="text" name="gp" value="#{item.price}" placeholder="请输入单价"  class="form-control" maxlenght="7"/></td>
+								</tr>
+								</ui:repeat>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</div>
+
+		
+			<div class="panel-body">
+			     <h:commandLink action="#{supplierBean.prepareDelivery}"
+								type="submit" form="form-product" data-toggle="tooltip"
+								title="提交" class="btn btn-primary">
+								<i class="fa fa-save"></i>配货处理
+					<f:setPropertyActionListener target="#{supplierBean.prepareDerReqId}" value="#{supplierBean.prepareDerReqId}" />
+				</h:commandLink>
+			</div>
+			</h:form>
+		</div>
+	    <div class="bottom">
+		<div class="clear"></div>
+	    </div>
+	</div>
+
+
+</body>
+</html>

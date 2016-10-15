@@ -21,6 +21,7 @@ import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFDamageReport;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
@@ -49,7 +50,6 @@ public class ShopBean {
 	private long viewShopIncomingId;
 	private Date viewShopIncomingDate;
 
-	private long viewShopInventoryRequestId;
 	private List<WFInventoryRequest> inventoryRequestList;
 	private WFShop inventoryRequestShop;
 	private WFInventoryRequest inventoryRequestdetail;
@@ -60,6 +60,8 @@ public class ShopBean {
 
 	private String iType;
 	private String subType;
+	
+	private WFDelivery delivery;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -266,7 +268,6 @@ public class ShopBean {
 	}
 
 	public void setViewShopInventoryRequestId(long viewShopInventoryRequestId) {
-		this.viewShopInventoryRequestId = viewShopInventoryRequestId;
 		inventoryRequestShop = shopService.getShop(viewShopInventoryRequestId);
 		inventoryRequestList = shopService
 				.queryInventoryRequestList(inventoryRequestShop);
@@ -526,5 +527,79 @@ public class ShopBean {
 		return "inventoryrequestsuccess";
 
 	}
+	
+	
+	public String prepareDelivery() {
+		 delivery = new WFDelivery();
+		 delivery.setShop(inventoryRequestdetail.getShop());
+		 for (WFInventoryRequest.Item wri : inventoryRequestdetail.getItemList()) {
+			 delivery.addItem(wri.getGoods(), wri.getCount(), false);
+		 }
+		 
+		return "perparedelivery";
+	}
+	
+	
+	public String generateDeliveryPaper() {
+
+		Map<String, String[]> map = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterValuesMap();
+		String[] goods_id = map.get("g_id");
+		String[] realCount = map.get("g_count");
+		
+		if (goods_id == null || realCount == null) {
+			errMsg = "请输入配送数量";
+			return "deliveriedFailed";
+		}
+		
+	
+		
+		boolean ma = false;
+		for (int i = 0; i < goods_id.length; i++) {
+			if (goods_id[i] == null || goods_id[i].isEmpty()) {
+				errMsg = "请输入产品信息";
+				return "deliveriedFailed";
+			}
+			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
+
+			if (g == null) {
+				errMsg = "没有找到相关产品： " + goods_id[i];
+				return "prepareDeliveryFailed";
+			}
+
+			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", realCount[i]);
+			if (!ma) {
+				errMsg = g.getName()+"配送数量应为数字";
+				return "deliveriedFailed";
+			}
+
+			
+			delivery.updateItem(g,  Float.parseFloat(realCount[i]));
+		}
+		delivery.setDatetime(new Date());
+		
+		
+		shopService.prepareDelivery(delivery, userBean.getUser());
+		
+		File file = shopService.generateDeliveryForm(delivery);
+		String absp = file.getAbsolutePath();
+		String url = ServerConstants.getInstance().getDeliveryFromContext()
+				+ absp.replace(ServerConstants.getInstance()
+						.getDeliveryFormPath(), "");
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		try {
+			externalContext.redirect(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public WFDelivery getDelivery() {
+		return delivery;
+	}
+	
+	
 
 }
