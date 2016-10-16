@@ -28,6 +28,7 @@ import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
+import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
 
 @ManagedBean(name = "shopBean", eager = false)
@@ -265,7 +266,27 @@ public class ShopBean {
 		shopIncoming.setDmTotalSum(dMeituan.getIncoming());
 		shopIncoming.setDmValid(dMeituan.getValid());
 
+		
+		// query last;
+		WFOperationCost cost = shopService.queryShopOperationCost(wfs,
+						viewShopIncomingDate);
+		if (cost != null) {
+			shopIncoming.setCostRYTL(cost.getRytl());
+			shopIncoming.setCostSB(cost.getSb());
+			shopIncoming.setCostBC(cost.getBc());
+			shopIncoming.setCostHSF(cost.getHsf());
+			shopIncoming.setCostYL(cost.getYl());
+			shopIncoming.setCostSF(cost.getSf());
+			shopIncoming.setCostDF(cost.getDf());
+			shopIncoming.setCostRQF(cost.getRqf());
+			shopIncoming.setCostFF(cost.getFf());
+			shopIncoming.setCostGZ(cost.getGz());
+			shopIncoming.setCostRZ(cost.getRz());
+			shopIncoming.setCostQT(cost.getQt());
+		}
 	}
+	
+	
 
 	public void setViewShopInventoryRequestId(long viewShopInventoryRequestId) {
 		inventoryRequestShop = shopService.getShop(viewShopInventoryRequestId);
@@ -413,8 +434,15 @@ public class ShopBean {
 			errMsg = "请重新登陆后，再登记营收!";
 			return "reportincomingfailed";
 		}
+		
+		WFIncoming wf = shopService.queryShopIncoming(((WFManager) userBean.getUser()).getShop(), new Date());
+		if (wf != null) {
+			errMsg = "今天已经提交过营收报表， 无法重复提交";
+			return "failed";
+		}
 		shopService.reportIncoming(((WFManager) userBean.getUser()).getShop(),
 				this.shopIncoming.buildToWFIncoming(),
+				this.shopIncoming.buildOperationCost(),
 				(WFManager) userBean.getUser());
 		return "reportincomingsuccess";
 	}

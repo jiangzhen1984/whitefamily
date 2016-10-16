@@ -5,6 +5,7 @@ import java.util.Date;
 import com.whitefamily.po.incoming.DeliveryType;
 import com.whitefamily.po.incoming.GroupOnType;
 import com.whitefamily.service.vo.WFIncoming;
+import com.whitefamily.service.vo.WFOperationCost;
 
 public class ShopIncoming {
 
@@ -85,6 +86,36 @@ public class ShopIncoming {
 	private float dkServiceFee;
 	private float dkDeliverFee;
 	private int dkValid;
+	
+	//Shop operation cost
+	//日用调料
+	private float costRYTL;
+	//烧饼
+	private float costSB;
+	//补菜
+	private float costBC;
+	//伙食费
+	private float costHSF;
+	//饮料
+	private float costYL;
+	//水费
+	private float costSF;
+	//电费
+	private float costDF;
+	//燃气费
+	private float costRQF;
+	//房费
+	private float costFF;
+	//工资
+	private float costGZ;
+	//日杂
+	private float costRZ;
+	//其他
+	private float costQT;
+	
+	
+	
+
 
 	public float getAli() {
 		return ali;
@@ -573,6 +604,106 @@ public class ShopIncoming {
 	public void setDkValid(int dkValid) {
 		this.dkValid = dkValid;
 	}
+	
+	
+	
+	
+
+	public float getCostRYTL() {
+		return costRYTL;
+	}
+
+	public void setCostRYTL(float costRYTL) {
+		this.costRYTL = costRYTL;
+	}
+
+	public float getCostSB() {
+		return costSB;
+	}
+
+	public void setCostSB(float costSB) {
+		this.costSB = costSB;
+	}
+
+	public float getCostBC() {
+		return costBC;
+	}
+
+	public void setCostBC(float costBC) {
+		this.costBC = costBC;
+	}
+
+	public float getCostHSF() {
+		return costHSF;
+	}
+
+	public void setCostHSF(float costHSF) {
+		this.costHSF = costHSF;
+	}
+
+	public float getCostYL() {
+		return costYL;
+	}
+
+	public void setCostYL(float costYL) {
+		this.costYL = costYL;
+	}
+
+	public float getCostSF() {
+		return costSF;
+	}
+
+	public void setCostSF(float costSF) {
+		this.costSF = costSF;
+	}
+
+	public float getCostDF() {
+		return costDF;
+	}
+
+	public void setCostDF(float costDF) {
+		this.costDF = costDF;
+	}
+
+	public float getCostRQF() {
+		return costRQF;
+	}
+
+	public void setCostRQF(float costRQF) {
+		this.costRQF = costRQF;
+	}
+
+	public float getCostFF() {
+		return costFF;
+	}
+
+	public void setCostFF(float costFF) {
+		this.costFF = costFF;
+	}
+
+	public float getCostGZ() {
+		return costGZ;
+	}
+
+	public void setCostGZ(float costGZ) {
+		this.costGZ = costGZ;
+	}
+
+	public float getCostRZ() {
+		return costRZ;
+	}
+
+	public void setCostRZ(float costRZ) {
+		this.costRZ = costRZ;
+	}
+
+	public float getCostQT() {
+		return costQT;
+	}
+
+	public void setCostQT(float costQT) {
+		this.costQT = costQT;
+	}
 
 	public void reset() {
 
@@ -653,6 +784,31 @@ public class ShopIncoming {
 		dkServiceFee = 0;
 		dkDeliverFee = 0;
 		dkValid = 0;
+		
+		//日用调料
+		costRYTL = 0;
+		//烧饼
+		costSB = 0;
+		//补菜
+		costBC = 0;
+		//伙食费
+		costHSF = 0;
+		//饮料
+		costYL = 0;
+		//水费
+		costSF = 0;
+		//电费
+		costDF = 0;
+		//燃气费
+		costRQF = 0;
+		//房费
+		costFF = 0;
+		//工资
+		costGZ = 0;
+		//日杂
+		costRZ = 0;
+		//其他
+		costQT = 0;
 	}
 
 	public WFIncoming buildToWFIncoming() {
@@ -695,5 +851,34 @@ public class ShopIncoming {
 				this.gnGme, this.gnCe, this.gnSjje, this.gnOther);
 
 		return wfi;
+	}
+	
+	public WFOperationCost buildOperationCost() {
+		WFOperationCost cost = new WFOperationCost();
+		//日用调料
+		cost.setRytl(costRYTL);
+		//烧饼
+		cost.setSb(costSB);
+		//补菜
+		cost.setBc(costBC);
+		//伙食费
+		cost.setHsf(costHSF);
+		//饮料
+		cost.setYl(costYL);
+		//水费
+		cost.setSf(costSF);
+		//电费
+		cost.setDf(costDF);
+		//燃气费
+		cost.setRqf(costRQF);
+		//房费
+		cost.setFf(costFF);
+		//工资
+		cost.setGz(costGZ);
+		//日杂
+		cost.setRz(costRZ);
+		//其他
+		cost.setQt(costQT);
+		return cost;
 	}
 }

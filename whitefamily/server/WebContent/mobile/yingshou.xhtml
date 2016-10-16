@@ -24,6 +24,11 @@
 	<div class="content_left_bg"></div>
 	<div class="top">营收明细  <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" >提交</h:commandLink></h:form></div></div>
 	<div class="content">
+	<div  class="content_right">
+	    <c:if test="${not empty shopBean.errMsg}">
+	    <h:outputText value="#{shopBean.errMsg}" style="color:#ff0000"/>
+	    </c:if>
+	</div>	
 		<h:form>
 			<div class="content_left">
 				<!-- 代码 开始 -->
@@ -55,6 +60,7 @@
 						店内支出
 					</h:commandLink>
 					</h:panelGroup>
+					<!-- 
 					<h:panelGroup rendered="${shopBean.iType == '3'}">
 						<a href="#" class="menu_head">团购明细</a>
 						<div class="menu_body">
@@ -133,6 +139,7 @@
 					   团购明细
 					   </h:commandLink>
 					</h:panelGroup>
+					 -->
 					<h:panelGroup rendered="${shopBean.iType == '4'}">
 						<a href="#" class="menu_head">外卖明细</a>
 						<div class="menu_body">
@@ -304,7 +311,7 @@
 				<!-- 代码 结束 -->
 			</div>
 		</h:form>
-		<div class="content_right">
+		<div class="content_right" style="margin-bottom:60px;">
 			<h:form class="meiTuan">
 				<h:panelGroup rendered="${shopBean.iType == '1'}">
 					<tbody>
@@ -322,6 +329,7 @@
 									value="#{shopBean.shopIncoming.weixin}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
+						<!-- 
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">团购</label></td>
@@ -329,6 +337,7 @@
 									value="#{shopBean.shopIncoming.groupon}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
+						
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">外卖</label></td>
@@ -336,6 +345,7 @@
 									value="#{shopBean.shopIncoming.delivery}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
+						 -->
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">支付宝</label></td>
@@ -350,6 +360,7 @@
 									value="#{shopBean.shopIncoming.nuomi}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
+						<!-- 
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">大众点评</label></td>
@@ -357,6 +368,7 @@
 									value="#{shopBean.shopIncoming.dazhong}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
+						 -->
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">其他</label></td>
@@ -371,61 +383,93 @@
 
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">现金</label></td>
+								for="input-name">日用调料</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costRYTL}" a:placeholder="日用调料"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">微信</label></td>
+								for="input-name">烧饼</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costSB}" a:placeholder="烧饼"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">团购</label></td>
+								for="input-name">补菜</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costBC}" a:placeholder="补菜"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">外卖</label></td>
+								for="input-name">伙食费</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costHSF}" a:placeholder="伙食费"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">支付宝</label></td>
+								for="input-name">饮料</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costYL}" a:placeholder="饮料"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">糯米</label></td>
+								for="input-name">水费</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costSF}" a:placeholder="水费"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
-								for="input-name">大众点评</label></td>
+								for="input-name">电费</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costDF}" a:placeholder="电费"
 									class="form-control" /></td>
 						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">燃气费</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.costRQF}" a:placeholder="燃气费"
+									class="form-control" /></td>
+						</tr>
+
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">房费</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.costFF}" a:placeholder="房费"
+									class="form-control" /></td>
+						</tr>
+						
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">工资</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.costGZ}" a:placeholder="工资"
+									class="form-control" /></td>
+						</tr>
+						
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">日杂</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.costRZ}" a:placeholder="日杂"
+									class="form-control" /></td>
+						</tr>
+						
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">其他</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.gdDje}" a:placeholder="购买额"
+									value="#{shopBean.shopIncoming.costQT}" a:placeholder="其他"
 									class="form-control" /></td>
 						</tr>
-
+						
 					</tbody>
 				</h:panelGroup>
 
@@ -842,6 +886,14 @@
 										value="#{shopBean.shopIncoming.dkDeliverFee}"
 										a:placeholder="配送费" class="form-control" /></td>
 							</tr>
+							
+							<tr>
+								<td class="text-left"><label class="control-label"
+									for="input-name">配送费</label></td>
+								<td class="text-right"><h:inputText
+										value="#{shopBean.shopIncoming.dkDeliverFee}"
+										a:placeholder="配送费" class="form-control" /></td>
+							</tr>
 
 						</tbody>
 					</h:panelGroup>
@@ -849,7 +901,6 @@
 				<button type="submit">保存</button>
 			</h:form>
 		</div>
-
 
 	</div>
 	<div class="bottom">

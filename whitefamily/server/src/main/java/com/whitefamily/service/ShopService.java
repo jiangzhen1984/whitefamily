@@ -39,6 +39,7 @@ import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
 import com.whitefamily.po.incoming.Incoming;
+import com.whitefamily.po.incoming.OperationCost;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
@@ -48,6 +49,7 @@ import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
+import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFUser;
@@ -287,7 +289,7 @@ public class ShopService extends BaseService implements IShopService {
 	
 	
 	
-	public void reportIncoming(WFShop shop, WFIncoming incoming, WFUser manager) {
+	public void reportIncoming(WFShop shop, WFIncoming incoming, WFOperationCost cost, WFUser manager) {
 		Session sess = getSession();
 		Incoming inco = new Incoming();
 		inco.setDate(incoming.getDate());
@@ -335,9 +337,26 @@ public class ShopService extends BaseService implements IShopService {
 			go.setDesc(item.getDesc());
 			sess.save(go);
 		}
+		
+		OperationCost oc = new OperationCost();
+		oc.setDate(new Date());
+		oc.setShop(shop);
+		oc.setRytl(cost.getRytl());
+		oc.setSb(cost.getSb());
+		oc.setBc(cost.getBc());
+		oc.setHsf(cost.getHsf());
+		oc.setYl(cost.getYl());
+		oc.setSf(cost.getSf());
+		oc.setDf(cost.getDf());
+		oc.setRqf(cost.getRqf());
+		oc.setFf(cost.getFf());
+		oc.setGz(cost.getGz());
+		oc.setRz(cost.getRz());
+		oc.setQt(cost.getQt());
+		sess.save(oc);
+		
 		tr.commit();
 		sess.flush();
-		sess.close();
 		
 	}
 	
@@ -469,6 +488,9 @@ public class ShopService extends BaseService implements IShopService {
 	
 	
 	public WFIncoming queryShopIncoming(WFShop shop, Date date) {
+		if (shop == null || date == null) {
+			return null;
+		}
 		WFIncoming wf = null;
 		Session sess = getSession();
 		Query query = sess.createQuery(" from Incoming where shop.id = ? and date = ? ");
@@ -514,8 +536,49 @@ public class ShopService extends BaseService implements IShopService {
 					d.getOnlinePayment(), d.getRefund(), d.getRefund1(),
 					d.getServiceFee(), d.getDeliveryFee(), d.getValid());
 		}
-		sess.close();
 		return wf;
+	}
+	
+	
+	public WFOperationCost queryShopOperationCost(WFShop shop, Date date) {
+		if (shop == null || date == null) {
+			return null;
+		}
+		WFOperationCost cost = null;
+		Session sess = getSession();
+		Query query = sess.createQuery(" from OperationCost where shop.id = ? and date = ? ");
+		query.setLong(0, shop.getId());
+		query.setDate(1, date);
+		List<OperationCost> inList = (List<OperationCost>)query.list();
+		if (inList.size() > 0) {
+			 cost = new WFOperationCost();
+			 OperationCost in = inList.get(0);
+			//日用调料
+			cost.setRytl(in.getRytl());
+			//烧饼
+			cost.setSb(in.getSb());
+			//补菜
+			cost.setBc(in.getBc());
+			//伙食费
+			cost.setHsf(in.getHsf());
+			//饮料
+			cost.setYl(in.getYl());
+			//水费
+			cost.setSf(in.getSf());
+			//电费
+			cost.setDf(in.getDf());
+			//燃气费
+			cost.setRqf(in.getRqf());
+			//房费
+			cost.setFf(in.getFf());
+			//工资
+			cost.setGz(in.getGz());
+			//日杂
+			cost.setRz(in.getRz());
+			//其他
+			cost.setQt(in.getQt());
+		}
+		return cost;
 	}
 	
 	

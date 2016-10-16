@@ -67,6 +67,7 @@
 		<mapping class="com.whitefamily.po.delivery.DeliverySupplierConfiguration" />
 		<mapping class="com.whitefamily.po.delivery.DeliveryRecord" />
 		<mapping class="com.whitefamily.po.delivery.DeliveryRecordGoods" />
+		<mapping class="com.whitefamily.po.incoming.OperationCost" />
 	</session-factory>
 
 </hibernate-configuration>

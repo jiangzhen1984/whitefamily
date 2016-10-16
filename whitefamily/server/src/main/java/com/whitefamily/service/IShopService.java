@@ -10,6 +10,7 @@ import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
+import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFUser;
 
@@ -38,9 +39,12 @@ public interface IShopService {
 	
 	public void queryDamageReportDetail(WFDamageReport wr);
 	
-	public void reportIncoming(WFShop shop, WFIncoming incoming, WFUser manager);
+	public void reportIncoming(WFShop shop, WFIncoming incoming, WFOperationCost cost, WFUser manager);
 	
 	public WFIncoming queryShopIncoming(WFShop shop, Date date);
+	
+	
+	public WFOperationCost queryShopOperationCost(WFShop shop, Date date);
 	
 	public Result requestInventory(WFInventoryRequest inventory, WFShop shop, WFUser manager);
 	

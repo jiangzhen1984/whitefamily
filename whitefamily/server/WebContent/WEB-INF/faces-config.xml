@@ -410,6 +410,12 @@
 			<to-view-id>/mobile/yingshou.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.reportIncoming}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/mobile/yingshou.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 

@@ -15,7 +15,7 @@ ul{list-style:none;}
 .search{text-align:center;background:#21b387;}
 .search form{text-align:left;border-radius:5px;}
 .search .search_box{width: 50%;border:none;color: #827e7d;border-radius:5px;padding:6px 15px 10px;background: #fff;margin-top: 5px;margin-bottom: 5px;margin-left: 25%;font-size: 1em;letter-spacing: 0px;font-family: '微软雅黑';}
-.content_left{width: 25%;float:left;background:#eeeeee;height:100%;}
+.content_left{width: 25%;float:left;background:#eeeeee;height:100%; }
 .content_right{float:right;width:75%;}
 .content_left_bg{
     position: absolute;
