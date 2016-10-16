@@ -13,6 +13,7 @@ import com.whitefamily.po.customer.User;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFUser;
+import com.whitefamily.service.vo.WFVegetableSupplier;
 
 
 public class UserService extends BaseService implements IUserService {
@@ -102,6 +103,9 @@ public class UserService extends BaseService implements IUserService {
 				m.setShop(shop);
 			}
 			wfu = m;
+		} else if (u.getRole() == Role.VEGETABLE_SUPPLIER){
+			wfu = new WFVegetableSupplier();
+			wfu.setId(u.getId());
 		} else {
 			wfu = new WFUser();
 			wfu.setId(u.getId());

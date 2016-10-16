@@ -547,8 +547,13 @@ public class ShopBean {
 		String[] goods_id = map.get("g_id");
 		String[] realCount = map.get("g_count");
 		
-		if (goods_id == null || realCount == null) {
-			errMsg = "请输入配送数量";
+		if (goods_id == null ) {
+			errMsg = "请输选择配送菜品";
+			return "deliveriedFailed";
+		}
+		
+		if (realCount == null) {
+			errMsg = "配送菜品数量应为数字";
 			return "deliveriedFailed";
 		}
 		
@@ -560,21 +565,22 @@ public class ShopBean {
 				errMsg = "请输入产品信息";
 				return "deliveriedFailed";
 			}
-			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
+			String[] str = goods_id[i].split("_");
+			WFGoods g = goodsService.getGoods(Long.parseLong(str[0]));
 
 			if (g == null) {
 				errMsg = "没有找到相关产品： " + goods_id[i];
 				return "prepareDeliveryFailed";
 			}
 
-			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", realCount[i]);
+			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", realCount[Integer.parseInt(str[1])]);
 			if (!ma) {
 				errMsg = g.getName()+"配送数量应为数字";
 				return "deliveriedFailed";
 			}
 
 			
-			delivery.updateItem(g,  Float.parseFloat(realCount[i]));
+			delivery.updateItem(g,  Float.parseFloat(realCount[Integer.parseInt(str[1])]));
 		}
 		delivery.setDatetime(new Date());
 		

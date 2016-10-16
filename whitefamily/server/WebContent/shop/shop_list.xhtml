@@ -79,10 +79,7 @@
                           <f:setPropertyActionListener target="#{shopBean.viewShopInventoryRequestId}" value="#{g.id}" />
                           <i class="fa fa-bars"> 配货申请</i>
                       </h:commandLink><h:outputText value="&#160;" />
-                      <h:commandLink  action="#{shopBean.gotoUpdateShop}" type="submit"  form="form-product" data-toggle="tooltip" title="报损" class="btn btn-primary">
-                          <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
-                          <i class="fa fa-bars"> 报损明细</i>
-                      </h:commandLink><h:outputText value="&#160;" />
+                     
                       <h:commandLink  action="#{shopBean.gotoViewShopIncoming}" type="submit"  form="form-product" data-toggle="tooltip" title="营收" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.viewShopIncomingId}" value="#{g.id}" />
                            <i class="fa fa-book"> 营收明细</i>
@@ -90,7 +87,7 @@
                        <h:commandLink  action="#{shopBean.gotoUpdateShop}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
                           <i class="fa fa-pencil"> 编辑</i>
-                      </h:commandLink>
+                      </h:commandLink><h:outputText value="&#160;" />
                        <h:commandLink  action="#{shopBean.deleteShop}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
                           <i class="fa fa-trash"> 删除</i>

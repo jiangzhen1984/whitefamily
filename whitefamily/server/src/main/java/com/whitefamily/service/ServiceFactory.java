@@ -16,6 +16,8 @@ public class ServiceFactory {
 	
 	private static ISupplierService isupsReal;
 	
+	private static IInventoryService  iisReal;
+	
 	
 	public static ICategoryService ics;
 	
@@ -30,6 +32,17 @@ public class ServiceFactory {
 	public static ISupplierService isups;
 	
 	public static SessionFactory sessionFactory;
+	
+	
+	static {
+		
+		getRealUserService();
+		getRealGoodsService();
+		getRealShopService();
+		getRealCategoryService();
+		getRealSupplierService();
+		getRealInventoryService();
+	}
 	
 	public static ICategoryService  getCategoryService() {
 		if (ics == null) {
@@ -68,10 +81,10 @@ public class ServiceFactory {
 	
 	public static IInventoryService  getInventoryService() {
 		if (iis == null) {
-			IInventoryService  service = new InventoryService();
-			((InventoryService)service).setGoodsService(getRealGoodsService());
-			((InventoryService)service).setSupplierService(getRealSupplierService());
-			iis = (IInventoryService)getProxy(IInventoryService.class.getClassLoader(), IInventoryService.class, service);
+			((InventoryService)getRealInventoryService()).setGoodsService(getRealGoodsService());
+			((InventoryService)getRealInventoryService()).setSupplierService(getRealSupplierService());
+			((InventoryService)getRealInventoryService()).setUserService(getRealUserService());
+			iis = (IInventoryService)getProxy(IInventoryService.class.getClassLoader(), IInventoryService.class, getRealInventoryService());
 		}
 		return iis;
 	}
@@ -95,6 +108,14 @@ public class ServiceFactory {
 		}
 		return isups;
 	}
+	
+	public static IInventoryService  getRealInventoryService() {
+		if (iisReal == null) {
+			iisReal =  new InventoryService();
+		}
+		return iisReal;
+	}
+	
 	
 	
 	private static synchronized IUserService getRealUserService() {

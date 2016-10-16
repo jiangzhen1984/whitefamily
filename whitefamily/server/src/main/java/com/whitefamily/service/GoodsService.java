@@ -160,7 +160,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Transaction tr = sess.beginTransaction();
 		sess.save(br);
 		tr.commit();
+		brand.setId(br.getId());
 		goods.addBrand(brand);
+		brandCache.put(br.getId(), brand);
 
 	}
 
@@ -364,6 +366,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		query.setMaxResults(count);
 		query.setFetchSize(count);
 		List<Brand> list = query.list();
+		goods.clearBrandCache();
 		for (Brand g : list) {
 			WFBrand wf = new WFBrand(g);
 			wf.setGoods(goods);

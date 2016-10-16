@@ -1,5 +1,6 @@
 <!DOCTYPE HTML  [
     <!ENTITY times "&#215;"> 
+    <!ENTITY times "&#215;"> 
 ]>
 <html xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
@@ -83,19 +84,19 @@
 						<dd>
 							<div class="today_sales_tit">#{g.name}</div>
 							<div class="today_sales_detail">
-								<div class="today_sales_detail_left">#{g.price}
-									<span class="today_sales_detail_price"><h:outputText
-											value="#{g.goodsDesc}" escape="false" /><br />规格：#{g.unit}    价格：#{g.price}</span><span></span>
+								<div class="today_sales_detail_left">
+									<span class="today_sales_detail_price"><br />规格：#{g.unit} 价格：#{g.price}</span>
 								</div>
 								<div class="today_sales_detail_right">
+								     <span class="today_sales_detail_price">
 									<input type="image" src="images/1_10.png"
-										onclick="minus(#{g.id})" /><span
-										class="today_sales_detail_num"><font
-										style="color: black">1</font></span><input type="image"
-										src="images/1_12.png" onclick="add(#{g.id})" />
+										onclick="minus('#{g.id}_num')" />
+										<input type="text" value="0" id="#{g.id}_num" size="1" maxlength="2"/><input type="image"
+										src="images/1_12.png" onclick="add('#{g.id}_num')" />
+										</span>
+										<span class="today_sales_detail_price" onclick="addToList(#{g.id}, '#{g.id}_num')" >添加到清单</span>
 								</div>
 							</div>
-							<div class="today_sales_num"></div>
 						</dd>
 					</dl>
 				</ui:repeat>
@@ -119,26 +120,50 @@
 
 	<SCRIPT type="text/javascript">
  //<![CDATA[
-		function add(gid) {
-		    var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount=1&goodsid='+gid;
+        function addToList(gid, c) {
+        	 var count = document.getElementById(c).value;
+        	 if (isNaN(count)) {
+		        alert("数量必须数字");
+		        return;
+		     }
+        	 var n = Number(count);
+        	 if (n <= 0) {
+        	 	alert("数量必须大于0");
+        	 	return;
+        	 }
+             var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount='+n+'&goodsid='+gid;
 			 $.ajax({
         		url: rq,
         	success :function(data) {
         		alert("添加成功");
         	}
         	});
+        }
+		function add(gid) {
+			var sp = document.getElementById(gid);
+		    var num = sp.value;
+		    if (isNaN(num)) {
+		        return;
+		    }
+		    var n = Number(num) + 1;
+		    sp.value = n;
 		}
 		
 		
 		function minus(gid) {
-		  $.ajax({
-        	url: 'mall.ajax?action=cartAction&subaction=minus&goodscount=1&goodsid='+gid,
-        	success :function(data) {
-        		alert("取消成功");
-        	},
-        });
+		    var sp = document.getElementById(gid);
+		    var num = sp.value;
+		     if (isNaN(num)) {
+		        return;
+		    }
+		    var n = Number(num);
+		   
+		    if (n > 0) {
+		        sp.value = n -1 ;
+		    }
+        }
+        
       
-		}
 	 //]]>
 	</SCRIPT>
 </body>

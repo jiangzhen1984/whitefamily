@@ -100,6 +100,12 @@ public class WFGoods extends Goods {
 		this.brandsLoad = brandsLoad;
 	}
 
+	
+	public void clearBrandCache() {
+		if (this.brands != null) {
+			this.brands.clear();
+		}
+	}
 
 	public void addBrand(WFBrand brand) {
 		if (this.brands == null) {

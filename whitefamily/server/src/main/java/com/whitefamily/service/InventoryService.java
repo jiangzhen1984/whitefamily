@@ -31,6 +31,8 @@ public class InventoryService extends BaseService implements IInventoryService {
 	private IShopService shopService;
 	
 	private ISupplierService supplierService;
+	
+	private IUserService userService;
 
 	public IGoodsService getGoodsService() {
 		return goodsService;
@@ -56,6 +58,16 @@ public class InventoryService extends BaseService implements IInventoryService {
 
 	public void setSupplierService(ISupplierService supplierService) {
 		this.supplierService = supplierService;
+	}
+	
+	
+
+	public IUserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 
 	@Override
@@ -318,7 +330,9 @@ public class InventoryService extends BaseService implements IInventoryService {
 			WFInventoryRequest wf = new WFInventoryRequest();
 			wf.setId(iur.getId());
 			wf.setDatetime(iur.getDatetime());
-			wf.setOperator(iur.getOperator());
+			if (iur.getOperator() != null) {
+				wf.setOperator(userService.getUser(iur.getOperator().getId()));
+			}
 			wf.setIs(iur.getStatus());
 			wf.setShop(shopService.getShop(iur.getId()));
 			inventoryList.add(wf);
@@ -354,7 +368,9 @@ public class InventoryService extends BaseService implements IInventoryService {
 			WFInventory wf = new WFInventory();
 			wf.setId(iur.getId());
 			wf.setDatetime(iur.getDatetime());
-			wf.setOperator(iur.getOperator());
+			if (iur.getOperator() != null) {
+				wf.setOperator(userService.getUser(iur.getOperator().getId()));
+			}
 			wf.setIt(iur.getIt());
 			inventoryList.add(wf);
 		}
