@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <h1> 店铺管理</h1>
       <ul class="breadcrumb">
-        <li><a href="product_list.xhtml"> 店铺备货记录</a></li>
+        <li>备货记录</li>
       </ul>
     </div>
   </div>
@@ -47,7 +47,7 @@
                   <td class="text-center">#{g.shop.address}</td>
                   <td class="text-center">#{g.datetime}</td>
                   <td class="text-center">#{g.operator.name}</td>
-                   <td class="text-center">#{g.is}</td>
+                   <td class="text-center">#{g.is.value}</td>
                   <td class="text-right">
                       <h:commandLink  action="#{shopBean.gotoViewShopInventoryRequestDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="产品详情" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.inventoryRequestDetailIdxFromAll}" value="#{itemStatus.index}" />
@@ -55,7 +55,7 @@
                       </h:commandLink><h:outputText value="&#160;" />
                        <h:commandLink  action="#{shopBean.showForm}" type="submit"  form="form-product" data-toggle="tooltip" title="生成发货单" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.inventoryRequestFormAllIdx}" value="#{itemStatus.index}" />
-                          <i class="fa fa-pencil">生成发货单</i>
+                          <i class="fa fa-pencil">查看发货单</i>
                       </h:commandLink>
                   </td>
                 </tr>

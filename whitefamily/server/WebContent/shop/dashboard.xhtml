@@ -20,6 +20,7 @@
     </div>
   </div>
   <div class="container-fluid">
+    <c:if  test="${userBean.user.role == 'ADMIN'}">
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-6">
         <div class="tile">
@@ -105,6 +106,7 @@
       <div class="col-lg-4 col-md-12 col-sm-12 col-sx-12"><?php echo $activity; ?></div>
       <div class="col-lg-8 col-md-12 col-sm-12 col-sx-12"> <?php echo $recent; ?> </div>
     </div>
+    </c:if>
   </div>
 </div>
 <footer id="footer"><br /></footer></div>

@@ -35,7 +35,7 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><INPUT type="checkbox" id="ck"/></td>
+                  <td style="width: 1px;" class="text-center"></td>
                   <td class="text-center"> 
                     <a href="#" >产品</a>
                      </td>
@@ -48,7 +48,7 @@
               
               <ui:repeat id="item" var="item" value="#{shopBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
                 <tr>
-                  <td class="text-center"><INPUT type="checkbox" name="g_id" value="#{item.goods.id}" /></td>
+                  <td class="text-center"></td>
                   <td class="text-center">#{item.goods.name}</td>
                   <td class="text-center">#{item.count}</td>
                 </tr>
@@ -61,10 +61,6 @@
   </div>
   </h:form>
 </div>
-<script type="text/javascript">
- $('#ck' ).click( function () {
-    $( '#ct input[type="checkbox"]' ).prop('checked', this.checked);
-  })
-</script>
+
 <footer id="footer"><br /></footer></div>
 </body></html>
