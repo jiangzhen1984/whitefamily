@@ -165,7 +165,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 		List<Category> list = (List<Category>)query.list();
 		List<WFCategory> newList = new ArrayList<WFCategory>(list.size());
 		for (Category c : list) {
-			WFCategory wfc = new WFCategory(c);
+			WFCategory wfc = getCategory(c.getId());
 			newList.add(wfc);
 		}
 		return newList;

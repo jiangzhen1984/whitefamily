@@ -34,8 +34,8 @@ public class BaseService {
 		if (sess == null || (flag && !sess.isOpen())) {
 			sess = getSessionFactory().openSession();
 			sessionLocal.set(sess);
+			logger.info("===> session open "+ sess.hashCode());
 		}
-		logger.info("===> session open "+ sess);
 		return sess;
 	}
 
@@ -50,8 +50,8 @@ public class BaseService {
 				sess.close();
 			}
 			sessionLocal.remove();
+			logger.info("===> session closed "+ sess.hashCode());
 		}
-		logger.info("===> session closed "+ sess);
 	}
 
 }

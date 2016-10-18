@@ -41,6 +41,13 @@
 					<c:forEach var="g" items="#{mallBean.categoryList}">
 						<h:panelGroup rendered="${g.id == mallBean.cateId}">
 							<h:outputText class="menu_head current" value="#{g.name}" />
+							<c:forEach var="sub" items="#{g.subs}">
+							    <h:commandLink class="menu_head" form="form-product"
+								data-toggle="tooltip" title="查看分类产品">#{sub.name}
+									<f:setPropertyActionListener target="#{mallBean.cateId}"
+									value="#{sub.id}" />
+								</h:commandLink>
+							</c:forEach>
 						</h:panelGroup>
 						<h:panelGroup rendered="${g.id ne mallBean.cateId}">
 							<h:commandLink class="menu_head" form="form-product"
