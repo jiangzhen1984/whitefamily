@@ -9,6 +9,8 @@ import com.whitefamily.service.vo.WFOperationCost;
 
 public class ShopIncoming {
 
+	
+	private float zls;
 	private float cash;
 	private float groupon;
 	private float delivery;
@@ -116,6 +118,14 @@ public class ShopIncoming {
 	
 	
 
+
+	public float getZls() {
+		return zls;
+	}
+
+	public void setZls(float zls) {
+		this.zls = zls;
+	}
 
 	public float getAli() {
 		return ali;
@@ -706,7 +716,7 @@ public class ShopIncoming {
 	}
 
 	public void reset() {
-
+		zls = 0;
 		cash = 0;
 		groupon = 0;
 		delivery = 0;
@@ -813,6 +823,7 @@ public class ShopIncoming {
 
 	public WFIncoming buildToWFIncoming() {
 		WFIncoming wfi = new WFIncoming();
+		wfi.setZls(zls);
 		wfi.setCash(cash);
 		wfi.setAli(ali);
 		wfi.setDazhong(dazhong);

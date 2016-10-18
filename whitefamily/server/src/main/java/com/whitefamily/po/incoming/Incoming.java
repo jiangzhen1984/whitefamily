@@ -33,28 +33,31 @@ public class Incoming {
 	@Type(type="date")
 	protected Date date;
 	
-	@Column(name = "WF_CASH", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_ZLS", columnDefinition = "NUMERIC(10,3) default 0")
+	protected float zls;
+	
+	@Column(name = "WF_CASH", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float cash;
 	
-	@Column(name = "WF_WEIXIN", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_WEIXIN", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float weixin;
 	
-	@Column(name = "WF_GROUP", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_GROUP", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float group;
 	
-	@Column(name = "WF_DELIVERY", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_DELIVERY", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float delivery;
 	
-	@Column(name = "WF_ALI", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_ALI", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float ali;
 	
-	@Column(name = "WF_NUOMI", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_NUOMI", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float nuomi;
 	
-	@Column(name = "WF_DAZHONG", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_DAZHONG", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float dazhong;
 	
-	@Column(name = "WF_OTHER", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_OTHER", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float other;
 	
 	@Column(name = "WF_DESC", columnDefinition = "VARCHAR(400)")
@@ -154,6 +157,14 @@ public class Incoming {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	public float getZls() {
+		return zls;
+	}
+
+	public void setZls(float zls) {
+		this.zls = zls;
 	}
 	
 	

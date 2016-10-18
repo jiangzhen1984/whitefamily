@@ -31,39 +31,39 @@ public class OperationCost {
 	private Date date;
 	
 	//日用调料
-	@Column(name = "WF_RYTL", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_RYTL", columnDefinition = "NUMERIC(10,3) default 0")
 	private float rytl;
 	
 	//补菜
-	@Column(name = "WF_BC", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_BC", columnDefinition = "NUMERIC(10,3) default 0")
 	private float bc;
 	
 	//烧饼
-	@Column(name = "WF_SB", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_SB", columnDefinition = "NUMERIC(10,3) default 0")
 	private float sb;
 	
 	//伙食费
-	@Column(name = "WF_HSF", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_HSF", columnDefinition = "NUMERIC(10,3) default 0")
 	private float hsf;
 	
 	//饮料
-	@Column(name = "WF_YL", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_YL", columnDefinition = "NUMERIC(10,3) default 0")
 	private float yl;
 	
 	//水费
-	@Column(name = "WF_SF", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_SF", columnDefinition = "NUMERIC(10,3) default 0")
 	private float sf;
 	
 	//电费
-	@Column(name = "WF_DF", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_DF", columnDefinition = "NUMERIC(10,3) default 0")
 	private float df;
 	
 	//房费
-	@Column(name = "WF_FF", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_FF", columnDefinition = "NUMERIC(10,3) default 0")
 	private float ff;
 	
 	//燃气费
-	@Column(name = "WF_RQF", columnDefinition = "NUMERIC(10,3)")
+	@Column(name = "WF_RQF", columnDefinition = "NUMERIC(10,3) default 0")
 	private float rqf;
 	
 	//工资

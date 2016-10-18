@@ -43,7 +43,6 @@ public interface IShopService {
 	
 	public WFIncoming queryShopIncoming(WFShop shop, Date date);
 	
-	
 	public WFOperationCost queryShopOperationCost(WFShop shop, Date date);
 	
 	public Result requestInventory(WFInventoryRequest inventory, WFShop shop, WFUser manager);
@@ -68,5 +67,10 @@ public interface IShopService {
 	public File generateDeliveryForm(WFDelivery de);
 	
 	public Result prepareDelivery(WFDelivery de, WFUser user);
+	
+	
+    public  List<WFIncoming>  queryShopIncoming(WFShop shop, Date start, Date end);
+	
+	public  List<WFOperationCost>   queryShopOperationCost(WFShop shop, Date start, Date end);
 
 }

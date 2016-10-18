@@ -2,6 +2,10 @@ package com.whitefamily.web.bean;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,6 +28,8 @@ import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFIncoming;
+import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
 
 public class AJAXHandler extends HttpServlet {
@@ -59,6 +65,8 @@ public class AJAXHandler extends HttpServlet {
 			handleShopFilter(req, resp);
 		} else if ("cartAction".equals(action)) {
 			handleCartAction(req, resp);
+		} else if ("chart".equalsIgnoreCase(action)) {
+			handleChartAction(req, resp);
 		}
 
 	}
@@ -241,6 +249,82 @@ public class AJAXHandler extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		out.print(data.toString());
 		out.flush();
+	}
+	
+	private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	private void handleChartAction(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		IShopService shopService = ServiceFactory.getShopService();
+		String type = req.getParameter("type");
+		String shopId = req.getParameter("shop");
+		String date  = req.getParameter("date");
+		if (shopId == null) {
+			
+		}
+		Date qd = null;
+		if (date == null) {
+			qd = new Date();
+		} else {
+			try {
+				qd = format.parse(date);
+			} catch (ParseException e) {
+				qd = new Date();
+			}
+		}
+		
+		JSONArray data = new JSONArray();
+		List<WFShop> list = null;
+		if (shopId == null || shopId.isEmpty()) {
+			list = shopService.getShopList();
+		} else {
+			list = new ArrayList<WFShop>(1);
+			list.add(shopService.getShop(Long.parseLong(shopId)));
+		}
+		for (WFShop s : list) {
+			if ("incoming".equals(type)) {
+				WFIncoming incoming = shopService.queryShopIncoming(s, qd);
+				if (incoming != null) {
+					JSONObject obj = new JSONObject();
+					obj.put("name", s.getName());
+					JSONArray incomingdata = new JSONArray();
+					incomingdata.put(incoming.getZls());
+					incomingdata.put(incoming.getCash());
+					incomingdata.put(incoming.getAli());
+					incomingdata.put(incoming.getWeixin());
+					incomingdata.put(incoming.getDazhong());
+					incomingdata.put(incoming.getNuomi());
+					obj.put("data", incomingdata);
+					data.put(obj);
+				}
+			} else if ("cost".equals(type)){
+				WFOperationCost cost = shopService.queryShopOperationCost(s, qd);
+				if (cost != null) {
+					JSONObject obj = new JSONObject();
+					obj.put("name", s.getName());
+					JSONArray costdata = new JSONArray();
+					costdata.put(cost.getRytl());
+					costdata.put(cost.getSb());
+					costdata.put(cost.getBc());
+					costdata.put(cost.getHsf());
+					costdata.put(cost.getYl());
+					costdata.put(cost.getDf());
+					costdata.put(cost.getRqf());
+					costdata.put(cost.getFf());
+					costdata.put(cost.getGz());
+					costdata.put(cost.getRz());
+					costdata.put(cost.getQt());
+					obj.put("data", costdata);
+					data.put(obj);
+				}
+			}
+		}
+		
+		
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(data.toString());
+		out.flush();
+		
 	}
 
 }

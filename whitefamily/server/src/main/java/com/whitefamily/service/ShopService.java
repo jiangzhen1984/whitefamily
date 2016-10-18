@@ -583,6 +583,77 @@ public class ShopService extends BaseService implements IShopService {
 	
 	
 	
+	public List<WFIncoming> queryShopIncoming(WFShop shop, Date start, Date end) {
+		if (shop == null || start == null || end == null) {
+			return null;
+		}
+		Session sess = getSession();
+		Query query = sess.createQuery(" from Incoming where shop.id = ? and date >= ?  and date <=? order date asc ");
+		query.setLong(0, shop.getId());
+		query.setDate(1, start);
+		query.setDate(2, end);
+		List<Incoming> inList = (List<Incoming>)query.list();
+		List<WFIncoming> incomingList = new ArrayList<WFIncoming>(inList.size());
+		WFIncoming wf = null;
+		for (Incoming in : inList) {
+			wf = new WFIncoming();
+			wf.setCash( in.getCash());
+			wf.setAli( in.getAli());
+			wf.setDazhong( in.getDazhong());
+			wf.setNuomi( in.getNuomi());
+			wf.setOther(in.getOther());
+			wf.setWeixin(in.getWeixin());
+			wf.setDate(in.getDate());
+			incomingList.add(wf);
+		}
+		return incomingList;
+	}
+	
+	public  List<WFOperationCost> queryShopOperationCost(WFShop shop, Date start, Date end) {
+		if (shop == null || start == null || end == null) {
+			return null;
+		}
+		WFOperationCost cost = null;
+		Session sess = getSession();
+		Query query = sess.createQuery(" from OperationCost where shop.id = ? and date = ?   and date <=? order date asc  ");
+		query.setLong(0, shop.getId());
+		query.setDate(1, start);
+		query.setDate(12, end);
+		List<OperationCost> inList = (List<OperationCost>)query.list();
+		List<WFOperationCost> costList = new ArrayList<WFOperationCost> (inList.size());
+		for (OperationCost in: inList) {
+			 cost = new WFOperationCost();
+			//日用调料
+			cost.setRytl(in.getRytl());
+			//烧饼
+			cost.setSb(in.getSb());
+			//补菜
+			cost.setBc(in.getBc());
+			//伙食费
+			cost.setHsf(in.getHsf());
+			//饮料
+			cost.setYl(in.getYl());
+			//水费
+			cost.setSf(in.getSf());
+			//电费
+			cost.setDf(in.getDf());
+			//燃气费
+			cost.setRqf(in.getRqf());
+			//房费
+			cost.setFf(in.getFf());
+			//工资
+			cost.setGz(in.getGz());
+			//日杂
+			cost.setRz(in.getRz());
+			//其他
+			cost.setQt(in.getQt());
+			costList.add(cost);
+		}
+		return costList;
+	}
+	
+	
+	
 	public List<WFInventoryRequest> queryInventoryRequestList(int start, int count) {
 		return queryInventoryRequestList(null, null, null, false, start, count);
 	}

@@ -43,6 +43,14 @@ public class WFIncoming  {
 		this.date = date;
 	}
 
+	public float getZls() {
+		return incoming.getZls();
+	}
+
+	public void setZls(float zls) {
+		this.incoming.setZls(zls);
+	}
+	
 
 	public float getCash() {
 		return incoming.getCash();

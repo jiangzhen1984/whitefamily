@@ -315,18 +315,25 @@
 			<h:form class="meiTuan">
 				<h:panelGroup rendered="${shopBean.iType == '1'}">
 					<tbody>
+					    <tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">总流水</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.zls}" a:placeholder="总流水"
+									class="form-control" /></td>
+						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">现金</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.cash}" a:placeholder="请输入金额"
+									value="#{shopBean.shopIncoming.cash}" a:placeholder="现金"
 									class="form-control" /></td>
 						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">微信</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.weixin}" a:placeholder="请输入金额"
+									value="#{shopBean.shopIncoming.weixin}" a:placeholder="微信"
 									class="form-control" /></td>
 						</tr>
 						<!-- 
@@ -353,13 +360,6 @@
 									value="#{shopBean.shopIncoming.ali}" a:placeholder="请输入金额"
 									class="form-control" /></td>
 						</tr>
-						<tr>
-							<td class="text-left"><label class="control-label"
-								for="input-name">糯米</label></td>
-							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.nuomi}" a:placeholder="请输入金额"
-									class="form-control" /></td>
-						</tr>
 						<!-- 
 						<tr>
 							<td class="text-left"><label class="control-label"
@@ -369,11 +369,25 @@
 									class="form-control" /></td>
 						</tr>
 						 -->
+						 <tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">闪惠</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.dazhong}" a:placeholder="闪惠"
+									class="form-control" /></td>
+						</tr>
+						<tr>
+							<td class="text-left"><label class="control-label"
+								for="input-name">糯米闪惠</label></td>
+							<td class="text-right"><h:inputText
+									value="#{shopBean.shopIncoming.nuomi}" a:placeholder="糯米闪惠"
+									class="form-control" /></td>
+						</tr>
 						<tr>
 							<td class="text-left"><label class="control-label"
 								for="input-name">其他</label></td>
 							<td class="text-right"><h:inputText
-									value="#{shopBean.shopIncoming.other}" a:placeholder="请输入金额"
+									value="#{shopBean.shopIncoming.other}" a:placeholder="其他"
 									class="form-control" /></td>
 						</tr>
 					</tbody>
