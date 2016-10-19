@@ -104,7 +104,7 @@
                    <ul class="dropdown-menu">
                        <li><span onclick="queryCost('',pickerObject1.date)">全部店铺</span></li>
                        <ui:repeat value="#{shopBean.shopList}" var="s">
-                       <li><span onclick="queryCost('#{s.id}', ,pickerObject1.date)" valign="middle">#{s.name}</span></li>
+                       <li><span onclick="queryCost('#{s.id}',pickerObject1.date)" valign="middle">#{s.name}</span></li>
                       </ui:repeat>
                    </ul>
                 </div>

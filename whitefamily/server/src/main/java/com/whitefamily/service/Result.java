@@ -28,4 +28,6 @@ public enum Result {
 	
 	
 	ERR_NO_SUCH_INVENTORY_REQUEST,
+	
+	ERR_NO_SUCH_RECORD,
 }

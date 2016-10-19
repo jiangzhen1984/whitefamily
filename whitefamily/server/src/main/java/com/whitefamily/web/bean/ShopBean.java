@@ -193,6 +193,7 @@ public class ShopBean {
 			}
 			return;
 		}
+		shopIncoming.setZls(wfi.getZls());
 		shopIncoming.setCash(wfi.getCash());
 		shopIncoming.setDazhong(wfi.getDazhong());
 		shopIncoming.setAli(wfi.getAli());
@@ -449,6 +450,14 @@ public class ShopBean {
 				this.shopIncoming.buildOperationCost(),
 				(WFManager) userBean.getUser());
 		return "reportincomingsuccess";
+	}
+	
+	
+	public void updateIncomingAndCost() {
+		WFShop shop = shopService.getShop(viewShopIncomingId);
+		shopService.updateShopIncomingAndOperationCost(shop,
+				this.shopIncoming.buildToWFIncoming(),
+				this.shopIncoming.buildOperationCost(), viewShopIncomingDate);
 	}
 
 	public String reportDamage() {

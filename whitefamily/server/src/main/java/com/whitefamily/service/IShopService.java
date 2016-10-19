@@ -72,5 +72,8 @@ public interface IShopService {
     public  List<WFIncoming>  queryShopIncoming(WFShop shop, Date start, Date end);
 	
 	public  List<WFOperationCost>   queryShopOperationCost(WFShop shop, Date start, Date end);
+	
+	
+	public Result updateShopIncomingAndOperationCost(WFShop shop, WFIncoming wf, WFOperationCost cost, Date date);
 
 }

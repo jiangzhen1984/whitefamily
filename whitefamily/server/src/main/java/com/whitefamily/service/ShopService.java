@@ -301,6 +301,7 @@ public class ShopService extends BaseService implements IShopService {
 		inco.setNuomi(incoming.getNuomi());
 		inco.setWeixin(incoming.getWeixin());
 		inco.setOther(incoming.getOther());
+		inco.setZls(incoming.getZls());
 		inco.setShop(shop);
 		Transaction tr = sess.beginTransaction();
 		sess.save(inco);
@@ -501,6 +502,7 @@ public class ShopService extends BaseService implements IShopService {
 		if (inList.size() > 0) {
 			 wf = new WFIncoming();
 			Incoming in = inList.get(0);
+			wf.setZls(in.getZls());
 			wf.setCash(in.getCash());
 			wf.setAli(in.getAli());
 			wf.setDate(date);
@@ -1005,6 +1007,62 @@ public class ShopService extends BaseService implements IShopService {
 		
 		return Result.SUCCESS;
 		
+	}
+	
+	@Override
+	public Result updateShopIncomingAndOperationCost(WFShop shop, WFIncoming incoming, WFOperationCost cost, Date date) {
 		
+		Session sess = getSession();
+		Query query = sess.createQuery(" from Incoming where shop.id =? and date = ?");
+		query.setLong(0, shop.getId());
+		query.setDate(1, date);
+		List<Incoming> incomingList = query.list();
+		if (incomingList == null || incomingList.size() <=0) {
+			return Result.ERR_NO_SUCH_RECORD;
+		}
+		
+		
+		query = sess.createQuery(" from OperationCost where shop.id =? and date = ?");
+		query.setLong(0, shop.getId());
+		query.setDate(1, date);
+		List<OperationCost> costList = query.list();
+		if (costList == null || costList.size() <=0) {
+			return Result.ERR_NO_SUCH_RECORD;
+		}
+		
+		Incoming inco = incomingList.get(0);
+		inco.setCash(incoming.getCash());
+		inco.setAli(incoming.getAli());
+		inco.setDazhong(incoming.getDazhong());
+		inco.setDelivery(incoming.getDelivery());
+		inco.setNuomi(incoming.getNuomi());
+		inco.setWeixin(incoming.getWeixin());
+		inco.setOther(incoming.getOther());
+		inco.setZls(incoming.getZls());
+		
+		Transaction tr = sess.beginTransaction();
+		sess.update(inco);
+		
+		OperationCost oc = costList.get(0);
+		oc.setShop(shop);
+		oc.setRytl(cost.getRytl());
+		oc.setSb(cost.getSb());
+		oc.setBc(cost.getBc());
+		oc.setHsf(cost.getHsf());
+		oc.setYl(cost.getYl());
+		oc.setSf(cost.getSf());
+		oc.setDf(cost.getDf());
+		oc.setRqf(cost.getRqf());
+		oc.setFf(cost.getFf());
+		oc.setGz(cost.getGz());
+		oc.setRz(cost.getRz());
+		oc.setQt(cost.getQt());
+		sess.update(oc);
+		
+		tr.commit();
+		sess.flush();
+		
+		
+		return Result.SUCCESS;
 	}
 }
