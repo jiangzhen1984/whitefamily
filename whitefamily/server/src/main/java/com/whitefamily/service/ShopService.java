@@ -834,16 +834,16 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase("23.4", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase("", chapterFont1)));
-        	sum += item.getCount();
+        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice() * item.getCount()) , chapterFont1)));
+        	sum += item.getGoods().getPrice() * item.getCount();
         }   
        
         
         chapter.add(table);
         
         PdfPTable table1 = new PdfPTable(1);
-        table1.addCell(new Phrase("总计： " + sum, chapterFont1));
+        table1.addCell(new Phrase("总计： " + String.format("%.2f", sum), chapterFont1));
         chapter.add(table1);
         
         Chapter chapterbottom = new Chapter(new Paragraph(""), 0);
@@ -918,7 +918,7 @@ public class ShopService extends BaseService implements IShopService {
         Paragraph detail = new Paragraph("产品明细 \n\n", chapterFont1);
         detail.setAlignment(Paragraph.ALIGN_CENTER);
         chapter.add(detail);
-        
+         
         
         PdfPTable table = new PdfPTable(7);
         table.addCell( new PdfPCell( new Phrase("序号", chapterFont1)));
@@ -939,16 +939,16 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase("23.4", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase("", chapterFont1)));
-        	sum += item.getCount();
+        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice() * item.getCount()) , chapterFont1)));
+        	sum += item.getGoods().getPrice() * item.getCount();
         }   
        
         
         chapter.add(table);
         
         PdfPTable table1 = new PdfPTable(1);
-        table1.addCell(new Phrase("总计： " + sum, chapterFont1));
+        table1.addCell(new Phrase("总计： " + String.format("%.2f", sum), chapterFont1));
         chapter.add(table1);
         
         Chapter chapterbottom = new Chapter(new Paragraph(""), 0);
@@ -968,9 +968,6 @@ public class ShopService extends BaseService implements IShopService {
         return file;
        
 	}
-	
-	
-	
 	
 	
 	

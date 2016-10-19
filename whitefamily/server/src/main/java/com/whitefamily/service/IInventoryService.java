@@ -30,6 +30,8 @@ public interface IInventoryService {
 	
 	public void queryInventoryRequestDetail(WFInventoryRequest wf);
 	
+	public Result removeWFIneventoryRequest(long id);
+	
 	
 	public List<WFInventory> queryInventory(int start, int count);
 	

@@ -57,6 +57,12 @@
                           <f:setPropertyActionListener target="#{shopBean.inventoryRequestFormAllIdx}" value="#{itemStatus.index}" />
                           <i class="fa fa-pencil">查看发货单</i>
                       </h:commandLink>
+                       <c:if  test="${userBean.user.role == 'ADMIN'}"><h:outputText value="&#160;" />
+                      <h:commandLink  actionListener="#{shopBean.removeInventoryRequest(g.id)}" type="submit"  form="form-product" data-toggle="tooltip" title="生成发货单" class="btn btn-primary">
+                          <i class="fa fa-pencil">删除备货申请</i>
+                      </h:commandLink>
+                      </c:if>
+                      
                   </td>
                 </tr>
                 </ui:repeat>

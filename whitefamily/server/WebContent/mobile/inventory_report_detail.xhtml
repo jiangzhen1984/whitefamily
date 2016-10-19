@@ -46,18 +46,18 @@
 										varStatus="status">
 										<tr id="it_row#{status.index}">
 											<td class="text-left"><label class="control-label"
-												for="input-name">产品</label></td>
+												for="input-name" style="color:#000000" >产品</label></td>
 											<td class="text-right"><input type="text"
 												name="goodsname" value="#{o.goods.name}" placeholder="请输入产品"
-												id="goodsname#{status.index}" class="form-control" /> <input
+												id="goodsname#{status.index}" class="form-control"  size="3" /> <input
 												type="hidden" name="goodsname_id"
 												id="goodsname_id#{status.index}" value="#{o.goods.id}"
 												class="form-control" /></td>
 											<td class="text-left"><label class="control-label"
-												for="input-model">数量</label></td>
+												for="input-model" style="color:#000000" >数量</label></td>
 											<td class="text-right"><input type="text"
 												name="goodscount" value="#{o.count}" placeholder="请输入数量"
-												id="goodscount#{status.index}" class="form-control" /></td>
+												id="goodscount#{status.index}" class="form-control" size="3"/></td>
 											<td class="text-left"><button type="button"
 													onclick="$('#it_row#{status.index}').remove();"
 													data-toggle="tooltip" title="移除条目" class="btn btn-danger">

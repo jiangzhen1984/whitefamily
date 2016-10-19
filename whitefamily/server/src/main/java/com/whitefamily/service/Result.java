@@ -25,4 +25,7 @@ public enum Result {
 	
 	//Update Brand error
 	ERR_NO_SUCH_BRAND,
+	
+	
+	ERR_NO_SUCH_INVENTORY_REQUEST,
 }

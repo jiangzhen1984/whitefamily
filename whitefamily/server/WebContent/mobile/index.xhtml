@@ -78,8 +78,8 @@
 			<!-- 代码 结束 -->
 		</div>
 		<div class="content_right">
-
 			<div class="today_sales">
+			 <span style="color:#000000; float: right; margin-right:15px" onclick="addAllToList()" >添加到清单</span>
 				<ui:repeat id="g" var="g" value="#{mallBean.goodsList}"
 					varStatus="itemStatus">
 					<dl>
@@ -95,13 +95,13 @@
 									<span class="today_sales_detail_price"><br />规格：#{g.unit} 价格：#{g.price}</span>
 								</div>
 								<div class="today_sales_detail_right">
-								     <span class="today_sales_detail_price">
-									<input type="image" src="images/1_10.png"
-										onclick="minus('#{g.id}_num')" />
-										<input type="text" value="0" id="#{g.id}_num" size="1" maxlength="2"/><input type="image"
-										src="images/1_12.png" onclick="add('#{g.id}_num')" />
-										</span>
-										<span class="today_sales_detail_price" onclick="addToList(#{g.id}, '#{g.id}_num')" >添加到清单</span>
+								     <span class="today_sales_detail_price" name="items">
+								         <input type="hidden" value="#{g.id}" name="ids" />
+									    <input type="image" src="images/1_10.png" onclick="minus('#{g.id}_num')" />
+										<input type="text" value="0" id="#{g.id}_num" size="1" maxlength="3"/>
+										<input type="image" src="images/1_12.png" onclick="add('#{g.id}_num')" />
+									 </span>
+									 <span class="today_sales_detail_price" onclick="addToList(#{g.id}, '#{g.id}_num')" >添加到清单</span>
 								</div>
 							</div>
 						</dd>
@@ -125,7 +125,7 @@
 	</div>
 
 
-	<SCRIPT type="text/javascript">
+<SCRIPT type="text/javascript">
  //<![CDATA[
         function addToList(gid, c) {
         	 var count = document.getElementById(c).value;
@@ -170,9 +170,37 @@
 		    }
         }
         
+        
       
+        
+ function addAllToList() {
+    var ids = [];
+    var values= [];
+    $("span[name=items]").each(function() {
+        var cl = $(this).children("input[type=hidden]");
+        var cl1 = $(this).children("input[type=text]");	
+        if (cl1.val() > 0) {
+            ids.push(cl.val());
+            values.push(cl1.val());
+            console.log(ids);
+        }
+     });
+     console.log(values);
+     
+    var rq= 'mall.ajax?action=cartAction&subaction=putlist';
+	$.ajax({
+        url: rq,
+        type: "POST",
+    	traditional: true,
+    	data: {ids : ids, itemcounts : values},
+    	dataType: "json",
+        success :function(data) {
+        		alert("添加成功");
+        	}
+    });
+ } 
 	 //]]>
-	</SCRIPT>
+</SCRIPT>
 </body>
 
 </html>

@@ -202,5 +202,5 @@ public class InventoryBean {
 		return "successcreateinveontryrequest";
 	
 	}
-
+	
 }

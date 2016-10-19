@@ -18,6 +18,7 @@ import com.whitefamily.po.customer.Role;
 import com.whitefamily.po.incoming.DeliveryType;
 import com.whitefamily.po.incoming.GroupOnType;
 import com.whitefamily.service.IGoodsService;
+import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFDamageReport;
@@ -43,6 +44,7 @@ public class ShopBean {
 
 	IShopService shopService;
 	IGoodsService goodsService;
+	IInventoryService inventoryService;
 
 	private long reportId;
 	private WFDamageReport report;
@@ -71,6 +73,7 @@ public class ShopBean {
 		super();
 		shopService = ServiceFactory.getShopService();
 		goodsService = ServiceFactory.getGoodsService();
+		inventoryService = ServiceFactory.getInventoryService();
 		shopIncoming = new ShopIncoming();
 		iType = "1";
 	}
@@ -634,6 +637,18 @@ public class ShopBean {
 		return delivery;
 	}
 	
+	
+	
+	
+	public void removeInventoryRequest(long id) {
+		for (WFInventoryRequest wfr : inventoryAllList) {
+			if (wfr.getId() == id) {
+				inventoryAllList.remove(wfr);
+				break;
+			}
+		}
+		inventoryService.removeWFIneventoryRequest(id);
+	}
 	
 
 }

@@ -217,6 +217,11 @@ public class AJAXHandler extends HttpServlet {
 			cartBean = (CartBean) context.getApplication().evaluateExpressionGet(context, "#{cartBean}", CartBean.class);
 		}
 		
+		if ("putlist".equals(action)) {
+			handlePutGoodsListtAction(req, resp, cartBean);
+			return;
+		}
+		
 		int count = 0;
 		long gid = 0;
 		
@@ -325,6 +330,46 @@ public class AJAXHandler extends HttpServlet {
 		out.print(data.toString());
 		out.flush();
 		
+	}
+	
+	
+	
+	private void handlePutGoodsListtAction(HttpServletRequest req,
+			HttpServletResponse resp, CartBean bean) throws ServletException, IOException {
+		String[] ids = req.getParameterValues("ids");
+		String[] counts = req.getParameterValues("itemcounts");
+		
+		
+		IGoodsService goodsService = ServiceFactory.getGoodsService();
+		Long gid;
+		Float c;
+		for (int i = 0; i < ids.length; i++) {
+			String id =ids[i];
+			if (i >= counts.length) {
+				continue;
+			}
+			String sc = counts[i];
+			try {
+				gid = Long.parseLong(id);
+				c = Float.parseFloat(sc);
+			} catch(NumberFormatException e) {
+				continue;
+			}
+			WFGoods g = goodsService.getGoods(gid);
+			if (g == null) {
+				continue;
+			}
+			
+			bean.getCart().addItemCount(g, c);
+		}
+		
+		JSONObject data = new JSONObject();
+		data.put("ret", 0);
+		data.put("itemcount", bean.getCart().getItems().size());
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(data.toString());
+		out.flush();
 	}
 
 }

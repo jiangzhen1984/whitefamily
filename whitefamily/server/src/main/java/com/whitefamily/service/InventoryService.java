@@ -400,4 +400,35 @@ public class InventoryService extends BaseService implements IInventoryService {
 		}
 		sess.close();
 	}
+	
+	
+	public Result removeWFIneventoryRequest(long id) {
+		Session sess = getSession();
+		
+		Query query = sess.createQuery(" from InventoryRequestRecord where parentId = ?");
+		query.setLong(0, id);
+		List<InventoryRequestRecord> subRecords = query.list();
+		
+		Transaction tr = sess.beginTransaction();
+		for (InventoryRequestRecord irr : subRecords) {
+			Query goodsQuery = sess.createQuery(" delete from InventoryRequestGoods where record.id = ?");
+			goodsQuery.setParameter(0, irr.getId());
+			goodsQuery.executeUpdate();
+			sess.delete(irr);
+		}
+		
+		InventoryRequestRecord irc = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, id);
+		if (irc == null) {
+			tr.commit();
+			return Result.ERR_NO_SUCH_INVENTORY_REQUEST;
+		}
+		
+		Query goodsQuery = sess.createQuery(" delete from InventoryRequestGoods where record.id = ?");
+		goodsQuery.setParameter(0, irc.getId());
+		goodsQuery.executeUpdate();
+		
+		sess.delete(irc);
+		tr.commit();
+		return Result.SUCCESS;
+	}
 }
