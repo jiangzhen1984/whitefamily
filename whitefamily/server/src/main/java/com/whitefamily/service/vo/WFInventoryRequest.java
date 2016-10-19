@@ -1,6 +1,7 @@
 package com.whitefamily.service.vo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -123,10 +124,11 @@ public class WFInventoryRequest {
 	}
 
 	public List<Item> getItemList() {
-		return itemList;
+		 Collections.sort(itemList);
+		 return itemList;
 	}
 
-	public class Item {
+	public class Item implements Comparable<Item> {
 
 		float count;
 
@@ -194,6 +196,10 @@ public class WFInventoryRequest {
 			this.realCount = realCount;
 		}
 		
+		@Override
+		public int compareTo(Item o) {
+			return o.goods.getCate().getId() > this.goods.getCate().getId() ? 1 : -1;
+		}
 		
 
 	}

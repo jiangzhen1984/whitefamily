@@ -45,6 +45,7 @@ import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
+import com.whitefamily.service.vo.WFDelivery.Item;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -798,7 +799,7 @@ public class ShopService extends BaseService implements IShopService {
 		} 
        
 	
-        Font chapterFont = new Font(bf, 16);
+        Font chapterFont = new Font(bf, 14);
         Chunk chunk = new Chunk("", chapterFont);
         Chapter chapter = new Chapter(new Paragraph(chunk), 0);
         chapter.setNumberDepth(0);
@@ -809,7 +810,7 @@ public class ShopService extends BaseService implements IShopService {
         chapter.add(new Paragraph("日期： "+sdf1.format(ir.getDatetime())+"\n", chapterFont));
         chapter.add(new Paragraph("地址： "+ir.getShop().getAddress()+ " \n\n", chapterFont));
         
-        Font chapterFont1 = new Font(bf, 13);
+        Font chapterFont1 = new Font(bf, 11);
         Paragraph detail = new Paragraph("产品明细 \n\n", chapterFont1);
         detail.setAlignment(Paragraph.ALIGN_CENTER);
         chapter.add(detail);
@@ -825,10 +826,11 @@ public class ShopService extends BaseService implements IShopService {
         table.addCell( new PdfPCell( new Phrase("小计", chapterFont1)));
         
         
-        int count = ir.getItemCount();
+        List<WFInventoryRequest.Item> list = ir.getItemList();
+        int count = list.size();
         double sum = 0;
         for(int aw = 0; aw < count; aw++){
-        	WFInventoryRequest.Item  item = ir.getItem(aw);
+        	WFInventoryRequest.Item  item = list.get(aw);
         	table.addCell(new PdfPCell( new Phrase((aw)+"", chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
@@ -903,7 +905,7 @@ public class ShopService extends BaseService implements IShopService {
 		} 
        
 	
-        Font chapterFont = new Font(bf, 16);
+        Font chapterFont = new Font(bf, 14);
         Chunk chunk = new Chunk("", chapterFont);
         Chapter chapter = new Chapter(new Paragraph(chunk), 0);
         chapter.setNumberDepth(0);
@@ -914,7 +916,7 @@ public class ShopService extends BaseService implements IShopService {
         chapter.add(new Paragraph("日期： "+sdf1.format(wf.getDatetime())+"\n", chapterFont));
         chapter.add(new Paragraph("地址： "+wf.getShop().getAddress()+ " \n\n", chapterFont));
         
-        Font chapterFont1 = new Font(bf, 13);
+        Font chapterFont1 = new Font(bf, 11);
         Paragraph detail = new Paragraph("产品明细 \n\n", chapterFont1);
         detail.setAlignment(Paragraph.ALIGN_CENTER);
         chapter.add(detail);
@@ -930,10 +932,11 @@ public class ShopService extends BaseService implements IShopService {
         table.addCell( new PdfPCell( new Phrase("小计", chapterFont1)));
         
         
-        int count = wf.getItemCount();
+        List<Item> list = wf.getItemList();
+        int count = list.size();
         double sum = 0;
         for(int aw = 0; aw < count; aw++){
-        	WFDelivery.Item  item = wf.getItem(aw);
+        	WFDelivery.Item  item = list.get(aw);
         	table.addCell(new PdfPCell( new Phrase((aw)+"", chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
@@ -986,7 +989,8 @@ public class ShopService extends BaseService implements IShopService {
 		sess.save(dr);
 		sess.flush();
 		
-		for (WFDelivery.Item di : de.getItemList()) {
+		List<Item> list = de.getItemList();
+		for (WFDelivery.Item di : list) {
 			if (di.getRealCount() <= 0) {
 				continue;
 			}

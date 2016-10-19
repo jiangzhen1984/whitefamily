@@ -1,10 +1,9 @@
 package com.whitefamily.web.bean;
 
-import java.util.regex.Pattern;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import com.whitefamily.po.customer.Role;
 import com.whitefamily.service.IUserService;
@@ -97,6 +96,10 @@ public class UserBean {
 		}
 		
 		isLogined = true;
+		HttpSession sess = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		if (sess != null) {
+			sess.removeAttribute("cartBean");
+		}
 		
 	//	String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");
 		if (user.getRole() != Role.MANAGER) {

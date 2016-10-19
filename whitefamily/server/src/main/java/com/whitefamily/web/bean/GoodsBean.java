@@ -348,7 +348,7 @@ public class GoodsBean {
 			return "failed";
 		}
 
-		if (categoryId <= 0) {
+		if (filterCateId <= 0) {
 			errMsg = "创建失败";
 			goodsCategoryRequired = "请输入产品所属分类";
 			return "failed";
@@ -357,7 +357,7 @@ public class GoodsBean {
 		if (updateGoodsId > 0) {
 			WFGoods goods = goodsService.getGoods(updateGoodsId);
 			goods.setName(name);
-			goods.setCate(findCategory(getCategoryList(), categoryId));
+			goods.setCate(findCategory(getCategoryList(), filterCateId));
 			goods.setType(type);
 			goods.setGoodsDesc(goodsDesc);
 			goods.setUnit(goodsUnit);
@@ -366,7 +366,7 @@ public class GoodsBean {
 		} else {
 			WFGoods goods = new WFGoods();
 			goods.setName(name);
-			goods.setCate(findCategory(getCategoryList(), categoryId));
+			goods.setCate(findCategory(getCategoryList(), filterCateId));
 			goods.setType(type);
 			goods.setUnit(goodsUnit);
 			goods.setPrice(goodsPrice);

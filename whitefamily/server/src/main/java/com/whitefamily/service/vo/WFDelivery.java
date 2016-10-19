@@ -1,10 +1,12 @@
 package com.whitefamily.service.vo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.whitefamily.po.customer.User;
+import com.whitefamily.service.vo.WFInventoryRequest.Item;
 
 public class WFDelivery {
 
@@ -110,10 +112,11 @@ public class WFDelivery {
 	}
 
 	public List<Item> getItemList() {
-		return itemList;
+		 Collections.sort(itemList);
+		 return itemList;
 	}
-
-	public class Item {
+	
+	public class Item implements Comparable<Item>{
 
 		float count;
 
@@ -179,6 +182,11 @@ public class WFDelivery {
 
 		public void setRealCount(float realCount) {
 			this.realCount = realCount;
+		}
+
+		@Override
+		public int compareTo(Item o) {
+			return o.goods.getCate().getId() > this.goods.getCate().getId() ? 1 : -1;
 		}
 		
 		

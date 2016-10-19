@@ -27,6 +27,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
+import com.whitefamily.service.vo.WFInventoryRequest.Item;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
@@ -563,7 +564,8 @@ public class ShopBean {
 	public String prepareDelivery() {
 		 delivery = new WFDelivery();
 		 delivery.setShop(inventoryRequestdetail.getShop());
-		 for (WFInventoryRequest.Item wri : inventoryRequestdetail.getItemList()) {
+		 List<Item> list =  inventoryRequestdetail.getItemList();
+		 for (WFInventoryRequest.Item wri : list) {
 			 delivery.addItem(wri.getGoods(), wri.getCount(), false);
 		 }
 		 

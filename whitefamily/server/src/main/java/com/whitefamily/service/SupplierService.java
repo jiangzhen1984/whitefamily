@@ -19,6 +19,7 @@ import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFSupplier;
 import com.whitefamily.service.vo.WFSupplierMapping;
+import com.whitefamily.service.vo.WFInventoryRequest.Item;
 
 public class SupplierService extends BaseService implements ISupplierService {
 	
@@ -113,7 +114,8 @@ public class SupplierService extends BaseService implements ISupplierService {
 		inventory.setIt(InventoryType.IN);
 		inventory.setOperator(supplier);
 		
-		for (WFInventoryRequest.Item wfi : req.getItemList()) {
+		List<Item> list = req.getItemList();
+		for (WFInventoryRequest.Item wfi : list) {
 			inventory.addInventoryItem(wfi.getGoods(), null, wfi.getRealCount(), wfi.getPrice(), false);
 		}
 		
