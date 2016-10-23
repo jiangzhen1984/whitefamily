@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -263,8 +264,9 @@ public class AJAXHandler extends HttpServlet {
 		String type = req.getParameter("type");
 		String shopId = req.getParameter("shop");
 		String date  = req.getParameter("date");
-		if (shopId == null) {
-			
+		if ("month".equals(req.getParameter("t"))) {
+			handleChartActionForMonth(req, resp);
+			return;
 		}
 		Date qd = null;
 		if (date == null) {
@@ -324,6 +326,110 @@ public class AJAXHandler extends HttpServlet {
 			}
 		}
 		
+		
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(data.toString());
+		out.flush();
+		
+	}
+	
+	private void handleChartActionForMonth(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		IShopService shopService = ServiceFactory.getShopService();
+		String type = req.getParameter("type");
+		String shopId = req.getParameter("shop");
+		String date  = req.getParameter("date");
+		int month = 0;
+		try {
+			month = Integer.parseInt(date);
+		} catch(NumberFormatException e) {
+			resp.setContentType("application/json");
+			PrintWriter out = resp.getWriter();
+			out.flush();
+		}
+		
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.MONTH, month -1);
+		c.set(Calendar.DAY_OF_MONTH, 1);
+		Date start = c.getTime();
+		
+		if (month == 2) {
+			c.set(Calendar.DAY_OF_MONTH, 29);
+		} else if (month == 1 || month == 3 || month == 5 || month == 7
+				|| month == 8 || month == 10 || month == 12) {
+			c.set(Calendar.DAY_OF_MONTH, 31);
+		} else {
+			c.set(Calendar.DAY_OF_MONTH, 30);
+		}
+		Date end = c.getTime();
+		List<WFShop> list = null;
+		if (shopId == null || shopId.isEmpty()) {
+			list = shopService.getShopList();
+		} else {
+			list = new ArrayList<WFShop>(1);
+			list.add(shopService.getShop(Long.parseLong(shopId)));
+		}
+		
+		
+		JSONArray data = new JSONArray();
+		for (WFShop s : list) {
+			if ("incoming".equals(type)) {
+				List<WFIncoming> incomings = shopService.queryShopIncoming(s, start, end);
+				WFIncoming incoming = new WFIncoming();
+				for (WFIncoming wfi : incomings) {
+					incoming.setZls(incoming.getZls() + wfi.getZls());
+					incoming.setCash(incoming.getCash() + wfi.getCash());
+					incoming.setAli(incoming.getAli() + wfi.getAli());
+					incoming.setWeixin(incoming.getWeixin() + wfi.getWeixin());
+					incoming.setDazhong(incoming.getDazhong() + wfi.getDazhong());
+					incoming.setNuomi(incoming.getNuomi() + wfi.getNuomi());
+				}
+				JSONObject obj = new JSONObject();
+				obj.put("name", s.getName());
+				JSONArray incomingdata = new JSONArray();
+				incomingdata.put(incoming.getZls());
+				incomingdata.put(incoming.getCash());
+				incomingdata.put(incoming.getAli());
+				incomingdata.put(incoming.getWeixin());
+				incomingdata.put(incoming.getDazhong());
+				incomingdata.put(incoming.getNuomi());
+				obj.put("data", incomingdata);
+				data.put(obj);
+			} else if ("cost".equals(type)){
+				List<WFOperationCost> costs = shopService.queryShopOperationCost(s, start, end);
+				WFOperationCost cost = new WFOperationCost();
+				for (WFOperationCost co : costs) {
+					cost.setRytl(cost.getRytl() + co.getRytl());
+					cost.setSb(cost.getSb() + co.getSb());
+					cost.setBc(cost.getBc() + co.getBc());
+					cost.setHsf(cost.getHsf() + co.getHsf());
+					cost.setYl(cost.getYl() + co.getYl());
+					cost.setDf(cost.getDf() + co.getDf());
+					cost.setDf(cost.getRqf() + co.getRqf());
+					cost.setFf(cost.getFf() + co.getFf());
+					cost.setGz(cost.getGz() + co.getGz());
+					cost.setRz(cost.getRz() + co.getRz());
+					cost.setQt(cost.getQt() + co.getQt());
+				}
+				JSONObject obj = new JSONObject();
+				obj.put("name", s.getName());
+				JSONArray costdata = new JSONArray();
+				costdata.put(cost.getRytl());
+				costdata.put(cost.getSb());
+				costdata.put(cost.getBc());
+				costdata.put(cost.getHsf());
+				costdata.put(cost.getYl());
+				costdata.put(cost.getDf());
+				costdata.put(cost.getRqf());
+				costdata.put(cost.getFf());
+				costdata.put(cost.getGz());
+				costdata.put(cost.getRz());
+				costdata.put(cost.getQt());
+				obj.put("data", costdata);
+				data.put(obj);
+			}
+		}
 		
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();

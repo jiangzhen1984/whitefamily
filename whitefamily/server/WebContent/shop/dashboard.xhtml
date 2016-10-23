@@ -74,8 +74,22 @@
     <div class="row">
       <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12">
       <div class="panel panel-default">
-              <div class="panel-heading">
-                 <div class="pull-right" id="datepicker">
+              <div class="panel-heading"> 
+                 <select  onchange="queryIncomingSelect(this, '#{s.id}');">
+                     <OPTION value="1">1月</OPTION>
+                     <OPTION value="2">2月</OPTION>
+                     <OPTION value="3">3月</OPTION>
+                     <OPTION value="4">4月</OPTION>
+                     <OPTION value="5">5月</OPTION>
+                     <OPTION value="6">6月</OPTION>
+                     <OPTION value="7">7月</OPTION>
+                     <OPTION value="8">8月</OPTION>
+                     <OPTION value="9">9月</OPTION>
+                     <OPTION value="10">10月</OPTION>
+                     <OPTION value="11">11月</OPTION>
+                     <OPTION value="12">12月</OPTION>                     
+                   </select>
+                 <div class="pull-right" id="datepicker">                  
                    <input type='hidden' class="input-group" />
                    <a href="#"  class="input-group" ><i class="fa fa-calendar"></i> <i class="caret"></i></a>
                 </div>
@@ -96,6 +110,20 @@
       <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12">
           <div class="panel panel-default">
               <div class="panel-heading">
+                  <select  onchange="queryCostSelect(this, '#{s.id}');">
+                     <OPTION value="1">1月</OPTION>
+                     <OPTION value="2">2月</OPTION>
+                     <OPTION value="3">3月</OPTION>
+                     <OPTION value="4">4月</OPTION>
+                     <OPTION value="5">5月</OPTION>
+                     <OPTION value="6">6月</OPTION>
+                     <OPTION value="7">7月</OPTION>
+                     <OPTION value="8">8月</OPTION>
+                     <OPTION value="9">9月</OPTION>
+                     <OPTION value="10">10月</OPTION>
+                     <OPTION value="11">11月</OPTION>
+                     <OPTION value="12">12月</OPTION>                     
+                   </select>
                  <div class="pull-right" id="datepicker1">
                    <input type='hidden' class="input-group" />
                    <a href="#"  class="input-group" ><i class="fa fa-calendar"></i> <i class="caret"></i></a>
@@ -229,6 +257,18 @@
 		});
     }
     
+    
+    function queryIncomingSelect(sl, shop) {
+         console.log(sl.value);
+    	 $.ajax({
+			url: 'chart.ajax?action=chart&amp;type=incoming&amp;shop='+shop+'&amp;date='+sl.value+'&amp;t=month',
+			dataType: 'json',
+			success: function(json) {
+			    showIncoming(json, sl.value +'月');
+			}
+		});
+    }
+    
     function queryCost(shop, date) {
         if (date == undefined) {
             date ='';
@@ -238,6 +278,17 @@
 			dataType: 'json',
 			success: function(json) {
 			    showCost(json, date);
+			}
+		});
+    }
+    
+      function queryCostSelect(sl, shop) {
+         console.log(sl.value);
+    	 $.ajax({
+			url: 'chart.ajax?action=chart&amp;type=cost&amp;shop='+shop+'&amp;date='+sl.value+'&amp;t=month',
+			dataType: 'json',
+			success: function(json) {
+			    showCost(json, sl.value +'月');
 			}
 		});
     }

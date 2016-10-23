@@ -591,7 +591,7 @@ public class ShopService extends BaseService implements IShopService {
 			return null;
 		}
 		Session sess = getSession();
-		Query query = sess.createQuery(" from Incoming where shop.id = ? and date >= ?  and date <=? order date asc ");
+		Query query = sess.createQuery(" from Incoming where shop.id = ? and date >= ?  and date <=? order by date asc ");
 		query.setLong(0, shop.getId());
 		query.setDate(1, start);
 		query.setDate(2, end);
@@ -618,10 +618,10 @@ public class ShopService extends BaseService implements IShopService {
 		}
 		WFOperationCost cost = null;
 		Session sess = getSession();
-		Query query = sess.createQuery(" from OperationCost where shop.id = ? and date = ?   and date <=? order date asc  ");
+		Query query = sess.createQuery(" from OperationCost where shop.id = ? and date >= ?   and date <=? order by date asc  ");
 		query.setLong(0, shop.getId());
 		query.setDate(1, start);
-		query.setDate(12, end);
+		query.setDate(2, end);
 		List<OperationCost> inList = (List<OperationCost>)query.list();
 		List<WFOperationCost> costList = new ArrayList<WFOperationCost> (inList.size());
 		for (OperationCost in: inList) {
