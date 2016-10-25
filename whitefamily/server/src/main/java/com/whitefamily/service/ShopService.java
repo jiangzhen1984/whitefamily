@@ -302,6 +302,8 @@ public class ShopService extends BaseService implements IShopService {
 		inco.setWeixin(incoming.getWeixin());
 		inco.setOther(incoming.getOther());
 		inco.setZls(incoming.getZls());
+		inco.setNuomiaf(incoming.getNuomiaf());
+		inco.setDazhongaf(incoming.getDazhongaf());
 		inco.setShop(shop);
 		Transaction tr = sess.beginTransaction();
 		sess.save(inco);
@@ -511,6 +513,8 @@ public class ShopService extends BaseService implements IShopService {
 			wf.setOther(in.getOther());
 			wf.setWeixin(in.getWeixin());
 			wf.setDesc(in.getDesc());
+			wf.setNuomiaf(in.getNuomiaf());
+			wf.setDaZhongaf(in.getDazhongaf());
 		}
 		
 		query = sess
@@ -607,6 +611,8 @@ public class ShopService extends BaseService implements IShopService {
 			wf.setOther(in.getOther());
 			wf.setWeixin(in.getWeixin());
 			wf.setDate(in.getDate());
+			wf.setNuomiaf(in.getNuomiaf());
+			wf.setDaZhongaf(in.getDazhongaf());
 			incomingList.add(wf);
 		}
 		return incomingList;
@@ -1039,6 +1045,8 @@ public class ShopService extends BaseService implements IShopService {
 		inco.setWeixin(incoming.getWeixin());
 		inco.setOther(incoming.getOther());
 		inco.setZls(incoming.getZls());
+		inco.setNuomiaf(incoming.getNuomiaf());
+		inco.setDazhongaf(incoming.getDazhongaf());
 		
 		Transaction tr = sess.beginTransaction();
 		sess.update(inco);

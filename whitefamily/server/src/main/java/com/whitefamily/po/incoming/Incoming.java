@@ -54,8 +54,14 @@ public class Incoming {
 	@Column(name = "WF_NUOMI", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float nuomi;
 	
+	@Column(name = "WF_NUOMI_AF_FEE", columnDefinition = "NUMERIC(10,3) default 0")
+	protected float nuomiaf;
+	
 	@Column(name = "WF_DAZHONG", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float dazhong;
+	
+	@Column(name = "WF_DAZHONG_AF_FEE", columnDefinition = "NUMERIC(10,3) default 0")
+	protected float dazhongaf;
 	
 	@Column(name = "WF_OTHER", columnDefinition = "NUMERIC(10,3) default 0")
 	protected float other;
@@ -165,6 +171,22 @@ public class Incoming {
 
 	public void setZls(float zls) {
 		this.zls = zls;
+	}
+
+	public float getNuomiaf() {
+		return nuomiaf;
+	}
+
+	public void setNuomiaf(float nuomiaf) {
+		this.nuomiaf = nuomiaf;
+	}
+
+	public float getDazhongaf() {
+		return dazhongaf;
+	}
+
+	public void setDazhongaf(float dazhongaf) {
+		this.dazhongaf = dazhongaf;
 	}
 	
 	

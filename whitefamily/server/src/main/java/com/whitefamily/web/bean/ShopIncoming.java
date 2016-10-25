@@ -19,6 +19,8 @@ public class ShopIncoming {
 	private float other;
 	private float ali;
 	private float weixin;
+	private float dazhongaf;
+	private float nuomiaf;
 
 	// group item dazhong
 	private int gdCount;
@@ -714,6 +716,24 @@ public class ShopIncoming {
 	public void setCostQT(float costQT) {
 		this.costQT = costQT;
 	}
+	
+	
+
+	public float getDazhongaf() {
+		return dazhongaf;
+	}
+
+	public void setDazhongaf(float dazhongaf) {
+		this.dazhongaf = dazhongaf;
+	}
+
+	public float getNuomiaf() {
+		return nuomiaf;
+	}
+
+	public void setNuomiaf(float nuomiaf) {
+		this.nuomiaf = nuomiaf;
+	}
 
 	public void reset() {
 		zls = 0;
@@ -831,6 +851,8 @@ public class ShopIncoming {
 		wfi.setNuomi(nuomi);
 		wfi.setWeixin(weixin);
 		wfi.setDate(new Date());
+		wfi.setDaZhongaf(dazhongaf);
+		wfi.setNuomiaf(nuomiaf);
 		wfi.addDeliveryData(DeliveryType.ELM, this.deTotalSum,
 				this.deOnlinePaymentSum, this.dePlatformRefund,
 				this.deResturantRefund, this.deServiceFee, this.deDeliverFee,

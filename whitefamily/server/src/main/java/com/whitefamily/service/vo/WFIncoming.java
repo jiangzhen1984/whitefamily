@@ -88,17 +88,34 @@ public class WFIncoming  {
 	public float getNuomi() {
 		return this.incoming.getNuomi();
 	}
+	
+	public float getNuomiaf() {
+		return this.incoming.getNuomiaf();
+	}
 
 	public void setNuomi(float nuomi) {
 		this.incoming.setNuomi(nuomi);
+	}
+	
+	public void setNuomiaf(float nuomiaf) {
+		this.incoming.setNuomiaf(nuomiaf);
 	}
 
 	public float getDazhong() {
 		return this.incoming.getDazhong();
 	}
+	
+	public float getDazhongaf() {
+		return this.incoming.getDazhongaf();
+	}
 
 	public void setDazhong(float dazhong) {
 		this.incoming.setDazhong(dazhong);
+	}
+	
+	
+	public void setDaZhongaf(float dazhongaf) {
+		this.incoming.setDazhongaf(dazhongaf);
 	}
 
 	public float getOther() {

@@ -60,8 +60,10 @@
                   <td class="text-center">现金</td>
                   <td class="text-center">微信</td>
                   <td class="text-center">支付宝</td>
-                  <td class="text-center">闪惠</td>
-                  <td class="text-center">糯米闪惠</td>
+                  <td class="text-center">闪惠（扣除费用前）</td>
+                  <td class="text-center">闪惠（扣除费用后）</td>
+                  <td class="text-center">糯米闪惠（扣除费用前）</td>
+                  <td class="text-center">糯米闪惠（扣除费用后）</td>
                   <td class="text-center">其他</td>
                 </tr>
               </thead>
@@ -72,7 +74,9 @@
                   <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.weixin}" class="form-control"/></td>
                   <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.ali}" class="form-control"/></td>
                   <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.dazhong}" class="form-control"/></td>
+                  <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.dazhongaf}" class="form-control"/></td>
                   <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.nuomi}" class="form-control"/></td>
+                  <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.nuomiaf}" class="form-control"/></td>
                   <td class="text-center"><h:inputText value="#{shopBean.shopIncoming.other}" class="form-control"/></td>
                 </tr>
               </tbody>
