@@ -1,0 +1,137 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="gform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+         <h:commandLink action="#{categoryBean.updateCategoryOrder}" type="submit" form="form-product" data-toggle="tooltip" title="保存" class="btn btn-primary">
+         <i class="fa fa-save"></i></h:commandLink>
+        <a href="category_list.xhtml" data-toggle="tooltip" title="取消" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>产品管理</h1>
+      <ul class="breadcrumb">
+        <li><a href="#">更新菜品排序</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <c:if test="${not empty categoryBean.errMsg}">
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    </c:if>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> </h3>
+      </div>
+      <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">基本</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+                <table class="table table-bordered table-hover" id="items">
+                  <tbody>
+                    <tr id="item-row">
+                      <td class="text-right"><input type="text"  name="c_name"  	id="c_name0" placeholder="分类名称" class="form-control" />
+                      <input type="hidden" name="c_id" 	id="c_id0" class="form-control" /></td>
+                      <td class="text-left"><input type="text"  name="c_count"  placeholder="分类排序" class="form-control" /></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-left"><button type="button" onclick="addItem();" data-toggle="tooltip" title="添加" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                    </tr>
+                  </tfoot>
+                </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+</div>
+<footer id="footer"><br /></footer></div>
+  <script type="text/javascript">
+  
+  function f_auto_complete_source_cates(request, response) {
+        $.ajax({
+			url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
+			data : '',
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					goods_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+  }
+var item_row = 1;
+
+function addItem() {
+	html  = '<tr id="item-row' + item_row + '">';
+	html += '  <td class="text-right"><input type="text"  name="c_name"  placeholder="分类名称" class="form-control" />';
+	html += '   <input type="hidden"  name="c_id"   class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="c_count"  placeholder="分类排序" class="form-control" /></td>';
+	html += '</tr>';
+
+	$('#items tbody').append(html);
+	
+	var el = $("input[name=\'c_name\']:last");
+	var id_el = $("input[name=\'c_id\']:last");
+	el.autocomplete({
+	'source': f_auto_complete_source_cates,
+	'select': function(item) {
+		el.val(item['label']);
+		id_el.val(item['value']);
+	    }
+    });
+	
+
+	item_row++;
+}
+</script>
+  <script type="text/javascript">
+
+// Category
+   var g_el_ar = $('input[name=\'c_name\']');
+   var g_id_el_ar = $('input[name=\'c_id\']');
+   var len = g_el_ar.length;
+   var i = 0;
+   //<![CDATA[
+   for ( i= 0; i < len; i++) {
+     var g_el =  $('#'+g_el_ar[i].id);
+     var g_id_el = $('#'+g_id_el_ar[i].id);
+     g_el.autocomplete({
+	    'source': f_auto_complete_source_cates,
+	    'select': function(item) {
+		  g_el.val(item['label']);
+		  g_id_el.val(item['value']);
+	   }
+     });
+   }
+     //]]>
+
+
+</script>
+</body></html>

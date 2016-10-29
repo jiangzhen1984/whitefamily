@@ -353,6 +353,25 @@
 	</navigation-rule>
 	
 	
+	
+		<navigation-rule>
+		<from-view-id>/shop/category_order_update_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{categoryBean.updateCategoryOrder}</from-action>
+			<from-outcome>updatecateorderfailed</from-outcome>
+			<to-view-id>/shop/category_order_update_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{categoryBean.updateCategoryOrder}</from-action>
+			<from-outcome>list</from-outcome>
+			<to-view-id>/shop/category_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	
 	<navigation-rule>
 		<from-view-id>/mobile/damage_report.xhtml</from-view-id>
 		<navigation-case>

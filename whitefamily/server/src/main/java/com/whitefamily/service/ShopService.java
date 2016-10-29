@@ -839,7 +839,7 @@ public class ShopService extends BaseService implements IShopService {
         double sum = 0;
         for(int aw = 0; aw < count; aw++){
         	WFInventoryRequest.Item  item = list.get(aw);
-        	table.addCell(new PdfPCell( new Phrase((aw)+"", chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase((aw + 1)+"", chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
@@ -945,7 +945,7 @@ public class ShopService extends BaseService implements IShopService {
         double sum = 0;
         for(int aw = 0; aw < count; aw++){
         	WFDelivery.Item  item = list.get(aw);
-        	table.addCell(new PdfPCell( new Phrase((aw)+"", chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase((aw + 1)+"", chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));

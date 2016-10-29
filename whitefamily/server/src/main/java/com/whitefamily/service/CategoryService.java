@@ -45,6 +45,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 		cate.setName(ca.getName());
 		cate.setType(ca.getType());
 		cate.setParentId(ca.getParentId());
+		cate.setOrder(0);
 		ca.setAbbr(PinyinHelper.getShortPinyin(ca.getName()));
 		Session sess = openSession();
 		Transaction tr = sess.beginTransaction();
@@ -115,6 +116,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 		cate.setName(ca.getName());
 		cate.setType(ca.getType());
 		cate.setParentId(ca.getParentId());
+		cate.setOrder(ca.getOrder());
 		
 		Transaction tr = sess.beginTransaction();
 		sess.update(cate);
@@ -225,6 +227,46 @@ public class CategoryService extends BaseService implements ICategoryService {
 		}
 		orderCategoryList = (levelList.size() > topLevel ?  levelList.get(topLevel) : null);
 		return orderCategoryList;
+	}
+	
+	
+	
+	
+	public Result updateCateogryOrder(Long[] ids, int[] orders) {
+		if (ids == null || orders == null) {
+			return Result.ERR_GENERIC_FAILED;
+		}
+		
+		if (ids.length != orders.length) {
+			return Result.ERR_CATEGORY_UPDATE_MIMATCH;
+		}
+		
+		Session sess = getSession();
+		Category cate  = null;
+		WFCategory cache = null;
+		Transaction tr = sess.beginTransaction();
+		for (int idx = 0; idx < ids.length; idx++) {
+			Long lid = ids[idx];
+			int order = orders[idx];
+			cate = (Category)sess.get(Category.class, lid);
+			if (cate == null) {
+				tr.rollback();
+				return Result.ERR_GENERIC_FAILED;
+			}
+			cate.setOrder(order);
+			sess.update(cate);
+			
+			cache  = getCategory(lid);
+			if (cache != null) {
+				cache.setOrder(order);
+			}
+		}
+		tr.commit();
+		
+		
+		
+		
+		return Result.SUCCESS;
 	}
 
 	

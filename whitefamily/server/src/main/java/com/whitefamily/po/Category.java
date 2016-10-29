@@ -29,6 +29,9 @@ public class Category {
 	@Column(name="WF_CTE_TYPE", columnDefinition="tinyint")
 	protected int type;
 	
+	@Column(name="WF_CTE_ORDER", columnDefinition="smallint default 0")
+	protected int order;
+	
 	
 
 	public long getId() {
@@ -69,6 +72,14 @@ public class Category {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 	
 	

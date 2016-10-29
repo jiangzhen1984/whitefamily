@@ -186,7 +186,11 @@ public class WFDelivery {
 
 		@Override
 		public int compareTo(Item o) {
-			return o.goods.getCate().getId() > this.goods.getCate().getId() ? 1 : -1;
+			if (o.goods.getSortOrder() == this.goods.getSortOrder()) {
+				return o.goods.getCateOrder() > this.goods.getCateOrder() ? -1: 1;
+			} else {
+				return o.goods.getSortOrder() > this.goods.getSortOrder() ? -1: 1;
+			}
 		}
 		
 		

@@ -26,6 +26,9 @@ public interface ICategoryService {
 	public List<WFCategory> getAllCategory();
 	
 	
+	public Result updateCateogryOrder(Long[] ids, int[] orders);
+	
+	
 }
 
 

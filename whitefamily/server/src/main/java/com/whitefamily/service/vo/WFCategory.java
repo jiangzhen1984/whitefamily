@@ -28,6 +28,7 @@ public class WFCategory extends Category {
 		this.setName(c.getName());
 		this.setType(c.getType());
 		this.setAbbr(PinyinHelper.getShortPinyin(this.name));
+		this.setOrder(c.getOrder());
 	}
 
 	public WFCategory getParent() {

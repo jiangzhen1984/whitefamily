@@ -2,6 +2,9 @@ package com.whitefamily.web.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -164,6 +167,59 @@ public class CategoryBean {
 			}
 		}
 		return null;
+	}
+	
+	
+	
+	public String updateCategoryOrder() {
+		Map<String, String[]> map = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterValuesMap();
+		String[] cate_ids = map.get("c_id");
+		String[] cate_orders = map.get("c_count");
+		
+
+		if (cate_ids == null || cate_ids.length <= 0) {
+			errMsg = "没有选择目录";
+			return "updatecateorderfailed";
+		}
+		
+		if (cate_orders == null || cate_orders.length <=0) {
+			errMsg = "没有输入排序";
+			return "updatecateorderfailed";
+		}
+		
+		if (cate_orders.length != cate_ids.length) {
+			errMsg = "目录和排序值不匹配";
+			return "updatecateorderfailed";
+		}
+		
+		Pattern pat = Pattern.compile("([0-9{1, 2}])");
+		
+		
+		Long[] ids = new Long[cate_ids.length];
+		int[] orders = new int[cate_orders.length];
+		Matcher m  = null;
+		for (int i = 0; i < ids.length; i++) {
+			if (cate_ids[i] == null || cate_ids[i].isEmpty()) {
+				errMsg = "请选择分类";
+				return "updatecateorderfailed";
+			}
+			ids[i] = Long.parseLong(cate_ids[i]);
+			m = pat.matcher(cate_orders[i]);
+			if (!m.matches()) {
+				errMsg = "排序必须为数字";
+				return "updatecateorderfailed";
+			}
+			orders[i] = Integer.parseInt(cate_orders[i]);
+		}
+		
+		Result ret = service.updateCateogryOrder(ids, orders);
+		if (ret != Result.SUCCESS) {
+			errMsg = "更新失败";
+			return "updatecateorderfailed";
+		}
+		errMsg = null;
+		return "list";
 	}
 
 }

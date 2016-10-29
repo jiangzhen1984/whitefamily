@@ -127,4 +127,26 @@ public class WFGoods extends Goods {
 			}
 		}
 	}
+	
+	
+	public int getSortOrder() {
+		WFCategory wf = (WFCategory) this.cate;
+		WFCategory  parent = null;
+		if (wf != null) {
+			while (wf != null) {
+				parent = wf;
+				wf = wf.getParent();
+			}
+		}
+		
+		return parent == null ? 1000 : parent.getOrder();
+	}
+	
+	public int getCateOrder() {
+		if (this.cate == null) {
+			return 1000;
+		} else {
+			return this.cate.getOrder();
+		}
+	}
 }
