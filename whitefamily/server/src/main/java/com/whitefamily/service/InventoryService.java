@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.whitefamily.po.Goods;
 import com.whitefamily.po.InventoryGoods;
 import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
@@ -23,6 +24,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFSupplierMapping;
+import com.whitefamily.service.vo.WFVendor;
 
 public class InventoryService extends BaseService implements IInventoryService {
 
@@ -84,25 +86,54 @@ public class InventoryService extends BaseService implements IInventoryService {
 		sess.flush();
 		int count = inventory.getItemCount();
 		InventoryGoods ig = null;
+		List<Goods> list = new ArrayList<Goods>(count);
+		boolean flag = false;
 		for (int i = 0; i < count; i++) {
 			WFInventory.Item wi = inventory.getItem(i);
 			if (wi.isPersisted()) {
 				continue;
 			}
+			flag = false;
+			Goods gs = goodsService.getGoods(wi.getGoods().getId());
 			ig = new InventoryGoods();
-			if (wi.getBrand() != null) {
-				ig.setBrand(goodsService.getBrand(wi.getBrand().getId()));
-			}
-			ig.setGoods(goodsService.getGoods(wi.getGoods().getId()));
+			ig.setBrandId(wi.getBrand().getId());
+			ig.setBrandName(wi.getBrand().getName());
+			ig.setVendorId(wi.getVendor().getId());
+			ig.setVendorName(wi.getVendor().getName());
+			ig.setGoods(gs);
 			ig.setCount(wi.getCount());
 			ig.setPrice(wi.getPrice());
 			ig.setRecord(record);
+			ig.setRate(wi.getRate());
+			ig.setRate1(wi.getRate1());
+			ig.setRemCount(wi.getCount());
 			sess.save(ig);
 			wi.setPersisted(true);
+			
+			if (gs.getPrice() <= wi.getPrice() * (1 + wi.getRate())) {
+				gs.setPrice(wi.getPrice() * (1 + wi.getRate()));
+				flag = true;
+			}
+			if (gs.getPrice1() <= wi.getPrice() * (1 + wi.getRate1())) {
+				gs.setPrice1(wi.getPrice() * (1 + wi.getRate1()));
+				flag = true;
+			}
+			
+			if (flag) {
+				list.add(gs);
+			}
 		}
-
+		
+		
+		for (Goods wfg : list) {
+			Goods g = (Goods)sess.get(Goods.class, wfg.getId());
+			g.setPrice(wfg.getPrice());
+			g.setPrice1(wfg.getPrice1());
+			g.setPrice2(wfg.getPrice2());
+			g.setPrice3(wfg.getPrice3());
+			sess.update(g);
+		}
 		tr.commit();
-		sess.close();
 
 	}
 
@@ -390,13 +421,14 @@ public class InventoryService extends BaseService implements IInventoryService {
 				.createQuery(" from InventoryGoods  where record.id = ? ");
 		query.setLong(0, wf.getId());
 		List<InventoryGoods> list = query.list();
+		WFBrand wfb = null;
+		WFVendor wfv = null;
+		
 		for (InventoryGoods iur : list) {
-			WFBrand bra = null;
-			if (iur.getBrand() != null) {
-				bra = goodsService.getBrand(iur.getBrand().getId());
-			}
+			wfb = goodsService.getBrand(iur.getBrandName());
+			wfv = goodsService.getVendor(iur.getVendorName());
 			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()),
-					bra, iur.getCount(), iur.getPrice(), true);
+					wfb, wfv, iur.getCount(), iur.getPrice(), iur.getRate(), iur.getRate1(), true);
 		}
 		sess.close();
 	}

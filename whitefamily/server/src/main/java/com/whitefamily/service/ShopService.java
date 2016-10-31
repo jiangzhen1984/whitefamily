@@ -29,6 +29,7 @@ import com.whitefamily.ServerConstants;
 import com.whitefamily.po.DamageReportGoods;
 import com.whitefamily.po.DamageReportRecord;
 import com.whitefamily.po.DamageStatus;
+import com.whitefamily.po.InventoryGoods;
 import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
@@ -43,9 +44,9 @@ import com.whitefamily.po.incoming.OperationCost;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
+import com.whitefamily.service.vo.WFDelivery.Item;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
-import com.whitefamily.service.vo.WFDelivery.Item;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -1003,15 +1004,54 @@ public class ShopService extends BaseService implements IShopService {
 				continue;
 			}
 			DeliveryRecordGoods g = new DeliveryRecordGoods();
-			g.setCount(di.getCount());
-			g.setGoods(di.getGoods());
-			g.setRecord(dr);
-			sess.save(g);
+			InventoryGoods ig = queryAvailableInventoryGoods(di.getGoods().getId());
+			int requestCount = (int)di.getCount();
+			while (requestCount > 0 && ig != null) {	
+				if (ig.getRemCount() > requestCount) {
+					requestCount = 0;
+					g.setCount(requestCount);
+					ig.setRemCount(ig.getRemCount() - requestCount);
+				} else {
+					g.setCount(ig.getRemCount());
+					requestCount -= ig.getRemCount();
+					ig.setRemCount(0);
+				}
+				g.setPrice(di.getGoods().getPrice());
+				g.setGoods(di.getGoods());
+				g.setBrandName(ig.getBrandName());
+				g.setVendorName(ig.getVendorName());
+				g.setInventoryPrice(ig.getPrice());
+				g.setInventoryId(ig.getRecord().getId());
+				g.setRecord(dr);
+				sess.save(g);
+				
+				//Just update remain count 
+				sess.update(ig);
+				ig = queryAvailableInventoryGoods(di.getGoods().getId());
+			}
+			
+			if (requestCount != 0) {
+				tr.rollback();
+				return Result.ERR_OUT_OF_STOCK;
+			}
 		}
+		
+		//Update inventory and update goods price.
 		
 		tr.commit();
 		
 		return Result.SUCCESS;
+		
+	}
+	
+	
+	private InventoryGoods queryAvailableInventoryGoods(long gid) {
+		Session sess = getSession();
+		Query query = sess.createQuery(" from InventoryGoods where goods.id = ? and remCount > 0 order by id ");
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		List list = query.list();
+		return list.size() > 0 ? (InventoryGoods)list.get(0) : null;
 		
 	}
 	

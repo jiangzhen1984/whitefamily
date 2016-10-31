@@ -41,8 +41,21 @@ public class Goods {
 	@Column(name = "WF_CTE_DESC", columnDefinition = "TEXT")
 	protected String goodsDesc;
 	
-	@Column(name = "WF_PRICE", columnDefinition = "NUMERIC(9,2) ")
+	@Column(name = "WF_PRICE", columnDefinition = "NUMERIC(9,2) default 0")
 	protected Float price;
+	
+	@Column(name = "WF_PRICE1", columnDefinition = "NUMERIC(9,2) default 0 ")
+	protected Float price1;
+	
+	
+	@Column(name = "WF_PRICE2", columnDefinition = "NUMERIC(9,2) default 0 ")
+	protected Float price2;
+	
+	@Column(name = "WF_PRICE3", columnDefinition = "NUMERIC(9,2) default 0 ")
+	protected Float price3;
+	
+	@Column(name = "WF_STOCK", columnDefinition = "NUMERIC(9,2) default 0 ")
+	protected Float stock;
 
 	public long getId() {
 		return id;
@@ -108,6 +121,42 @@ public class Goods {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public float getPrice1() {
+		return price1 == null ? 0 : price1;
+	}
+
+	public void setPrice1(Float price1) {
+		this.price1 = price1;
+	}
+
+	public float getPrice2() {
+		return price2 == null ?0  : price2;
+	}
+
+	public void setPrice2(Float price2) {
+		this.price2 = price2;
+	}
+
+	public float getPrice3() {
+		return price3 == null ? 0 : price3;
+	}
+
+	public void setPrice3(Float price3) {
+		this.price3 = price3;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public float getStock() {
+		return stock == null ? 0 : stock;
+	}
+
+	public void setStock(float stock) {
+		this.stock = stock;
 	}
 	
 	

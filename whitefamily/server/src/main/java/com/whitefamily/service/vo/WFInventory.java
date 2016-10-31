@@ -51,12 +51,12 @@ public class WFInventory {
 		this.operator = operator;
 	}
 
-	public void addInventoryItem(WFGoods goods, WFBrand brand, float count,
-			float price, boolean persiste) {
+	public void addInventoryItem(WFGoods goods, WFBrand brand, WFVendor vendor, float count,
+			float price, float rate1, float rate2, boolean persiste) {
 		if (itemList == null) {
 			itemList = new ArrayList<Item>(10);
 		}
-		itemList.add(new Item(count, price, goods, brand, persiste));
+		itemList.add(new Item(count, price, goods, brand, vendor, rate1, rate2, persiste));
 	}
 	
 	public int getItemCount() {
@@ -93,16 +93,25 @@ public class WFInventory {
 		WFGoods goods;
 
 		WFBrand brand;
+		
+		WFVendor vendor;
 
 		boolean persisted;
+		
+		float rate;
+		
+		float rate1;
 
-		public Item(float count, float price, WFGoods goods, WFBrand brand,
+		public Item(float count, float price, WFGoods goods, WFBrand brand, WFVendor vendor, float rate, float rate1, 
 				boolean persisted) {
 			super();
 			this.count = count;
 			this.price = price;
 			this.goods = goods;
 			this.brand = brand;
+			this.vendor = vendor;
+			this.rate = rate;
+			this.rate1 = rate1;
 			this.persisted = persisted;
 		}
 
@@ -144,6 +153,30 @@ public class WFInventory {
 
 		public void setPersisted(boolean persisted) {
 			this.persisted = persisted;
+		}
+
+		public WFVendor getVendor() {
+			return vendor;
+		}
+
+		public void setVendor(WFVendor ventor) {
+			this.vendor = ventor;
+		}
+
+		public float getRate() {
+			return rate;
+		}
+
+		public void setRate(float rate) {
+			this.rate = rate;
+		}
+
+		public float getRate1() {
+			return rate1;
+		}
+
+		public void setRate1(float rate1) {
+			this.rate1 = rate1;
 		}
 		
 		

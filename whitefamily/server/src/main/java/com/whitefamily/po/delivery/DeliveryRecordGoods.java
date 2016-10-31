@@ -34,6 +34,24 @@ public class DeliveryRecordGoods {
 	@JoinColumn(name = "WF_GOOD_ID", insertable = true, updatable = true, nullable = false)
 	protected Goods goods;
 	
+	@Column(name="WF_BRAND_NAME", columnDefinition="VARCHAR(500)")
+	protected String brandName;
+	
+	@Column(name="WF_VENDOR_NAME", columnDefinition="VARCHAR(500)")
+	protected String vendorName;
+	
+	@Column(name="WF_INVEN_PRICE", columnDefinition="NUMERIC(10,2) default 0")
+	protected float inventoryPrice;
+	
+	@Column(name="WF_DE_PRICE", columnDefinition="NUMERIC(10,2) default 0")
+	protected float price;
+	
+	@Column(name="WF_DE_COUNT", columnDefinition="NUMERIC(10,2) default 0")
+	protected float deliverCount;
+	
+	@Column(name="WF_INVENTORY_ID", columnDefinition="NUMERIC(10,0) default 0")
+	protected long inventoryId;
+	
 
 	public long getId() {
 		return id;
@@ -66,6 +84,54 @@ public class DeliveryRecordGoods {
 
 	public void setRecord(DeliveryRecord record) {
 		this.record = record;
+	}
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
+	}
+
+	public String getVendorName() {
+		return vendorName;
+	}
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public float getDeliverCount() {
+		return deliverCount;
+	}
+
+	public void setDeliverCount(float deliverCount) {
+		this.deliverCount = deliverCount;
+	}
+
+	public long getInventoryId() {
+		return inventoryId;
+	}
+
+	public void setInventoryId(long inventoryId) {
+		this.inventoryId = inventoryId;
+	}
+
+	public float getInventoryPrice() {
+		return inventoryPrice;
+	}
+
+	public void setInventoryPrice(float inventoryPrice) {
+		this.inventoryPrice = inventoryPrice;
 	}
 
 	

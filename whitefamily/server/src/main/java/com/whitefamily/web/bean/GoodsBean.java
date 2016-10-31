@@ -42,9 +42,6 @@ public class GoodsBean {
 	private String brandName;
 	private String brandNameRequired;
 	private String brandUnit;
-	private String brandSubUnit;
-	private int brandSubCount;
-	private String brandCalculation;
 
 	private List<WFCategory> categoryList;
 
@@ -225,21 +222,6 @@ public class GoodsBean {
 		this.brandUnit = brandUnit;
 	}
 
-	public String getBrandSubUnit() {
-		return brandSubUnit;
-	}
-
-	public void setBrandSubUnit(String brandSubUnit) {
-		this.brandSubUnit = brandSubUnit;
-	}
-
-	public int getBrandSubCount() {
-		return brandSubCount;
-	}
-
-	public void setBrandSubCount(int brandSubCount) {
-		this.brandSubCount = brandSubCount;
-	}
 
 	public long getBrandId() {
 		return brandId;
@@ -249,13 +231,6 @@ public class GoodsBean {
 		this.brandId = brandId;
 	}
 
-	public String getBrandCalculation() {
-		return brandCalculation;
-	}
-
-	public void setBrandCalculation(String brandCalculation) {
-		this.brandCalculation = brandCalculation;
-	}
 
 	public String getFilterGoodsName() {
 		return filterGoodsName;
@@ -407,52 +382,6 @@ public class GoodsBean {
 		}
 	}
 
-	public String createOrSaveGoodsBrand() {
-		errMsg = null;
-		brandNameRequired = null;
-		if (brandName == null || brandName.trim().isEmpty()) {
-			errMsg = "操作失败";
-			brandNameRequired = "请输入品牌名称";
-			return "brandcreatefailed";
-		}
-
-		if (goods == null) {
-			errMsg = "操作失败，没有关联产品";
-			return "brandcreatefailed";
-		}
-		WFBrand brand = null;
-		if (brandId <= 0) {
-			brand = new WFBrand();
-		} else {
-			brand = findBrand(goods);
-			if (brand == null) {
-				errMsg = "操作失败，没有关联产品";
-				return "brandviewfailed";
-			}
-		}
-		brand.setName(brandName);
-		brand.setGoods(goods);
-		brand.setSubCount(brandSubCount);
-		brand.setSubUnit(brandSubUnit);
-		brand.setUnit(brandUnit);
-		brand.setCalculation(brandCalculation);
-		if (brandId <= 0) {
-			goodsService.addGoodsBrand(goods, brand);
-		} else {
-			goodsService.updateGoodsBrand(goods, brand);
-		}
-
-		brandName = null;
-		errMsg = null;
-		brandNameRequired = null;
-		brandSubUnit = null;
-		brandUnit = null;
-		brandSubCount = 0;
-		brandId = 0;
-		brandCalculation = null;
-		return "brandlist";
-	}
-
 	private WFBrand findBrand(WFGoods goods) {
 		List<WFBrand> brlist = goods.getBrands();
 		if (brlist == null) {
@@ -482,8 +411,6 @@ public class GoodsBean {
 			return "brandviewfailed";
 		}
 		brandName = wfb.getName();
-		brandSubCount = wfb.getSubCount();
-		brandSubUnit = wfb.getSubUnit();
 		brandUnit = wfb.getUnit();
 		return "gotoUpdateBrands";
 	}

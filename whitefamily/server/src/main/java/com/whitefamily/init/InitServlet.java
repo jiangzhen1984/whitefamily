@@ -55,6 +55,8 @@ public class InitServlet extends GenericServlet {
 			e.printStackTrace();
 		}
 		
+		
+		ServiceFactory.getGoodsService().init();
 	}
 
 	@Override

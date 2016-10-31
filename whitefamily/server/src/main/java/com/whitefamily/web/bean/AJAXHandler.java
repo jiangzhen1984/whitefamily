@@ -32,6 +32,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFVendor;
 
 public class AJAXHandler extends HttpServlet {
 
@@ -62,6 +63,8 @@ public class AJAXHandler extends HttpServlet {
 			handleGoodsFilter(req, resp);
 		} else if ("filterBrand".equals(action)) {
 			handleBrandFilter(req, resp);
+		}  else if ("filterVendor".equals(action)) {
+			handleVendorFilter(req, resp);
 		} else if ("filterShop".equals(action)) {
 			handleShopFilter(req, resp);
 		} else if ("cartAction".equals(action)) {
@@ -156,27 +159,48 @@ public class AJAXHandler extends HttpServlet {
 		GoodsBean goodsBean = (GoodsBean) session.getAttribute("goodsBean");
 
 		String goods_id = req.getParameter("goods_id");
+		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
 		if (goods_id == null || goods_id.isEmpty()) {
 			return;
 		}
-		WFGoods g = service.getGoods(Long.parseLong(goods_id));
-
 		if (goodsBean == null) {
 		} else {
-			List<WFBrand> list = null;
-			if (g.isBrandsLoad()) {
-				list = g.getBrands();
-			} else {
-				list = service.queryBrands(g, 0, 50);
+			List<WFBrand> list = service.searchBrand(name, 10);
+			for (WFBrand wf : list) {
+				JSONObject o = new JSONObject();
+				o.put("name", wf.getName());
+				o.put("id", wf.getId());
+				ret.put(o);
 			}
-			if (list != null) {
-				for (WFBrand wf : list) {
-					JSONObject o = new JSONObject();
-					o.put("name", wf.getName());
-					o.put("id", wf.getId());
-					ret.put(o);
-				}
+		}
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(ret.toString());
+		out.flush();
+	}
+	
+	
+	private void handleVendorFilter(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		JSONArray ret = new JSONArray();
+		HttpSession session = req.getSession();
+		GoodsBean goodsBean = (GoodsBean) session.getAttribute("goodsBean");
+
+		String goods_id = req.getParameter("goods_id");
+		String name = req.getParameter("name");
+		IGoodsService service = ServiceFactory.getGoodsService();
+		if (goods_id == null || goods_id.isEmpty()) {
+			return;
+		}
+		if (goodsBean == null) {
+		} else {
+			List<WFVendor> list = service.searchVendor(name, 10);
+			for (WFVendor wf : list) {
+				JSONObject o = new JSONObject();
+				o.put("name", wf.getName());
+				o.put("id", wf.getId());
+				ret.put(o);
 			}
 		}
 		resp.setContentType("application/json");

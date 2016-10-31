@@ -116,7 +116,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 		
 		List<Item> list = req.getItemList();
 		for (WFInventoryRequest.Item wfi : list) {
-			inventory.addInventoryItem(wfi.getGoods(), null, wfi.getRealCount(), wfi.getPrice(), false);
+			inventory.addInventoryItem(wfi.getGoods(), null, null, wfi.getRealCount(), wfi.getPrice(), 0, 0, false);
 		}
 		
 		Transaction tr = sess.beginTransaction();

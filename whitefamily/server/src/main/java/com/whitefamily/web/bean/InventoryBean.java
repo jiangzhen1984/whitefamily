@@ -17,6 +17,7 @@ import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFVendor;
 
 @ManagedBean(name = "inventoryBean", eager = false)
 @RequestScoped
@@ -103,11 +104,19 @@ public class InventoryBean {
 		Map<String, String[]> map = FacesContext.getCurrentInstance()
 				.getExternalContext().getRequestParameterValuesMap();
 		String[] goods_id = map.get("goodsname_id");
-		String[] brands_id = map.get("brandname_id");
+		String[] brands = map.get("brandname");
+		String[] vendors = map.get("vendorname");
+		String[] rate = map.get("rate");
+		String[] rate1 = map.get("rate1");
 		String[] prs = map.get("prs");
 		String[] count = map.get("count");
 		
-		if (goods_id == null || prs == null || count == null) {
+		if (goods_id == null || prs == null || count == null || brands == null || vendors == null) {
+			errMsg ="请输入要更新的库存的产品信息";
+			return "createinventoryfailed";
+		}
+		
+		if (goods_id.length != brands.length  || goods_id.length != vendors.length) {
 			errMsg ="请输入要更新的库存的产品信息";
 			return "createinventoryfailed";
 		}
@@ -130,6 +139,16 @@ public class InventoryBean {
 				return "createinventoryfailed";
 			}
 			
+			if (brands[i] == null || brands[i].isEmpty()) {
+				errMsg ="产品品牌必须输入";
+				return "createinventoryfailed";
+			}
+			
+			if (vendors[i] == null || vendors[i].isEmpty()) {
+				errMsg ="品牌供应商必须输入";
+				return "createinventoryfailed";
+			}
+			
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", count[i]);
 			if (!ma) {
 				errMsg ="产品数量应为数字";
@@ -142,11 +161,39 @@ public class InventoryBean {
 				return "createinventoryfailed";
 			}
 			
-			WFBrand b = null;
-			if (brands_id[i] != null && !brands_id[i].isEmpty()) {
-				b = goodsService.getBrand(Long.parseLong(brands_id[i]));
+			if (rate[i] != null) {
+				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", rate[i]);
+				if (!ma) {
+					errMsg ="出货价格比例应为数字";
+					return "createinventoryfailed";
+				}
 			}
-			inventory.addInventoryItem(g, b, Float.parseFloat(count[i]), Float.parseFloat(prs[i]), false);
+			
+			if (rate1[i] != null) {
+				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", rate1[i]);
+				if (!ma) {
+					errMsg ="出货加盟商价格比例应为数字";
+					return "createinventoryfailed";
+				}
+			}
+			
+			WFBrand wfb = goodsService.getBrand(brands[i]);
+			if (wfb == null) {
+				wfb = new WFBrand();
+				wfb.setName(brands[i]);
+				goodsService.addBrand(wfb);
+			}
+			
+			WFVendor wfv = goodsService.getVendor(vendors[i]);
+			if (wfv == null) {
+				wfv = new WFVendor();
+				wfv.setName(vendors[i]);
+				goodsService.addVendor(wfv);
+			}
+			
+			inventory.addInventoryItem(g, wfb, wfv, Float.parseFloat(count[i]), Float.parseFloat(prs[i]),
+					rate[i] == null ? 0 : Float.parseFloat(rate[i]), rate1[i] == null ? 0 : Float.parseFloat(rate1[i]),
+					false);
 			inventory.setDatetime(new Date());
 			inventory.setIt(InventoryType.IN);
 		}

@@ -52,6 +52,7 @@
 		<mapping class="com.whitefamily.po.Category" ></mapping>
 		<mapping class="com.whitefamily.po.Goods" ></mapping>
 		<mapping class="com.whitefamily.po.Brand" ></mapping>
+		<mapping class="com.whitefamily.po.Vendor" ></mapping>
 		<mapping class="com.whitefamily.po.Shop" ></mapping>
 		<mapping class="com.whitefamily.po.PriceRecord" ></mapping>
 		<mapping class="com.whitefamily.po.customer.User" ></mapping>

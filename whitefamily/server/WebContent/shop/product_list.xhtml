@@ -115,10 +115,12 @@
                      -->
                   </td>
                   <td class="text-right">
+                      <!-- 
                       <h:commandLink  action="#{goodsBean.viewGoodsBrands}" type="submit"  form="form-product" data-toggle="tooltip" title="查看产品品牌" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />
                           <i class="fa fa-book"></i>
                       </h:commandLink>    
+                       -->
                       <h:outputText value="&#160;" />
                       <h:commandLink  action="#{goodsBean.gotoAddGoodsBrands}" type="submit"  form="form-product" data-toggle="tooltip" title="添加产品品牌" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />

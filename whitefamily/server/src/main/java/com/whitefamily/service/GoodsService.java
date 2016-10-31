@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,17 +16,35 @@ import com.whitefamily.po.Brand;
 import com.whitefamily.po.Category;
 import com.whitefamily.po.Goods;
 import com.whitefamily.po.InventoryType;
+import com.whitefamily.po.Vendor;
 import com.whitefamily.po.customer.User;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFVendor;
 
 public class GoodsService extends BaseService implements IGoodsService {
 	
 	
+	private static Log logger = LogFactory.getLog(GoodsService.class);
+	
 	private static Map<Long, WFGoods> goodsCache;
 	
 	private static Map<Long, WFBrand> brandCache;
+	
+	private static Map<Long, WFVendor> vendorCache;
+	
+	private static Map<String, WFBrand> brandNameCache;
+	
+	private static Map<String, WFVendor> vendorNameCache;
+	
+	private static List<WFBrand> brandsList;
+	
+	private static List<WFVendor> vendorsList;
+	
+	private static boolean vendorLoad;
+	
+	private static boolean brandLoad;
 	
 	private static CacheGoods cacheGoods = new CacheGoods();
 	
@@ -38,8 +58,15 @@ public class GoodsService extends BaseService implements IGoodsService {
 
 	public GoodsService() {
 		super();
-		goodsCache = new HashMap<Long,WFGoods>(50); 
-		brandCache= new HashMap<Long,WFBrand>(50); 
+		goodsCache = new HashMap<Long,WFGoods>(100); 
+		brandCache= new HashMap<Long,WFBrand>(100); 
+		brandNameCache= new HashMap<String,WFBrand>(100); 
+		vendorCache= new HashMap<Long,WFVendor>(100); 
+		vendorNameCache= new HashMap<String,WFVendor>(100); 
+		
+		brandsList = new ArrayList<WFBrand>(100);
+		vendorsList = new ArrayList<WFVendor>(100);
+		
 	}
 
 	public ICategoryService getCateService() {
@@ -82,6 +109,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		good.setType(wfg.getType());
 		good.setUnit(wfg.getUnit());
 		good.setPrice(wfg.getPrice());
+		good.setPrice1(wfg.getPrice1());
+		good.setPrice2(wfg.getPrice2());
+		good.setPrice3(wfg.getPrice3());
 		good.setGoodsDesc(wfg.getGoodsDesc());
 		Category cate = new Category();
 		cate.setId(wfg.getCate().getId());
@@ -145,57 +175,76 @@ public class GoodsService extends BaseService implements IGoodsService {
 	public WFBrand getBrand(long id) {
 		return brandCache.get(Long.valueOf(id));
 	}
-
-	@Override
-	public void addGoodsBrand(WFGoods goods, WFBrand brand) {
-		Brand br = new Brand();
-		br.setName(brand.getName());
-		br.setStyle(brand.getStyle());
-		br.setSubCount(brand.getSubCount());
-		br.setSubUnit(brand.getSubUnit());
-		br.setUnit(brand.getUnit());
-		br.setCalculation(brand.getCalculation());
-		br.setGoods(goods);
-		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
-		sess.save(br);
-		tr.commit();
-		brand.setId(br.getId());
-		goods.addBrand(brand);
-		brandCache.put(br.getId(), brand);
-
-	}
-
-	@Override
-	public void removeGoodsBrand(WFGoods goods, WFBrand brand) {
-		// TODO Auto-generated method stub
-
+	
+	
+	public WFVendor getVendor(long id) {
+		return vendorCache.get(Long.valueOf(id));
 	}
 	
 	
-	public Result updateGoodsBrand(WFGoods goods, WFBrand brand) {
-		Session sess = getSession();
-		Brand br = (Brand)sess.get(Brand.class, brand.getId());
-		if (br == null) {
-			return Result.ERR_NO_SUCH_BRAND;
+	public WFBrand getBrand(String name) {
+		return brandNameCache.get(name);
+	}
+	
+	public WFVendor getVendor(String name) {
+		return vendorNameCache.get(name);
+	}
+	
+	
+	public Result addVendor(WFVendor wfv) {
+		if (wfv == null || vendorNameCache.get(wfv.getName()) != null) {
+			return Result.ERR_VENDOR_EXISTS;
 		}
-		br.setName(brand.getName());
-		br.setStyle(brand.getStyle());
-		br.setSubCount(brand.getSubCount());
-		br.setSubUnit(brand.getSubUnit());
-		br.setUnit(brand.getUnit());
-		br.setCalculation(brand.getCalculation());
-		br.setGoods(goods);
+		Session sess = getSession();
 		Transaction tr = sess.beginTransaction();
-		sess.update(br);
+		Vendor v = new Vendor();
+		v.setName(wfv.getName());
+		sess.save(v);
 		tr.commit();
+		wfv.setId(v.getId());
+		
+		vendorNameCache.put(wfv.getName(), wfv);
+		vendorCache.put(Long.valueOf(wfv.getId()), wfv);
+		vendorsList.add(wfv);
 		return Result.SUCCESS;
 	}
-
+	
+	
+	public Result addBrand(WFBrand wfb) {
+		if (wfb == null || brandNameCache.get(wfb.getName()) != null) {
+			return Result.ERR_BRAND_EXISTS;
+		}
+		Session sess = getSession();
+		Transaction tr = sess.beginTransaction();
+		Brand v = new Brand();
+		v.setName(wfb.getName());
+		sess.save(v);
+		tr.commit();
+		wfb.setId(v.getId());
+		
+		brandNameCache.put(wfb.getName(), wfb);
+		brandCache.put(Long.valueOf(wfb.getId()), wfb);
+		brandsList.add(wfb);
+		return Result.SUCCESS;
+	}
+	
+	
 	@Override
-	public void updateGoodsPrice(WFGoods goods, User opter) {
-		// TODO Auto-generated method stub
-
+	public void updateGoodsPrice(WFGoods goods, float newPrice, float newPrice1,  float newPrice2,  float newPrice3, User opter) {
+		if (goods == null) {
+			return;
+		}
+		WFGoods wfg = goodsCache.get(Long.valueOf(goods.getId()));
+		if (wfg == null) {
+			logger.warn(" No such goods in cache :" + goods.getId() +"  name:"+ goods.getName());
+			return;
+		}
+		
+		wfg.setPrice(newPrice);
+		wfg.setPrice1(newPrice1);
+		wfg.setPrice2(newPrice2);
+		wfg.setPrice3(newPrice2);
+		updateGoods(wfg);
 	}
 
 	@Override
@@ -369,7 +418,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 		goods.clearBrandCache();
 		for (Brand g : list) {
 			WFBrand wf = new WFBrand(g);
-			wf.setGoods(goods);
 			goods.addBrand(wf);
 			//put cache
 			brandCache.put(wf.getId(), wf);
@@ -380,6 +428,76 @@ public class GoodsService extends BaseService implements IGoodsService {
 	}
 
 	
+	
+	
+	public void init() {
+		Session sess = getSession();
+		Query query = sess.createQuery(" from Brand  ");
+		List<Brand> list = query.list();
+		for (Brand b : list) {
+			WFBrand wf = new WFBrand(b);
+			brandCache.put(wf.getId(), wf);
+			brandNameCache.put(wf.getName(), wf);
+			brandsList.add(wf);
+		}
+		
+		
+		query = sess.createQuery(" from Vendor  ");
+		List<Vendor> listv = query.list();
+		for (Vendor v : listv) {
+			WFVendor wf = new WFVendor(v);
+			vendorCache.put(wf.getId(), wf);
+			vendorNameCache.put(wf.getName(), wf);
+			vendorsList.add(wf);
+		}
+		
+		this.queryGoods(0, 300, -1);
+	}
+	
+	
+	
+
+	public List<WFBrand> searchBrand(String name, int count) {
+		if (name == null || name.isEmpty()) {
+			int endsize = brandsList.size();
+			return brandsList.subList(0, count > endsize ? endsize : count);
+		}
+		
+		List<WFBrand> list = new ArrayList<WFBrand>(count);
+		WFBrand wfb = null;
+		for (int i = 0; i < brandsList.size(); i++) {
+			wfb = brandsList.get(i);
+			if (wfb.getName().contains(name)) {
+				list.add(wfb);
+				if (list.size() >= count) {
+					break;
+				}
+			}
+		}
+		return list;
+		
+	}
+	
+	
+	public List<WFVendor> searchVendor(String name, int count) {
+		if (name == null || name.isEmpty()) {
+			int endsize = vendorsList.size();
+			return vendorsList.subList(0, count > endsize ? endsize : count);
+		}
+		
+		List<WFVendor> list = new ArrayList<WFVendor>(count);
+		WFVendor wfb = null;
+		for (int i = 0; i < vendorsList.size(); i++) {
+			wfb = vendorsList.get(i);
+			if (wfb.getName().contains(name)) {
+				list.add(wfb);
+				if (list.size() >= count) {
+					break;
+				}
+			}
+		}
+		return list;
+	}
 	
 	
 	static class CacheGoods {
