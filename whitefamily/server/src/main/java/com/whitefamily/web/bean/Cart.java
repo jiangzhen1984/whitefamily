@@ -76,6 +76,9 @@ public class Cart {
 			return;
 		}
 		item.count -= count;
+		if (item.count <= 0) {
+			map.remove(goods);
+		}
 	}
 	
 	public List<Item> getItems() {

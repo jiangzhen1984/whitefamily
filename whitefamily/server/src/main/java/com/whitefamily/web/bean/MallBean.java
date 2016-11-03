@@ -1,6 +1,7 @@
 package com.whitefamily.web.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Pattern;
@@ -37,6 +38,7 @@ public class MallBean {
 		goodsService = ServiceFactory.getGoodsService();
 		
 		categoryList = cateservice.getTopCategory();
+		Collections.sort(categoryList);
 		sortedList = cateservice.getSortedCategory();
 		
 		if (categoryList.size() > 0) {

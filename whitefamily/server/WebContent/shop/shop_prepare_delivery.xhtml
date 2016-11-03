@@ -53,10 +53,10 @@
               
               <ui:repeat id="item" var="item" value="#{shopBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
                 <tr>
-                  <td class="text-center"><INPUT type="checkbox" name="g_id" value="#{item.goods.id}_#{itemStatus.index}" /></td>
+                  <td class="text-center"><INPUT type="checkbox" name="g_id" value="#{item.goods.id}_#{itemStatus.index}" checked="checked"/></td>
                   <td class="text-center">#{item.goods.name}</td>
                   <td class="text-center">#{item.count}</td>
-                  <td class="text-center"><INPUT type="text" name="g_count" value=""  class="form-control" /></td>
+                  <td class="text-center"><INPUT type="text" name="g_count" value="#{item.count}"  class="form-control" /></td>
                 </tr>
                 </ui:repeat>
               </tbody>

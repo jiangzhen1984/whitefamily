@@ -14,8 +14,8 @@ import com.whitefamily.po.Goods;
 
 
 @Entity
-@Table(name = "WF_DELIVER_RECORD_GOODS")
-public class DeliveryRecordGoods {
+@Table(name = "WF_INERNAL_DELIVER_RECORD_GOODS")
+public class InternalDeliveryRecordGoods {
 	
 
 	@Id
@@ -25,10 +25,7 @@ public class DeliveryRecordGoods {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "WF_REC_ID", insertable = true, updatable = true, nullable = false)
-	protected DeliveryRecord record;
-	
-	@Column(name="WF_REQ_COUNT", columnDefinition="NUMERIC(10,2) default 0")
-	protected float requestCount;
+	protected InternalDeliveryRecord record;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "WF_GOOD_ID", insertable = true, updatable = true, nullable = false)
@@ -64,14 +61,14 @@ public class DeliveryRecordGoods {
 		this.id = id;
 	}
 
+	
 
-
-	public float getRequestCount() {
-		return requestCount;
+	public InternalDeliveryRecord getRecord() {
+		return record;
 	}
 
-	public void setRequestCount(float requestCount) {
-		this.requestCount = requestCount;
+	public void setRecord(InternalDeliveryRecord record) {
+		this.record = record;
 	}
 
 	public Goods getGoods() {
@@ -80,14 +77,6 @@ public class DeliveryRecordGoods {
 
 	public void setGoods(Goods goods) {
 		this.goods = goods;
-	}
-
-	public DeliveryRecord getRecord() {
-		return record;
-	}
-
-	public void setRecord(DeliveryRecord record) {
-		this.record = record;
 	}
 
 	public String getBrandName() {

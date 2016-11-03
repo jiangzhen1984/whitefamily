@@ -264,7 +264,7 @@ public class AJAXHandler extends HttpServlet {
 		}
 		
 		if (ret == 0 && "plus".equalsIgnoreCase(action)) {
-			cartBean.getCart().addItem(g, count);
+			cartBean.getCart().addItemCount(g, count);
 		} else if (ret == 0 && "minus".equals(action)) {
 			cartBean.getCart().minusItemCount(g, count);
 		} else {

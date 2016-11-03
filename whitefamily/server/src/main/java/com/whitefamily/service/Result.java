@@ -38,4 +38,6 @@ public enum Result {
 	ERR_VENDOR_EXISTS,
 	
 	ERR_OUT_OF_STOCK,
+	
+	ERR_ARTIFACT_CREATE_FAILED,
 }

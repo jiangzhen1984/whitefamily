@@ -20,6 +20,7 @@ import com.whitefamily.po.incoming.GroupOnType;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
+import com.whitefamily.service.Result;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
@@ -27,8 +28,8 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
-import com.whitefamily.service.vo.WFInventoryRequest.Item;
 import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFInventoryRequest.Item;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
@@ -627,7 +628,11 @@ public class ShopBean {
 		delivery.setDatetime(new Date());
 		
 		
-		shopService.prepareDelivery(delivery, userBean.getUser());
+		Result ret = shopService.prepareDelivery(delivery, userBean.getUser());
+		if (ret == Result.ERR_OUT_OF_STOCK) {
+			errMsg = "库存不足，无法处理相关配送";
+			return "deliveriedFailed";
+		}
 		
 		File file = shopService.generateDeliveryForm(delivery);
 		String absp = file.getAbsolutePath();

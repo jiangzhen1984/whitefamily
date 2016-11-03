@@ -7,7 +7,7 @@ import java.util.List;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.whitefamily.po.Category;
 
-public class WFCategory extends Category {
+public class WFCategory extends Category implements Comparable<WFCategory>{
 	
 	private WFCategory parent;
 	
@@ -84,6 +84,12 @@ public class WFCategory extends Category {
 				break;
 			}
 		}
+	}
+
+
+	@Override
+	public int compareTo(WFCategory o) {
+		return o.getOrder() > this.getOrder() ? -1 : 1;
 	}
 	
 	

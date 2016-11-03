@@ -99,6 +99,7 @@ public class UserBean {
 		HttpSession sess = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		if (sess != null) {
 			sess.removeAttribute("cartBean");
+			sess.removeAttribute("mallBean");
 		}
 		
 	//	String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");

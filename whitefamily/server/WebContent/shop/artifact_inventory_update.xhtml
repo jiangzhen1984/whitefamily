@@ -1,0 +1,157 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+        
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="gform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+         <h:commandLink action="#{artifactBean.saveArtifactInventory}" type="submit" form="form-product" data-toggle="tooltip" title="" class="btn btn-primary"><i class="fa fa-save"></i></h:commandLink>
+        <!-- <a href="inventory_update_list.xhtml" data-toggle="tooltip" title="取消" class="btn btn-default"><i class="fa fa-reply"></i></a>-->
+        </div>
+      <h1>加工产品库存管理</h1>
+      <ul class="breadcrumb">
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <c:if test="${not empty artifactBean.errMsg}">
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{artifactBean.errMsg}" ></h:outputText>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    </c:if>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i></h3>
+      </div>
+      <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">基本</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+                <div class="table-responsive">
+                <table id="images" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left  col-md-2">产品</td>
+                      <td class="text-right col-md-2">品牌</td>
+                      <td class="text-right col-md-2">供应商</td>
+                      <td class="text-right col-md-2">分装单价</td>
+                      <td class="text-right col-md-1">数量</td>
+                      <td class="text-right col-md-1">出货价格比例%</td>
+                      <td class="text-right col-md-1">出货价格比例(加盟商)%</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ui:repeat var="a" value="#{artifactBean.arsList}">
+                    <ui:repeat var="o" value="#{a.targetGoods}" varStatus="status">
+                    <tr id="image-row#{status.index}">
+                      <td class="text-left"><input type="text" id="goodsname#{status.index}" name="goodsname" value="#{o.wfg.name}"  placeholder="请输入产品名称" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id#{status.index}" value="#{o.wfg.id}"  class="form-control" /></td>
+                      <td class="text-right"><input type="text" id="brandname#{status.index}"  value=""  name="brandname"  placeholder="请输入产品品牌" class="form-control" /></td>
+                      <td class="text-right"><input type="text" id="vendorname#{status.index}"  value=""  name="vendorname"  placeholder="请输入供应商" class="form-control" /></td>
+                      <td class="text-right"><input type="text" name="prs"  value="" placeholder="请输入产品单价" class="form-control" /></td>
+                      <td class="text-right"><input type="text" name="count" value="#{o.unit}" placeholder="请输入库存数量" class="form-control" disabled="disabled" /></td>
+                      <td class="text-right"><input type="text" name="rate" value="" placeholder="0-100" class="form-control"  maxlength="3" /></td>
+                      <td class="text-right"><input type="text" name="rate1" value="" placeholder="0-100" class="form-control" maxlength="3"/></td>
+                    </tr>
+                    </ui:repeat>
+                    </ui:repeat>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+</div>
+    <script type="text/javascript">
+    
+     function f_auto_complete_source_type(type, request, response, param) {
+    		$.ajax({
+			url: type+'.ajax?action='+type+'&amp;'+'filter=' +  encodeURIComponent(request)+ '&amp;name=' +  encodeURIComponent(request),
+			data : param,
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					goods_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+    
+    }
+    
+    
+    
+    function f_auto_complete_source_goods(request, response) {
+         f_auto_complete_source_type('filterGoods', request, response, '');
+    }
+    
+    function f_auto_complete_source_brand(request, response) {
+         var input_name = $(this).prop('id');
+         var g_id = $("#goodsname_id" + input_name.substring(9)).val();
+         f_auto_complete_source_type('filterBrand', request, response, '&amp;goods_id='+g_id);
+    }
+    
+    
+    function f_auto_complete_source_vendor(request, response) {
+        var input_name = $(this).prop('id');
+        var g_id = $("#goodsname_id" + input_name.substring(9)).val();
+        f_auto_complete_source_type('filterVendor', request, response, '&amp;goods_id='+g_id);
+   }
+
+   
+   
+   var b_el_ar = $('input[name=\'brandname\']');
+   for ( i= 0; i < len; i++) {
+     var b_el =$('#'+b_el_ar[i].id);
+     var b_id_el = $('#'+b_id_el_ar[i].id);
+      b_el.autocomplete({
+	    'source': f_auto_complete_source_brand,
+	    'select': function(item) {
+		  b_el.val(item['label']);
+	   }
+     });
+   }
+   
+   var v_el_ar = $('input[name=\'vendorname\']');
+   for ( i= 0; i < len; i++) {
+     var v_el =$('#'+v_el_ar[i].id);
+     var v_id_el = $('#'+v_id_el_ar[i].id);
+      v_el.autocomplete({
+	    'source': f_auto_complete_source_vendor,
+	    'select': function(item) {
+		  v_el.val(item['label']);
+	   }
+     });
+   }
+    //]]>
+
+</script>
+
+  
+<footer id="footer"><br /></footer></div>
+</body></html>

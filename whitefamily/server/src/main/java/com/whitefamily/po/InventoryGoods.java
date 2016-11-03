@@ -28,7 +28,7 @@ public class InventoryGoods {
 	@Column(name="WF_UNIT_COUNT", columnDefinition="NUMERIC(10,2) default 0")
 	protected float count;
 	
-	@Column(name="WF_COUNT", columnDefinition="NUMERIC(10,2) default 0")
+	@Column(name="WF_PRICE", columnDefinition="NUMERIC(10,2) default 0")
 	protected float price;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

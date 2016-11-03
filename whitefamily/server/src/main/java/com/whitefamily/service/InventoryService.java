@@ -110,12 +110,14 @@ public class InventoryService extends BaseService implements IInventoryService {
 			sess.save(ig);
 			wi.setPersisted(true);
 			
-			if (gs.getPrice() <= wi.getPrice() * (1 + wi.getRate())) {
-				gs.setPrice(wi.getPrice() * (1 + wi.getRate()));
+			float rat = 1 + wi.getRate() / 100 ;
+			float rat1 = 1 + wi.getRate1() / 100 ;
+			if (gs.getPrice() <= wi.getPrice() *rat) {
+				gs.setPrice(wi.getPrice() * rat);
 				flag = true;
 			}
-			if (gs.getPrice1() <= wi.getPrice() * (1 + wi.getRate1())) {
-				gs.setPrice1(wi.getPrice() * (1 + wi.getRate1()));
+			if (gs.getPrice1() <= wi.getPrice() * rat1) {
+				gs.setPrice1(wi.getPrice() * rat1);
 				flag = true;
 			}
 			
@@ -428,7 +430,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			wfb = goodsService.getBrand(iur.getBrandName());
 			wfv = goodsService.getVendor(iur.getVendorName());
 			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()),
-					wfb, wfv, iur.getCount(), iur.getPrice(), iur.getRate(), iur.getRate1(), true);
+					wfb, wfv, iur.getCount(), iur.getPrice(), iur.getRate(), iur.getRate1(), iur.getRemCount(), true);
 		}
 		sess.close();
 	}

@@ -75,5 +75,9 @@ public interface IShopService {
 	
 	
 	public Result updateShopIncomingAndOperationCost(WFShop shop, WFIncoming wf, WFOperationCost cost, Date date);
+	
+	public Result handleInternalDelivery(WFDelivery de, WFUser user);
+	
+	
 
 }

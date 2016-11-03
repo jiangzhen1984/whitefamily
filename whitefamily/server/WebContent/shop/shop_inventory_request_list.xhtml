@@ -55,6 +55,9 @@
                   <td class="text-center">#{g.operator.name}</td>
                    <td class="text-center">#{g.is.value}</td>
                   <td class="text-right">
+                      <h:commandLink action="#{shopBean.prepareDelivery}" type="submit" form="form-product" data-toggle="tooltip" title="处理配送" class="btn btn-primary">
+                        <f:setPropertyActionListener target="#{shopBean.inventoryRequestDetailIdx}" value="#{itemStatus.index}" />
+                       处理配送</h:commandLink><h:outputText value="&#160;" />
                       <h:commandLink  action="#{shopBean.gotoViewShopInventoryRequestDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="产品详情" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.inventoryRequestDetailIdx}" value="#{itemStatus.index}" />
                            <i class="fa fa-book">产品详情</i>

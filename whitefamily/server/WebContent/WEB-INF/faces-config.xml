@@ -160,6 +160,11 @@
 			<to-view-id>/shop/shop_inventory_request_detail.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.prepareDelivery}</from-action>
+			<from-outcome>perparedelivery</from-outcome>
+			<to-view-id>/shop/shop_prepare_delivery.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
@@ -354,7 +359,7 @@
 	
 	
 	
-		<navigation-rule>
+	<navigation-rule>
 		<from-view-id>/shop/category_order_update_form.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{categoryBean.updateCategoryOrder}</from-action>
@@ -370,6 +375,20 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<navigation-rule>
+		<from-view-id>/shop/artifact_create_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{artifactBean.createArtifact}</from-action>
+			<from-outcome>createArtifactFailed</from-outcome>
+			<to-view-id>/shop/artifact_create_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{artifactBean.createArtifact}</from-action>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/shop/artifact_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 	
 	
 	<navigation-rule>

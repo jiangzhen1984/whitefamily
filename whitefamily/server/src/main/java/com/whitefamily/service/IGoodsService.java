@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.customer.User;
+import com.whitefamily.service.vo.WFArtifact;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
@@ -66,5 +67,11 @@ public interface IGoodsService {
 	
 	
 	public void init();
+	
+	
+	public Result createWFArtifact(WFArtifact wff);
+	
+	
+	public WFArtifact loadArtifact(long id);
 
 }

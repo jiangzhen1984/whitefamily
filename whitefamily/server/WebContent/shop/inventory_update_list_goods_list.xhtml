@@ -37,11 +37,14 @@
 								<table class="table table-bordered table-hover">
 									<thead>
 										<tr>
-											<td class="text-left"><a href=" $sort_name"
-												class=" strtolower($order)">产品</a></td>
+											<td class="text-left">产品</td>
 											<td class="text-right">品牌</td>
-											<td class="text-right">单价</td>
-											<td class="text-right">数量</td>
+											<td class="text-right">供应商</td>
+											<td class="text-right">入库价</td>
+											<td class="text-right">入库数量</td>
+											<td class="text-right">剩余数量</td>
+											<td class="text-right">出货价比</td>
+											<td class="text-right">出货价比（加盟商）</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -49,8 +52,12 @@
 											<tr>
 												<td class="text-left">#{o.goods.name}</td>
 												<td class="text-right">#{o.brand.name}</td>
+												<td class="text-right">#{o.vendor.name}</td>
 												<td class="text-right">#{o.price}</td>
 												<td class="text-right">#{o.count}</td>
+												<td class="text-right">#{o.remain}</td>
+												<td class="text-right">#{o.rate}%</td>
+											    <td class="text-right">#{o.rate1}%</td>
 											</tr>
 										</ui:repeat>
 									</tbody>

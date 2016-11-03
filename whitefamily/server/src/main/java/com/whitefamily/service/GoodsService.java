@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +18,12 @@ import com.whitefamily.po.Category;
 import com.whitefamily.po.Goods;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.Vendor;
+import com.whitefamily.po.artifact.ArtifactProduct;
+import com.whitefamily.po.artifact.ArtifactStaff;
+import com.whitefamily.po.artifact.ArtifactStaffType;
 import com.whitefamily.po.customer.User;
+import com.whitefamily.service.vo.WFArtifact;
+import com.whitefamily.service.vo.WFArtifact.StaffGoods;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
@@ -510,5 +516,99 @@ public class GoodsService extends BaseService implements IGoodsService {
 		int newEndOffset;
 		List<WFGoods> caches = new ArrayList<WFGoods>();
 		
+	}
+	
+	
+
+	@Override
+	public Result createWFArtifact(WFArtifact wff) {
+		
+		ArtifactProduct ap = new ArtifactProduct();
+		Session sess = getSession();
+		Transaction tr = sess.beginTransaction();
+		sess.save(ap);
+		List<StaffGoods> input = wff.getStaffGoods(ArtifactStaffType.INPUT);
+		if (input != null) {
+			ArtifactStaff as = null;
+			StaffGoods sg = null;
+			for (int i = 0; i < input.size(); i++) {
+				sg = input.get(i);
+				as = new ArtifactStaff();
+				as.setArtifact(ap);
+				as.setType(ArtifactStaffType.INPUT);
+				as.setProductId(sg.wfg.getId());
+				as.setStyle(sg.getStyle());
+				as.setMinalProduceUnit(sg.getMinialProduceUnit());
+				as.setUnit(sg.unit);
+				ap.addStaffs(as);
+				sess.save(as);
+			}
+		} else {
+			tr.rollback();
+			return Result.ERR_ARTIFACT_CREATE_FAILED;
+		}
+		
+		
+		List<StaffGoods> output = wff.getStaffGoods(ArtifactStaffType.OUTPUT);
+		if (output != null) {
+			ArtifactStaff as = null;
+			StaffGoods sg = null;
+			for (int i = 0; i < output.size(); i++) {
+				sg = output.get(i);
+				as = new ArtifactStaff();
+				as.setArtifact(ap);
+				as.setType(ArtifactStaffType.OUTPUT);
+				as.setProductId(sg.wfg.getId());
+				as.setStyle(sg.getStyle());
+				as.setMinalProduceUnit(sg.getMinialProduceUnit());
+				as.setUnit(sg.unit);
+				ap.addStaffs(as);
+				sess.save(as);
+			}
+		} else {
+			tr.rollback();
+			return Result.ERR_ARTIFACT_CREATE_FAILED;
+		}
+		
+		List<StaffGoods> procuced = wff.getStaffGoods(ArtifactStaffType.PRODUCED);
+		if (procuced != null) {
+			ArtifactStaff as = null;
+			StaffGoods sg = null;
+			for (int i = 0; i < procuced.size(); i++) {
+				sg = procuced.get(i);
+				as = new ArtifactStaff();
+				as.setArtifact(ap);
+				as.setType(ArtifactStaffType.PRODUCED);
+				as.setProductId(sg.wfg.getId());
+				as.setStyle(sg.getStyle());
+				as.setMinalProduceUnit(sg.getMinialProduceUnit());
+				as.setUnit(sg.unit);
+				ap.addStaffs(as);
+				sess.save(as);
+			}
+		}
+		
+		tr.commit();
+		
+		return Result.SUCCESS;
+	}
+	
+	
+	public WFArtifact loadArtifact(long id) {
+		Session sess = getSession();
+		ArtifactProduct ap = (ArtifactProduct)sess.get(WFArtifact.class, id);
+		if (ap == null) {
+			return null;
+		}
+		
+		WFArtifact wfa = new WFArtifact();
+		wfa.setId(ap.getId());
+		Set<ArtifactStaff> sets = ap.getStaffs();
+		WFGoods wfg = null;
+		for (ArtifactStaff as : sets) {
+			wfg = this.getGoods(as.getProductId());
+			wfa.addWFGoods(as.getType(), wfg, as.getUnit(), as.getMinalProduceUnit(), as.getStyle());
+		}
+		return wfa;
 	}
 }

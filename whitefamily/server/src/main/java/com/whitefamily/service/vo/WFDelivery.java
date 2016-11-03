@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.whitefamily.po.customer.User;
-import com.whitefamily.service.vo.WFInventoryRequest.Item;
 
 public class WFDelivery {
 

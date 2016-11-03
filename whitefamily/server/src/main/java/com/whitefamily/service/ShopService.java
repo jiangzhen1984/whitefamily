@@ -7,8 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -37,6 +39,8 @@ import com.whitefamily.po.Shop;
 import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
+import com.whitefamily.po.delivery.InternalDeliveryRecord;
+import com.whitefamily.po.delivery.InternalDeliveryRecordGoods;
 import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
 import com.whitefamily.po.incoming.Incoming;
@@ -998,6 +1002,7 @@ public class ShopService extends BaseService implements IShopService {
 		sess.save(dr);
 		sess.flush();
 		
+		Set<Long> goodsId = new HashSet<Long>();
 		List<Item> list = de.getItemList();
 		for (WFDelivery.Item di : list) {
 			if (di.getRealCount() <= 0) {
@@ -1005,17 +1010,19 @@ public class ShopService extends BaseService implements IShopService {
 			}
 			DeliveryRecordGoods g = new DeliveryRecordGoods();
 			InventoryGoods ig = queryAvailableInventoryGoods(di.getGoods().getId());
-			int requestCount = (int)di.getCount();
-			while (requestCount > 0 && ig != null) {	
+			int requestCount = (int)di.getRealCount();
+			while (requestCount > 0 && ig != null) {
 				if (ig.getRemCount() > requestCount) {
-					requestCount = 0;
-					g.setCount(requestCount);
 					ig.setRemCount(ig.getRemCount() - requestCount);
+					g.setInventoryCount(requestCount);
+					requestCount = 0;
 				} else {
-					g.setCount(ig.getRemCount());
+					g.setInventoryCount(ig.getRemCount());
 					requestCount -= ig.getRemCount();
 					ig.setRemCount(0);
 				}
+				g.setDeliverCount(di.getRealCount());
+				g.setRequestCount(di.getCount());
 				g.setPrice(di.getGoods().getPrice());
 				g.setGoods(di.getGoods());
 				g.setBrandName(ig.getBrandName());
@@ -1028,6 +1035,9 @@ public class ShopService extends BaseService implements IShopService {
 				//Just update remain count 
 				sess.update(ig);
 				ig = queryAvailableInventoryGoods(di.getGoods().getId());
+				g = new DeliveryRecordGoods();
+				
+				goodsId.add(Long.valueOf(di.getGoods().getId()));
 			}
 			
 			if (requestCount != 0) {
@@ -1040,19 +1050,82 @@ public class ShopService extends BaseService implements IShopService {
 		
 		tr.commit();
 		
-		return Result.SUCCESS;
+		//TODO update goods price
 		
+		return Result.SUCCESS;
 	}
 	
 	
 	private InventoryGoods queryAvailableInventoryGoods(long gid) {
 		Session sess = getSession();
 		Query query = sess.createQuery(" from InventoryGoods where goods.id = ? and remCount > 0 order by id ");
+		query.setLong(0, gid);
 		query.setFirstResult(0);
 		query.setMaxResults(1);
 		List list = query.list();
 		return list.size() > 0 ? (InventoryGoods)list.get(0) : null;
 		
+	}
+	
+	@Override
+	public Result handleInternalDelivery(WFDelivery de, WFUser user) {
+		
+		Session sess = getSession();
+		
+		InternalDeliveryRecord dr = new InternalDeliveryRecord();
+		dr.setDatetime(de.getDatetime());
+		dr.setOperator(user);
+		Transaction tr = sess.beginTransaction();
+		sess.save(dr);
+		sess.flush();
+		
+		Set<Long> goodsId = new HashSet<Long>();
+		List<Item> list = de.getItemList();
+		for (WFDelivery.Item di : list) {
+			if (di.getRealCount() <= 0) {
+				continue;
+			}
+			InternalDeliveryRecordGoods g = new InternalDeliveryRecordGoods();
+			InventoryGoods ig = queryAvailableInventoryGoods(di.getGoods().getId());
+			int requestCount = (int)di.getRealCount();
+			while (requestCount > 0 && ig != null) {
+				if (ig.getRemCount() > requestCount) {
+					ig.setRemCount(ig.getRemCount() - requestCount);
+					g.setInventoryCount(requestCount);
+					requestCount = 0;
+				} else {
+					g.setInventoryCount(ig.getRemCount());
+					requestCount -= ig.getRemCount();
+					ig.setRemCount(0);
+				}
+				g.setDeliverCount(di.getRealCount());
+				g.setPrice(di.getGoods().getPrice());
+				g.setGoods(di.getGoods());
+				g.setBrandName(ig.getBrandName());
+				g.setVendorName(ig.getVendorName());
+				g.setInventoryPrice(ig.getPrice());
+				g.setInventoryId(ig.getRecord().getId());
+				g.setRecord(dr);
+				sess.save(g);
+				
+				//Just update remain count 
+				sess.update(ig);
+				ig = queryAvailableInventoryGoods(di.getGoods().getId());
+				g = new InternalDeliveryRecordGoods();
+				
+				goodsId.add(Long.valueOf(di.getGoods().getId()));
+			}
+			
+			if (requestCount != 0) {
+				tr.rollback();
+				return Result.ERR_OUT_OF_STOCK;
+			}
+		}
+		
+		
+		tr.commit();
+		
+		return Result.SUCCESS;
 	}
 	
 	@Override
@@ -1113,4 +1186,6 @@ public class ShopService extends BaseService implements IShopService {
 		
 		return Result.SUCCESS;
 	}
+	
+	
 }
