@@ -55,7 +55,7 @@
                   <tbody>
                     <ui:repeat var="o" value="#{artifactBean.artifact.targetGoods}" varStatus="status">
                     <tr id="atg-row#{status.index}">
-                      <td class="text-left"><input type="text"  name="atggoodsname" value="#{o.wfg.name}"  placeholder="加工产品" class="form-control" /><input type="hidden" name="atg_id"  id="atg_id#{status.index}" value="#{o.wfg.id}"  class="form-control" /></td>
+                      <td class="text-left"><input type="text"  id="atg#{status.index}"  name="atggoodsname" value="#{o.wfg.name}"  placeholder="加工产品" class="form-control" /><input type="hidden" name="atg_id"  id="atg_id#{status.index}" value="#{o.wfg.id}"  class="form-control" /></td>
                       <td class="text-right"><input type="text" name="minal" value="#{o.minialProduceUnit}" placeholder="最小生产数量" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="style" value="#{o.style}" placeholder="分装规格" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="atgunit" value="#{o.unit}" placeholder="分装数量" class="form-control" /></td>
@@ -160,7 +160,7 @@
    
 function registerAutoCompleteEvent(el, idels) {
  //<![CDATA[
-    var len = g_el_ar.length;  
+    var len = el.length;
    for (var i= 0; i < len; i++) {
      var g_el = $('#'+el[i].id);
      var g_id_el = $('#'+idels[i].id);
@@ -173,7 +173,7 @@ function registerAutoCompleteEvent(el, idels) {
      });
    }
     //]]>
-} 
+ } 
 
 
 

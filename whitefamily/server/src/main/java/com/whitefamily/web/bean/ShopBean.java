@@ -54,6 +54,7 @@ public class ShopBean {
 	private ShopIncoming shopIncoming;
 	private long viewShopIncomingId;
 	private Date viewShopIncomingDate;
+	private Date viewShopInventoryDate;
 
 	private List<WFInventoryRequest> inventoryRequestList;
 	private WFShop inventoryRequestShop;
@@ -665,6 +666,16 @@ public class ShopBean {
 		}
 		inventoryService.removeWFIneventoryRequest(id);
 	}
+
+	public Date getViewShopInventoryDate() {
+		return viewShopInventoryDate;
+	}
+
+	public void setViewShopInventoryDate(Date viewShopInventoryDate) {
+		this.viewShopInventoryDate = viewShopInventoryDate;
+	}
+	
+	
 	
 
 }

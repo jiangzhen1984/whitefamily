@@ -17,13 +17,13 @@
     </ul>
   </li>
    </c:if>
-   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER'}">
+   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER' or userBean.user.role == 'INVENTORY_STAFF'}">
   <li id="extension"><a class="parent"><i class="fa fa-puzzle-piece fa-fw"></i> <span>店铺管理</span></a>
     <ul>
        <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="shop_list.xhtml">店铺列表</a></li>
       </c:if>
-      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'}">
+      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF' or userBean.user.role == 'INVENTORY_STAFF'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺备货申请</a></li>
       </c:if>
       <c:if test="${userBean.user.role == 'VEGETABLE_SUPPLIER'}">
@@ -35,11 +35,22 @@
     </ul>
   </li>
    </c:if>
-   <c:if test="${userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'ADMIN'}" >
+  <c:if test="${userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'ADMIN'}" >
   <li id="reports"><a class="parent"><i class="fa fa-bar-chart-o fa-fw"></i> <span>库存管理</span></a>
     <ul>
       <li><a href="inventory_update_form.xhtml">更新库存</a></li>
       <li><a href="inventory_update_list.xhtml">库存更新记录</a></li>
+    </ul>
+  </li>
+   </c:if>
+   <c:if  test="${userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'ADMIN' }">
+  <li id="customer"><a class="parent"><i class="fa fa-crop fa-fw"></i> <span>加工产品管理</span></a>
+  
+    <ul>
+       <c:if  test="${userBean.user.role == 'ADMIN'}">
+      <li><a href="artifact_create_form.xhtml">加工产品配置</a></li>
+      </c:if>
+      <li><a href="artifact_produce_form.xhtml">加工产品提货</a></li>
     </ul>
   </li>
    </c:if>

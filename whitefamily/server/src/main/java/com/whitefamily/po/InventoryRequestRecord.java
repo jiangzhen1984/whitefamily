@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+
 import com.whitefamily.po.customer.User;
 
 @Entity
@@ -43,6 +45,9 @@ public class InventoryRequestRecord extends Record {
 
 	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
 	private String userName;
+	
+	
+	private Date requestDate;
 	
 	@Transient
 	protected List<InventoryRequestRecord> subRecords;
@@ -217,5 +222,17 @@ public class InventoryRequestRecord extends Record {
 	public void setSupplierRecd(int supplierRecd) {
 		this.supplierRecd = supplierRecd;
 	}
+
+	@Column(name = "WF_REQ_DATE", columnDefinition = "DATE")
+	@Type(type="date")
+	public Date getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(Date requestDate) {
+		this.requestDate = requestDate;
+	}
+	
+	
 
 }

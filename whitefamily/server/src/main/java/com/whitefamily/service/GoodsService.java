@@ -56,6 +56,8 @@ public class GoodsService extends BaseService implements IGoodsService {
 	
 	private List<WFGoods> cacheList;
 	
+	private List<WFArtifact> cacheArtifactList;
+	
 	ICategoryService cateService;
 	
 	
@@ -458,6 +460,8 @@ public class GoodsService extends BaseService implements IGoodsService {
 		}
 		
 		this.queryGoods(0, 300, -1);
+		
+		this.loadArtifacts();
 	}
 	
 	
@@ -589,14 +593,19 @@ public class GoodsService extends BaseService implements IGoodsService {
 		}
 		
 		tr.commit();
-		
+		wff.setId(ap.getId());
+		if (cacheArtifactList != null && cacheArtifactList.size() > 0) {
+			synchronized(cacheArtifactList) {
+				cacheArtifactList.add(wff);
+			}
+		}
 		return Result.SUCCESS;
 	}
 	
 	
 	public WFArtifact loadArtifact(long id) {
 		Session sess = getSession();
-		ArtifactProduct ap = (ArtifactProduct)sess.get(WFArtifact.class, id);
+		ArtifactProduct ap = (ArtifactProduct)sess.get(ArtifactProduct.class, id);
 		if (ap == null) {
 			return null;
 		}
@@ -610,5 +619,48 @@ public class GoodsService extends BaseService implements IGoodsService {
 			wfa.addWFGoods(as.getType(), wfg, as.getUnit(), as.getMinalProduceUnit(), as.getStyle());
 		}
 		return wfa;
+	}
+	
+	
+	public List<WFArtifact> loadArtifacts() {
+		if (cacheArtifactList != null && cacheArtifactList.size() > 0) { 
+			return cacheArtifactList;
+		}
+		Session sess = getSession();
+		Query query = sess.createQuery(" from ArtifactProduct");
+		List<ArtifactProduct> apList = query.list();
+		List<WFArtifact> list = new ArrayList<WFArtifact>(apList.size());
+		
+		WFArtifact wfa = null;
+		for (ArtifactProduct ap : apList) {
+			wfa = new WFArtifact();
+			wfa.setId(ap.getId());
+			list.add(wfa);
+			for (ArtifactStaff as : ap.getStaffs()) {
+				wfa.addWFGoods(as.getType(), getGoods(as.getProductId()), as.getUnit(), as.getMinalProduceUnit(), as.getStyle());
+			}
+		}
+		cacheArtifactList = list;
+		return cacheArtifactList;
+		
+	}
+	
+	
+	public List<WFArtifact> searchWFArtifactGoods(String name) {
+		List<WFArtifact> matchedList = new ArrayList<WFArtifact>();
+		List<WFArtifact> list = loadArtifacts();
+		for (WFArtifact wfa : list) {
+			boolean flag = false;
+			for (StaffGoods sg : wfa.getTargetGoods()) {
+				if (sg.wfg.getName().contains(name) || sg.wfg.getAbbr().contains(name)) {
+					flag = true;
+					break;
+				}
+			}
+			if (flag) {
+				matchedList.add(wfa);
+			}
+		}
+		return matchedList;
 	}
 }

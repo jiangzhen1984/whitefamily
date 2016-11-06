@@ -4,9 +4,11 @@
 <html xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:h="http://java.sun.com/jsf/html">
 <ui:include src="../include/header.xhtml" />
 <link href="css/page_style.css" rel="stylesheet" type="text/css" />
+
 <title>补货清单</title>
 <body>
 	<div id="container">
@@ -17,7 +19,7 @@
 						<div class="pull-right">
 							<h:commandLink action="#{shopBean.requestInventory}"
 								type="submit" form="form-product" data-toggle="tooltip"
-								title="提交" class="btn btn-primary">
+								title="提交" class="btn btn-primary" onclick="return ck();">
 								<i class="fa fa-save"></i>
 							</h:commandLink>
 							<a href="index.xhtml" data-toggle="tooltip" title="取消"
@@ -37,6 +39,27 @@
 							<button type="button" class="close" data-dismiss="alert">&times;</button>
 						</div>
 					</c:if>
+					
+					 <div class="well">
+			          <div class="row">
+			             <div class="input-group date">
+			                <h:inputText type="text"
+									value="#{shopBean.viewShopInventoryDate}" a:placeholder="选择日期"
+									a:data-date-format="YYYY-MM-DD" a:id="input-date-available"
+									a:class="form-control">
+									<f:convertDateTime pattern="yyyy-MM-dd" />
+								</h:inputText>
+							<span class="input-group-btn">
+	                     <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+			                </span>
+			                  <span class="input-group-btn">
+			                         <h:commandLink  type="submit" form="form-product" data-toggle="tooltip" class="btn btn-primary pull-right"><i class="fa fa-search"></i>查看</h:commandLink>
+			                  </span>
+			               </div>
+			          </div>
+			        </div>
+					
+					
 					<div class="panel panel-default">
 						<div class="panel-heading">送货清单</div>
 						<div class="panel-body">
@@ -72,7 +95,7 @@
 						<div class="panel-body">
 							<h:commandLink action="#{shopBean.requestInventory}"
 								type="submit" form="form-product" data-toggle="tooltip"
-								title="提交" class="btn btn-primary">
+								title="提交" class="btn btn-primary"   onclick="return ck();">
 								<i class="fa fa-save"></i>提交</h:commandLink>
 							<button type="button" class="btn btn-primary"
 								onclick="addItem();">
@@ -175,8 +198,18 @@ function addItem() {
      });
    }
     //]]>
+    
+function ck() {
+    return confirm("确认提交进货申请吗？");
+}    
 
-  </script>
+</script>
+<script type="text/javascript"><!--
+ $('.date').datetimepicker({
+         pickTime: false
+ });
+ //-->
+</script>
 
 
 </body>

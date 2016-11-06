@@ -22,7 +22,7 @@
 <body>
 
 	<div class="content_left_bg"></div>
-	<div class="top">营收明细  <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" >提交</h:commandLink></h:form></div></div>
+	<div class="top">营收明细  <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" onclick="return ck();">提交</h:commandLink></h:form></div></div>
 	<div class="content">
 	<div  class="content_right">
 	    <c:if test="${not empty shopBean.errMsg}">
@@ -942,6 +942,11 @@
 		</ul>
 		<div class="clear"></div>
 	</div>
+<script type="text/javascript">
+function ck() {
+	return confirm("确定提交吗？ 提交后营收无法修改， 如果需要添加其他营收，请先保存");
+}
+</script>
 
 </body>
 

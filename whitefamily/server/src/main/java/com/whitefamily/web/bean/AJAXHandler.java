@@ -26,6 +26,8 @@ import com.sun.faces.lifecycle.LifecycleImpl;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
+import com.whitefamily.service.vo.WFArtifact;
+import com.whitefamily.service.vo.WFArtifact.StaffGoods;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
@@ -71,6 +73,8 @@ public class AJAXHandler extends HttpServlet {
 			handleCartAction(req, resp);
 		} else if ("chart".equalsIgnoreCase(action)) {
 			handleChartAction(req, resp);
+		} else if ("artifact".equalsIgnoreCase(action)) {
+			handleArtifactSearchAction(req, resp);
 		}
 
 	}
@@ -161,18 +165,12 @@ public class AJAXHandler extends HttpServlet {
 		String goods_id = req.getParameter("goods_id");
 		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
-		if (goods_id == null || goods_id.isEmpty()) {
-			return;
-		}
-		if (goodsBean == null) {
-		} else {
-			List<WFBrand> list = service.searchBrand(name, 10);
-			for (WFBrand wf : list) {
-				JSONObject o = new JSONObject();
-				o.put("name", wf.getName());
-				o.put("id", wf.getId());
-				ret.put(o);
-			}
+		List<WFBrand> list = service.searchBrand(name, 10);
+		for (WFBrand wf : list) {
+			JSONObject o = new JSONObject();
+			o.put("name", wf.getName());
+			o.put("id", wf.getId());
+			ret.put(o);
 		}
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
@@ -190,18 +188,12 @@ public class AJAXHandler extends HttpServlet {
 		String goods_id = req.getParameter("goods_id");
 		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
-		if (goods_id == null || goods_id.isEmpty()) {
-			return;
-		}
-		if (goodsBean == null) {
-		} else {
-			List<WFVendor> list = service.searchVendor(name, 10);
-			for (WFVendor wf : list) {
-				JSONObject o = new JSONObject();
-				o.put("name", wf.getName());
-				o.put("id", wf.getId());
-				ret.put(o);
-			}
+		List<WFVendor> list = service.searchVendor(name, 10);
+		for (WFVendor wf : list) {
+			JSONObject o = new JSONObject();
+			o.put("name", wf.getName());
+			o.put("id", wf.getId());
+			ret.put(o);
 		}
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
@@ -496,6 +488,42 @@ public class AJAXHandler extends HttpServlet {
 		JSONObject data = new JSONObject();
 		data.put("ret", 0);
 		data.put("itemcount", bean.getCart().getItems().size());
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(data.toString());
+		out.flush();
+	}
+	
+	private void handleArtifactSearchAction(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		String name = req.getParameter("name");
+		IGoodsService goodsService = ServiceFactory.getGoodsService();
+		List<WFArtifact> list = null;
+		if (name == null || name.isEmpty()) {
+			List<WFArtifact> l = goodsService.loadArtifacts();
+			if (l == null ) {
+				return;
+			} 
+			int len = l.size() > 10 ? 10 : l.size();
+			list = goodsService.loadArtifacts().subList(0, len);
+		} else {
+			list = goodsService.searchWFArtifactGoods(name);
+			
+		}
+		JSONArray data = new JSONArray();
+		for (WFArtifact wfa : list) {
+			for (StaffGoods sg : wfa.getTargetGoods()) {
+				JSONObject o = new JSONObject();
+				//FIXME should update structure for support mulit-goods query
+				o.put("name", sg.wfg.getName());
+				o.put("style", sg.style);
+				o.put("un", sg.unit);
+				o.put("mn", sg.minialProduceUnit);
+				o.put("id", wfa.getId());
+				data.put(o);
+			}
+		}
+
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.print(data.toString());

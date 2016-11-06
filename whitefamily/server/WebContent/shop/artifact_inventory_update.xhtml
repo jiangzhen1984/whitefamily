@@ -60,10 +60,10 @@
                     <ui:repeat var="o" value="#{a.targetGoods}" varStatus="status">
                     <tr id="image-row#{status.index}">
                       <td class="text-left"><input type="text" id="goodsname#{status.index}" name="goodsname" value="#{o.wfg.name}"  placeholder="请输入产品名称" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id#{status.index}" value="#{o.wfg.id}"  class="form-control" /></td>
-                      <td class="text-right"><input type="text" id="brandname#{status.index}"  value=""  name="brandname"  placeholder="请输入产品品牌" class="form-control" /></td>
-                      <td class="text-right"><input type="text" id="vendorname#{status.index}"  value=""  name="vendorname"  placeholder="请输入供应商" class="form-control" /></td>
+                      <td class="text-right"><input type="text" id="brandname#{status.index}"   name="brandname"  placeholder="请输入产品品牌" class="form-control" /></td>
+                      <td class="text-right"><input type="text" id="vendorname#{status.index}"  name="vendorname"  placeholder="请输入供应商" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="prs"  value="" placeholder="请输入产品单价" class="form-control" /></td>
-                      <td class="text-right"><input type="text" name="count" value="#{o.unit}" placeholder="请输入库存数量" class="form-control" disabled="disabled" /></td>
+                      <td class="text-right"><input type="text" name="count" value="#{o.unit}" placeholder="请输入库存数量" class="form-control" readonly="readonly" /></td>
                       <td class="text-right"><input type="text" name="rate" value="" placeholder="0-100" class="form-control"  maxlength="3" /></td>
                       <td class="text-right"><input type="text" name="rate1" value="" placeholder="0-100" class="form-control" maxlength="3"/></td>
                     </tr>
@@ -81,10 +81,11 @@
   </h:form>
 </div>
     <script type="text/javascript">
-    
+    //<![CDATA[
      function f_auto_complete_source_type(type, request, response, param) {
-    		$.ajax({
-			url: type+'.ajax?action='+type+'&amp;'+'filter=' +  encodeURIComponent(request)+ '&amp;name=' +  encodeURIComponent(request),
+        console.log(request+ "   " + response); 
+   		$.ajax({
+			url: type+'.ajax?action='+type+'&'+'filter=' +  encodeURIComponent(request)+ '&name=' +  encodeURIComponent(request),
 			data : param,
 			dataType: 'json',
 			success: function(json) {
@@ -111,24 +112,21 @@
     }
     
     function f_auto_complete_source_brand(request, response) {
-         var input_name = $(this).prop('id');
-         var g_id = $("#goodsname_id" + input_name.substring(9)).val();
-         f_auto_complete_source_type('filterBrand', request, response, '&amp;goods_id='+g_id);
+         f_auto_complete_source_type('filterBrand', request, response, '');
     }
     
     
     function f_auto_complete_source_vendor(request, response) {
-        var input_name = $(this).prop('id');
-        var g_id = $("#goodsname_id" + input_name.substring(9)).val();
-        f_auto_complete_source_type('filterVendor', request, response, '&amp;goods_id='+g_id);
+        f_auto_complete_source_type('filterVendor', request, response, '');
    }
 
    
    
    var b_el_ar = $('input[name=\'brandname\']');
+   var len = b_el_ar.length;
    for ( i= 0; i < len; i++) {
      var b_el =$('#'+b_el_ar[i].id);
-     var b_id_el = $('#'+b_id_el_ar[i].id);
+     console.log(b_el);
       b_el.autocomplete({
 	    'source': f_auto_complete_source_brand,
 	    'select': function(item) {
@@ -138,9 +136,9 @@
    }
    
    var v_el_ar = $('input[name=\'vendorname\']');
+   len = v_el_ar.length;
    for ( i= 0; i < len; i++) {
      var v_el =$('#'+v_el_ar[i].id);
-     var v_id_el = $('#'+v_id_el_ar[i].id);
       v_el.autocomplete({
 	    'source': f_auto_complete_source_vendor,
 	    'select': function(item) {

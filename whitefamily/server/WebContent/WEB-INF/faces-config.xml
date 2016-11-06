@@ -390,6 +390,36 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<navigation-rule>
+		<from-view-id>/shop/artifact_produce_form.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{artifactBean.artifactInventoryUpdate}</from-action>
+			<from-outcome>inventoryupdate</from-outcome>
+			<to-view-id>/shop/artifact_inventory_update.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{artifactBean.createArtifact}</from-action>
+			<from-outcome>artifactInventoryUpdateFailed</from-outcome>
+			<to-view-id>/shop/artifact_produce_form.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/artifact_inventory_update.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{artifactBean.artifactInventoryUpdate}</from-action>
+			<from-outcome>saveinventoryfailed</from-outcome>
+			<to-view-id>/shop/artifact_inventory_update.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{artifactBean.saveArtifactInventory}</from-action>
+			<from-outcome>inventorylist</from-outcome>
+			<to-view-id>/shop/inventory_update_list.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
 	
 	<navigation-rule>
 		<from-view-id>/mobile/damage_report.xhtml</from-view-id>

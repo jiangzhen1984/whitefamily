@@ -73,5 +73,11 @@ public interface IGoodsService {
 	
 	
 	public WFArtifact loadArtifact(long id);
+	
+	
+	public List<WFArtifact> loadArtifacts();
+	
+	
+	public List<WFArtifact> searchWFArtifactGoods(String name);
 
 }

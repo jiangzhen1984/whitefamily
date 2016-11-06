@@ -371,22 +371,33 @@ public class ShopService extends BaseService implements IShopService {
 	
 	
 	public Result requestInventory(WFInventoryRequest inventory, WFShop shop, WFUser manager) {
-		InventoryRequestRecord record = new InventoryRequestRecord();
-		record.setDatetime(inventory.getDatetime());
-		record.setOperator(manager);
-		record.setStatus(InventoryStatus.REQUEST);
-		record.setShop(shop);
-		
+		InventoryRequestRecord record = null;
 		
 
 		Session sess = getSession();
 		
+		Query query = sess.createQuery(" from InventoryRequestRecord where shopId = ? and requestDate =? ");
+		query.setLong(0, shop.getId());
+		query.setDate(1, inventory.getDatetime());
+		Transaction tr = sess.beginTransaction();
+		List<InventoryRequestRecord> irrList = query.list();
+		if (irrList == null || irrList.size() <= 0) {
+			record = new InventoryRequestRecord();
+			record.setDatetime(inventory.getDatetime());
+			record.setOperator(manager);
+			record.setStatus(InventoryStatus.REQUEST);
+			record.setShop(shop);
+			record.setRequestDate(inventory.getDatetime());
+			
+			sess.save(record);
+			sess.flush();
+		} else {
+			record = irrList.iterator().next();
+		}
+		
 		List<WFSupplierMapping> mappingList = supplierService.getMappingList();
 		Map<WFSupplierMapping, LocalMappingSubRecord> mapping = new HashMap<WFSupplierMapping, LocalMappingSubRecord>();
 		
-		Transaction tr = sess.beginTransaction();
-		sess.save(record);
-		sess.flush();
 		int count = inventory.getItemCount();
 		InventoryRequestGoods ig = null;
 		for (int i = 0; i < count; i++) {
@@ -460,6 +471,7 @@ public class ShopService extends BaseService implements IShopService {
 		record.setParent(subRecord.parent);
 		record.setStatus(InventoryStatus.REQUEST);
 		record.setSupplierRecd(InventoryRequestRecord.TYPE_IS_SUPPLIER);
+		record.setRequestDate(subRecord.parent.getDatetime());
 		sess.save(record);
 		sess.flush();
 		

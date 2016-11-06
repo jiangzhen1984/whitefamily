@@ -68,7 +68,7 @@
 		<mapping class="com.whitefamily.po.delivery.DeliverySupplierConfiguration" />
 		<mapping class="com.whitefamily.po.delivery.DeliveryRecord" />
 		<mapping class="com.whitefamily.po.delivery.DeliveryRecordGoods" />
-		<mapping class="com.whitefamily.po.delivery.InternalDelieryRecord" />
+		<mapping class="com.whitefamily.po.delivery.InternalDeliveryRecord" />
 		<mapping class="com.whitefamily.po.delivery.InternalDeliveryRecordGoods" />
 		<mapping class="com.whitefamily.po.incoming.OperationCost" />
 		<mapping class="com.whitefamily.po.artifact.ArtifactProduct" />
