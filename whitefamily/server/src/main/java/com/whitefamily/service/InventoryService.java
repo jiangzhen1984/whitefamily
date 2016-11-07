@@ -1,5 +1,7 @@
 package com.whitefamily.service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
+import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFVendor;
@@ -464,5 +467,41 @@ public class InventoryService extends BaseService implements IInventoryService {
 		sess.delete(irc);
 		tr.commit();
 		return Result.SUCCESS;
+	}
+	
+	
+	
+	public List<WFInventoryGoods> queryCurrentStock() {
+		
+		List<WFInventoryGoods> list = null;
+		Session sess = getSession();
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select wig.WF_GOOD_ID,  wig.WF_BRAND_NAME, wig.WF_VENDOR_NAME, wig.WF_PRICE, wig.WF_UNIT_COUNT,");
+		sql.append(" wig.WF_UNIT_REM_COUNT, wi.WF_OPT_TIMESTAMP ");
+		sql.append(" from wf_inventory_goods wig left join wf_inventory_record wi on wi.id = wig.wf_rec_id where wig.wf_unit_rem_count > 0 order by wf_opt_timestamp, wf_good_id ");
+		Query query = sess.createSQLQuery(sql.toString());
+		List<Object[]> qlist = query.list();
+		list = new ArrayList<WFInventoryGoods>(qlist.size());
+		BigInteger biId = null;
+		BigDecimal biprice = null;
+		BigDecimal biuc = null;
+		BigDecimal biurc = null;
+		for (Object[] obj : qlist) {
+			biId = (BigInteger)obj[0];
+			biprice = (BigDecimal)obj[3];
+			biuc = (BigDecimal)obj[4];
+			biurc = (BigDecimal)obj[5];
+			WFInventoryGoods wfg = new WFInventoryGoods();
+			wfg.setGoods(goodsService.getGoods(biId.longValue()));
+			wfg.setBrand(goodsService.getBrand((String)obj[1]));
+			wfg.setVendor(goodsService.getVendor((String)obj[2]));
+			wfg.setCount(biuc.floatValue());
+			wfg.setRemain(biurc.floatValue());
+			wfg.setPrice(biprice.floatValue());
+			wfg.setDate((Date)obj[6]);
+			list.add(wfg);
+		}
+		
+		return list;
 	}
 }

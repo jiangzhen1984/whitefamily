@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.service.vo.WFInventory;
+import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 
 public interface IInventoryService {
@@ -38,6 +39,9 @@ public interface IInventoryService {
 	public List<WFInventory> queryInventory(Date startDate, Date endDate, int start, int count);
 	
 	public void queryInventoryDetail(WFInventory wf);
+	
+	
+	public List<WFInventoryGoods> queryCurrentStock();
 	
 
 }
