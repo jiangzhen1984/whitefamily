@@ -22,6 +22,7 @@
     <ul>
        <c:if  test="${userBean.user.role == 'ADMIN'}">
       <li><a href="shop_list.xhtml">店铺列表</a></li>
+       <li><a href="incoming_list.xhtml">店铺营收统计</a></li>
       </c:if>
       <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF' or userBean.user.role == 'INVENTORY_STAFF'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺备货申请</a></li>

@@ -18,8 +18,6 @@ public class DamageBean {
 	
 	
 	private float quality;
-	private String shopName;
-	private long shopId;
 	private List<WFCategory> categoryList;
 	private String error;
 	private long categoryId;
@@ -47,18 +45,11 @@ public class DamageBean {
 		return "测试店铺";
 	}
 
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
-	}
-
+	
 	public long getShopId() {
 		return 1;
 	}
 
-	public void setShopId(long shopId) {
-		this.shopId = shopId;
-	}
-	
 	
 
 	public long getCategoryId() {

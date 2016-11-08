@@ -649,6 +649,80 @@ public class ShopService extends BaseService implements IShopService {
 		List<WFOperationCost> costList = new ArrayList<WFOperationCost> (inList.size());
 		for (OperationCost in: inList) {
 			 cost = new WFOperationCost();
+			 cost.setDate(in.getDate());
+			//日用调料
+			cost.setRytl(in.getRytl());
+			//烧饼
+			cost.setSb(in.getSb());
+			//补菜
+			cost.setBc(in.getBc());
+			//伙食费
+			cost.setHsf(in.getHsf());
+			//饮料
+			cost.setYl(in.getYl());
+			//水费
+			cost.setSf(in.getSf());
+			//电费
+			cost.setDf(in.getDf());
+			//燃气费
+			cost.setRqf(in.getRqf());
+			//房费
+			cost.setFf(in.getFf());
+			//工资
+			cost.setGz(in.getGz());
+			//日杂
+			cost.setRz(in.getRz());
+			//其他
+			cost.setQt(in.getQt());
+			costList.add(cost);
+		}
+		return costList;
+	}
+	
+	
+	public  List<WFIncoming>  queryShopIncoming(Date start, Date end) {
+		if (start == null || end == null) {
+			return null;
+		}
+		Session sess = getSession();
+		Query query = sess.createQuery(" from Incoming where  date >= ?  and date <=? order by date, shop.id asc ");
+		query.setDate(0, start);
+		query.setDate(1, end);
+		List<Incoming> inList = (List<Incoming>)query.list();
+		List<WFIncoming> incomingList = new ArrayList<WFIncoming>(inList.size());
+		WFIncoming wf = null;
+		for (Incoming in : inList) {
+			wf = new WFIncoming();
+			wf.setShop(this.getShop(in.getShop().getId()));
+			wf.setCash( in.getCash());
+			wf.setAli( in.getAli());
+			wf.setDazhong( in.getDazhong());
+			wf.setNuomi( in.getNuomi());
+			wf.setOther(in.getOther());
+			wf.setWeixin(in.getWeixin());
+			wf.setDate(in.getDate());
+			wf.setNuomiaf(in.getNuomiaf());
+			wf.setDaZhongaf(in.getDazhongaf());
+			incomingList.add(wf);
+		}
+		return incomingList;
+	}
+	
+	public  List<WFOperationCost>   queryShopOperationCost(Date start, Date end) {
+		if (start == null || end == null) {
+			return null;
+		}
+		WFOperationCost cost = null;
+		Session sess = getSession();
+		Query query = sess.createQuery(" from OperationCost where date >= ?   and date <=? order by date. shop.id asc  ");
+		query.setDate(0, start);
+		query.setDate(1, end);
+		List<OperationCost> inList = (List<OperationCost>)query.list();
+		List<WFOperationCost> costList = new ArrayList<WFOperationCost> (inList.size());
+		for (OperationCost in: inList) {
+			cost = new WFOperationCost();
+			cost.setDate(in.getDate());
+			cost.setShop(getShop(in.getShop().getId()));
 			//日用调料
 			cost.setRytl(in.getRytl());
 			//烧饼

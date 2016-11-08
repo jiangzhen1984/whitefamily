@@ -21,7 +21,7 @@ public class WFIncoming  {
 	
 	private Date date;
 	
-	
+	private WFShop shop;
 	
 	
 	
@@ -226,4 +226,16 @@ public class WFIncoming  {
 		
 	}
 
+
+	public WFShop getShop() {
+		return shop;
+	}
+
+
+	public void setShop(WFShop shop) {
+		this.shop = shop;
+	}
+
+	
+	
 }

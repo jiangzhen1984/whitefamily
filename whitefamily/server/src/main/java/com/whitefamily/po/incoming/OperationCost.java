@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.whitefamily.po.Shop;
 
 @Entity
@@ -28,6 +30,7 @@ public class OperationCost {
 	private Shop shop;
 	
 	@Column(name = "WF_DATE", columnDefinition = "date")
+	@Type(type="date")
 	private Date date;
 	
 	//日用调料

@@ -43,8 +43,6 @@ public class GoodsBean {
 	private String brandNameRequired;
 	private String brandUnit;
 
-	private List<WFCategory> categoryList;
-
 	private long goodsId;
 
 	private WFGoods goods;
@@ -154,9 +152,6 @@ public class GoodsBean {
 		return ServiceFactory.getCategoryService().getSortedCategory();
 	}
 
-	public void setCategoryList(List<WFCategory> categoryList) {
-		this.categoryList = categoryList;
-	}
 
 	public int getType() {
 		return type;
@@ -266,14 +261,12 @@ public class GoodsBean {
 				* PAGE_COUNT, PAGE_COUNT, -1);
 		if (this.filterCateId > 0) {
 			int len = dbList.size();
-			boolean matchFlag = false;
 			for (int i = 0; i < len; i++) {
 				WFGoods wf = dbList.get(i);
 				WFCategory wfc = (WFCategory) wf.getCate();
 				while (wfc != null) {
 					if (wfc.getId() == filterCateId) {
 						newList.add(wf);
-						matchFlag = true;
 						break;
 					}
 					wfc = wfc.getParent();
