@@ -1096,7 +1096,7 @@ public class ShopService extends BaseService implements IShopService {
 			}
 			DeliveryRecordGoods g = new DeliveryRecordGoods();
 			InventoryGoods ig = queryAvailableInventoryGoods(di.getGoods().getId());
-			int requestCount = (int)di.getRealCount();
+			float requestCount = di.getRealCount();
 			while (requestCount > 0 && ig != null) {
 				if (ig.getRemCount() > requestCount) {
 					ig.setRemCount(ig.getRemCount() - requestCount);

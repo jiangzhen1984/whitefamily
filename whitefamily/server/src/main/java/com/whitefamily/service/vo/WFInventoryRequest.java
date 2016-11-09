@@ -102,6 +102,7 @@ public class WFInventoryRequest {
 			if (goods.getId() == item.getGoods().getId()) {
 				item.price = pr;
 				item.realCount = realCount;
+				break;
 			}
 		}
 	}

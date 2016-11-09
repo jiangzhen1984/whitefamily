@@ -71,13 +71,14 @@ public class SupplierService extends BaseService implements ISupplierService {
 	@Override
 	public List<WFInventoryRequest> querySupplierDeliveryRequest(WFSupplier suppler, Date date) {
 		StringBuffer hqlBuf = new StringBuffer();
-		hqlBuf.append(" from InventoryRequestRecord where supplierRecd = ? ");
+		hqlBuf.append(" from InventoryRequestRecord where supplierRecd = ? and status = ?");
 		
 		hqlBuf.append(" order by status, datetime asc ");
 		
 		Session sess = getSession();
 		Query query = sess.createQuery(hqlBuf.toString());
 		query.setInteger(0, InventoryRequestRecord.TYPE_IS_SUPPLIER);
+		query.setInteger(1, InventoryStatus.REQUEST.ordinal());
 		
 		List<InventoryRequestRecord>  list = query.list();
 		List<WFInventoryRequest> wflist = new ArrayList<WFInventoryRequest>(list.size());
@@ -120,9 +121,11 @@ public class SupplierService extends BaseService implements ISupplierService {
 		}
 		
 		Transaction tr = sess.beginTransaction();
-		createInventory(sess, inventory);
+		createInventory(sess, inventory, req);
 		
 		sess.update(irr);
+		
+		
 		tr.commit();
 		
 		return Result.SUCCESS;
@@ -131,15 +134,14 @@ public class SupplierService extends BaseService implements ISupplierService {
 	
 	
 	
-	private void createInventory(Session sess, WFInventory inventory) {
+	private void createInventory(Session sess, WFInventory inventory, WFInventoryRequest req) {
 		InventoryUpdateRecord record = new InventoryUpdateRecord();
 		record.setIt(inventory.getIt());
 		record.setDatetime(inventory.getDatetime());
 		record.setOperator(inventory.getOperator());
 		record.setIt(InventoryType.IN);
-
+		record.setRequestInventoryId(req.getId());
 		sess.save(record);
-		sess.flush();
 		int count = inventory.getItemCount();
 		InventoryGoods ig = null;
 		for (int i = 0; i < count; i++) {
@@ -152,6 +154,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 			ig.setGoods(wi.getGoods());
 			ig.setCount(wi.getCount());
 			ig.setPrice(wi.getPrice());
+			ig.setRemCount(wi.getCount());
 			ig.setRecord(record);
 			sess.save(ig);
 			wi.setPersisted(true);

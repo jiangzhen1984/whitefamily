@@ -43,5 +43,8 @@ public interface IInventoryService {
 	
 	public List<WFInventoryGoods> queryCurrentStock();
 	
+	
+	public List<WFInventory> queryInventoryAccordingToRequest(long requestId);
+	
 
 }

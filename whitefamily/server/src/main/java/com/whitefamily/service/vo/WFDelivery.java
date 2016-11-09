@@ -89,6 +89,7 @@ public class WFDelivery {
 			item = itemList.get(i);
 			if (goods.getId() == item.getGoods().getId()) {
 				item.realCount = realCount;
+				break;
 			}
 		}
 	}

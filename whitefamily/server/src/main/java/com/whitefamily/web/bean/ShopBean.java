@@ -28,6 +28,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
+import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFInventoryRequest.Item;
 import com.whitefamily.service.vo.WFManager;
@@ -577,9 +578,20 @@ public class ShopBean {
 		 delivery.setShop(inventoryRequestdetail.getShop());
 		 List<Item> list =  inventoryRequestdetail.getItemList();
 		 for (WFInventoryRequest.Item wri : list) {
-			 delivery.addItem(wri.getGoods(), wri.getCount(), false);
+			 delivery.addItem(wri.getGoods(), wri.getCount(), wri.getCount(), 0, false);
 		 }
 		 
+		 List<WFInventory> ilist = inventoryService.queryInventoryAccordingToRequest(inventoryRequestdetail.getId());
+		 for (WFInventory wfi : ilist) {
+			 List<WFInventory.Item>  itemList = wfi.getItemList();
+			 if (itemList == null) {
+				 continue;
+			 }
+			 for (WFInventory.Item  wi : itemList) {
+				 delivery.updateItem(wi.getGoods(), wi.getCount());
+				 inventoryRequestdetail.updateInventoryItem(wi.getGoods(), wi.getCount(), wi.getPrice());
+			 }
+		 }
 		return "perparedelivery";
 	}
 	

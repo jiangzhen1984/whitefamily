@@ -25,6 +25,9 @@ public class InventoryUpdateRecord extends Record {
 	@Enumerated(EnumType.ORDINAL)
 	protected InventoryType it;
 	
+	@Column(name = "WF_INV_REQ_ID", columnDefinition = "NUMERIC(12) DEFAULT 0")
+	protected long requestInventoryId;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,6 +70,14 @@ public class InventoryUpdateRecord extends Record {
 
 	public void setIt(InventoryType it) {
 		this.it = it;
+	}
+
+	public long getRequestInventoryId() {
+		return requestInventoryId;
+	}
+
+	public void setRequestInventoryId(long requestInventoryId) {
+		this.requestInventoryId = requestInventoryId;
 	}
 
 	
