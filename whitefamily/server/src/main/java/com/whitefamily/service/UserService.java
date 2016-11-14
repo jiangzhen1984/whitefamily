@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import com.whitefamily.po.customer.AccountType;
 import com.whitefamily.po.customer.Role;
 import com.whitefamily.po.customer.User;
+import com.whitefamily.service.vo.Franchisee;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFUser;
@@ -106,6 +107,20 @@ public class UserService extends BaseService implements IUserService {
 		} else if (u.getRole() == Role.VEGETABLE_SUPPLIER){
 			wfu = new WFVegetableSupplier();
 			wfu.setId(u.getId());
+		} else if (u.getRole() == Role.FRANCHISEE) {
+			Franchisee m = new Franchisee();
+			m.setId(u.getId());
+			m.setAccountType(AccountType.NORMAL);
+			m.setName(u.getName());
+			m.setRole(Role.FRANCHISEE);
+			if (u.getShopId() > 0) {
+				WFShop shop = new WFShop();
+				shop.setId(u.getShopId());
+				shop.setAddress(u.getShopAddress());
+				shop.setName(u.getName());
+				m.setShop(shop);
+			}
+			wfu = m;
 		} else {
 			wfu = new WFUser();
 			wfu.setId(u.getId());

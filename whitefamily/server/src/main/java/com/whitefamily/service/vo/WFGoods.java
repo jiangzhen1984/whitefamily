@@ -33,6 +33,7 @@ public class WFGoods extends Goods {
 		this.setUnit(c.getUnit());
 		this.setGoodsDesc(c.getGoodsDesc());
 		this.setPrice(c.getPrice());
+		this.setPrice1(c.getPrice1());
 		this.abbr =  PinyinHelper.getShortPinyin(this.name);
 	}
 	

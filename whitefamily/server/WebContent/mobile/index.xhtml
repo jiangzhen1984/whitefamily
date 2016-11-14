@@ -39,7 +39,7 @@
 				<!-- 代码 开始 -->
 				<div id="firstpane" class="menu_list">
 					<c:forEach var="g" items="#{mallBean.categoryList}">
-						<h:panelGroup rendered="${g.id == mallBean.cateId and g.type == 0}">
+						<h:panelGroup rendered="${g.id == mallBean.cateId and (g.type == 1 or g.type == 2)}">
 							<h:outputText class="menu_head current" value="#{g.name}" />
 							<c:forEach var="sub" items="#{g.subs}">
 							    <h:commandLink class="menu_head" form="form-product"
@@ -49,7 +49,7 @@
 								</h:commandLink>
 							</c:forEach>
 						</h:panelGroup>
-						<h:panelGroup rendered="${g.id ne mallBean.cateId and g.type == 0}">
+						<h:panelGroup rendered="${g.id ne mallBean.cateId  and (g.type == 1 or g.type == 2)}">
 							<h:commandLink class="menu_head" form="form-product"
 								data-toggle="tooltip" title="查看分类产品">#{g.name}
 									<f:setPropertyActionListener target="#{mallBean.cateId}"
@@ -94,7 +94,12 @@
 							<div class="today_sales_tit">#{g.name}</div>
 							<div class="today_sales_detail">
 								<div class="today_sales_detail_left">
+								    <c:if  test="${userBean.user.role == 'MANAGER'}">
 									<span class="today_sales_detail_price"><br />规格：#{g.unit} 价格：#{g.price}</span>
+									</c:if>
+									<c:if  test="${userBean.user.role == 'FRANCHISEE'}">
+									<span class="today_sales_detail_price"><br />规格：#{g.unit} 价格：#{g.price1}</span>
+									</c:if>
 								</div>
 								<div class="today_sales_detail_right">
 								     <span class="today_sales_detail_price" name="items">

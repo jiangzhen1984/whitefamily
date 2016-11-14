@@ -103,7 +103,7 @@ public class UserBean {
 		}
 		
 	//	String agent = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("user-agent");
-		if (user.getRole() != Role.MANAGER) {
+		if (user.getRole() != Role.MANAGER && user.getRole() != Role.FRANCHISEE) {
 			if (user.getRole() == Role.VEGETABLE_SUPPLIER) {
 				return "veg";
 			} else {

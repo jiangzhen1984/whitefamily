@@ -48,6 +48,16 @@
                       <td class="text-left">分类名称</td>
                       <td class="text-left"><h:inputText value="#{categoryBean.name}" a:placeholder="请输入分类"  class="form-control"></h:inputText></td>
                     </tr>
+                    <tr>
+                         <td class="text-left">分类类型</td>
+                         <td class="text-left"> 
+                             <h:selectOneMenu value="#{categoryBean.type}"   class="form-control">
+                                <f:selectItem itemLabel="库管可见" itemValue="0" />
+                                <f:selectItem itemLabel="店长可见" itemValue="1" />
+                                <f:selectItem itemLabel="加盟商可见" itemValue="2" />
+                             </h:selectOneMenu>	
+                         </td>
+                   </tr>
                      <tr>
                       <td class="text-left">上级分类</td>
                       <td class="text-left">

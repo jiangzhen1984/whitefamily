@@ -22,6 +22,7 @@ public class CategoryBean {
 	private List<WFCategory> categoryList;
 	private long categoryId;
 	private String name;
+	private int type;
 	private long parentCategoryId;
 
 	private String errMsg;
@@ -98,6 +99,7 @@ public class CategoryBean {
 		}
 
 		wf.setName(name);
+		wf.setType(type);
 		if (parentCategoryId > 0) {
 			WFCategory wfParent = findCategory(categoryList, parentCategoryId);
 			wf.setParent(wfParent);
@@ -130,6 +132,7 @@ public class CategoryBean {
 
 		name = cate.getName();
 		categoryId = cate.getId();
+		type = cate.getType();
 		parentCategoryId = cate.getParentId();
 		//
 		return "editcate";
@@ -222,4 +225,14 @@ public class CategoryBean {
 		return "list";
 	}
 
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	
+	
 }

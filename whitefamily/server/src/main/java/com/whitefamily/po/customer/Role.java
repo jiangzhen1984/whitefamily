@@ -7,7 +7,8 @@ public enum Role {
 	DELIVER_STAFF,
 	MARKETING,
 	INVENTORY_STAFF,
-	VEGETABLE_SUPPLIER;
+	VEGETABLE_SUPPLIER,
+	FRANCHISEE;
 	
 	public String getValue() {
 		switch (this) {
@@ -23,6 +24,8 @@ public enum Role {
 			return "市场分析";
 		case VEGETABLE_SUPPLIER:
 			return "菜商";
+		case FRANCHISEE:
+			return "加盟商";
 		default:
 			return "未知";
 		}
