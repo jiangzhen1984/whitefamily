@@ -44,11 +44,9 @@
                 </div>
             </div>
              <div class="col-sm-3">
-                 <label class="control-label" for="input-name">查询类型</label>
-                 <h:selectOneMenu  class="form-control" value="#{incomingBean.type}">
-                        <f:selectItem itemValue="1" itemLabel="营收" />
-                        <f:selectItem itemValue="2" itemLabel="运营成本" />	   							
-                 </h:selectOneMenu>
+                 <label class="control-label" for="input-name">店铺</label>
+                  <h:inputText   a:placeholder="查询店铺"  id="shopName"  class="form-control" ></h:inputText>
+                  <h:inputHidden value="#{incomingBean.shopId}" id="shop_id" name="shop_id" ></h:inputHidden>
             </div>
             <div class="col-sm-2">
                 <label class="control-label" for="input-name"><h:outputText value="&#160;" /></label>
@@ -61,57 +59,27 @@
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
-               <h:panelGroup rendered="${incomingBean.type == 1}">
+                <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td></tr>
                 <tr>
-                  <td class="text-center">店铺</td>
-                   <td class="text-center">日期</td>
-                  <td class="text-center">总流水</td>
-                  <td class="text-center">现金</td>
-                  <td class="text-center">微信</td>
-                  <td class="text-center">外卖</td>
+                     <td class="text-center">总流水</td> <td class="text-center">#{incomingBean.incoming.zls}</td>
+                     <td class="text-center">日用调料</td><td class="text-center">#{incomingBean.cost.rytl}</td>
                 </tr>
-                </h:panelGroup>
-                <h:panelGroup rendered="${incomingBean.type == 2}">
-                 <tr>
-                  <td class="text-center">店铺</td>
-                  <td class="text-center">日期</td>
-                  <td class="text-center">日用调料</td>
-                  <td class="text-center">伙食费</td>
-                  <td class="text-center">房费</td>
-                  <td class="text-center">工资</td>
+                <tr>
+                     <td class="text-center">现金</td><td class="text-center">#{incomingBean.incoming.cash}</td>
+                     <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
                 </tr>
-                </h:panelGroup>
+                <tr>
+                     <td class="text-center">微信</td><td class="text-center">#{incomingBean.incoming.weixin}</td>
+                     <td class="text-center">房费</td><td class="text-center">#{incomingBean.cost.ff}</td>
+                </tr>
+                <tr>
+                     <td class="text-center">外卖</td> <td class="text-center">#{incomingBean.incoming.delivery}</td>
+                     <td class="text-center">工资</td><td class="text-center">#{incomingBean.cost.gz}</td>
+                </tr>
               </thead>
-              <tbody>
-              <h:panelGroup rendered="${incomingBean.type == 1}">
-              <ui:repeat id="g" var="g" value="#{incomingBean.incomingList}" varStatus="itemStatus">
-                <tr>
-                  <td class="text-center">#{g.shop.name}</td>
-                  <td class="text-center">#{g.date}</td>
-                  <td class="text-center">#{g.zls}</td>
-                  <td class="text-center">#{g.cash}</td>
-                  <td class="text-center">#{g.weixin}</td>
-                  <td class="text-center">#{g.delivery}</td>
-                </tr>
-                </ui:repeat>
-                </h:panelGroup>
-                 <h:panelGroup rendered="${incomingBean.type == 2}">
-              <ui:repeat id="c" var="c" value="#{incomingBean.costList}" varStatus="itemStatus">
-                <tr>
-                  <td class="text-center">#{c.shop.name}</td>
-                  <td class="text-center">#{c.date}</td>
-                  <td class="text-center">#{c.rytl}</td>
-                  <td class="text-center">#{c.hsf}</td>
-                  <td class="text-center">#{c.ff}</td>
-                  <td class="text-center">#{c.gz}</td>
-                </tr>
-                </ui:repeat>
-                </h:panelGroup>
-              </tbody>
             </table>
           </div>
         <div class="row">
-        
         </div>
       </div>
     </div>
@@ -144,4 +112,38 @@
       
   });
 </script>
+
+  <script type="text/javascript"><!--
+
+$('input[name=\'pform:shopName\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'filterShop.ajax?action=filterShop&filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				json.unshift({
+					shop_id: 0,
+					name: ''
+				});
+
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'pform:shopName\']').val(item['label']);
+		$('input[name=\'pform:shop_id\']').val(item['value']);
+	}
+});
+
+
+//--></script>
+
+
+
 </body></html>

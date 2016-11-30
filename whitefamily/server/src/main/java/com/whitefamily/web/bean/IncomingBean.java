@@ -17,13 +17,15 @@ public class IncomingBean {
 	
 	private IShopService shopService;
 	
-	private List<WFIncoming> incomingList;
-	private List<WFOperationCost>  costList;
+	private WFIncoming incoming;
+	private WFOperationCost  cost;
 	
 	private Date startDate;
 	private Date endDate;
 	
 	private int type;
+	
+	private long shopId;
 	
 	
 	public IncomingBean() {
@@ -32,14 +34,21 @@ public class IncomingBean {
 	}
 
 
-	public List<WFIncoming> getIncomingList() {
-		return incomingList;
+
+
+	public WFIncoming getIncoming() {
+		return incoming;
 	}
 
 
-	public List<WFOperationCost> getCostList() {
-		return costList;
+
+
+	public WFOperationCost getCost() {
+		return cost;
 	}
+
+
+
 
 
 	public Date getStartDate() {
@@ -64,6 +73,16 @@ public class IncomingBean {
 	
 	
 	
+	public long getShopId() {
+		return shopId;
+	}
+
+
+	public void setShopId(long shopId) {
+		this.shopId = shopId;
+	}
+
+
 	public int getType() {
 		return type;
 	}
@@ -75,8 +94,48 @@ public class IncomingBean {
 
 
 	public void query() {
-		incomingList = shopService.queryShopIncoming(startDate, endDate);
-		costList = shopService.queryShopOperationCost(startDate, endDate);
+		incoming = new WFIncoming();
+		cost = new WFOperationCost();
+		List<WFIncoming> incomingList = null;
+		List<WFOperationCost> costList= null;
+		if (shopId <= 0) {
+			incomingList = shopService.queryShopIncoming(startDate, endDate);
+			costList = shopService.queryShopOperationCost(startDate, endDate);
+		
+		} else {
+			incomingList = shopService.queryShopIncoming(shopService.getShop(shopId), startDate, endDate);
+			costList = shopService.queryShopOperationCost(shopService.getShop(shopId), startDate, endDate);
+		}
+		
+		if (incomingList != null && incomingList.size() > 0) {
+			for (WFIncoming wfi : incomingList) {
+				incoming.setAli(wfi.getAli() + incoming.getAli());
+				incoming.setZls(wfi.getZls()+ incoming.getZls());
+				incoming.setCash(wfi.getCash()+ incoming.getCash());
+				incoming.setDazhong(wfi.getDazhong()+ incoming.getDazhong());
+				incoming.setDaZhongaf(wfi.getDazhongaf()+ incoming.getDazhongaf());
+				incoming.setDelivery(wfi.getDelivery()+ incoming.getDelivery());
+				incoming.setNuomi(wfi.getNuomi()+ incoming.getNuomi());
+				incoming.setWeixin(wfi.getWeixin()+ incoming.getWeixin());
+				incoming.setNuomiaf(wfi.getNuomiaf()+ incoming.getNuomiaf());
+			}
+		}
+		if (costList != null && costList.size() > 0) {
+			for (WFOperationCost woc : costList) {
+				cost.setBc(woc.getBc() + woc.getBc());
+				cost.setDf(woc.getDf()+ cost.getDf());
+				cost.setFf(woc.getFf()+ cost.getFf());
+				cost.setGz(woc.getGz()+ cost.getGz());
+				cost.setHsf(woc.getHsf()+ cost.getHsf());
+				cost.setQt(woc.getQt()+ cost.getQt());
+				cost.setRqf(woc.getRqf()+ cost.getRqf());
+				cost.setRytl(woc.getRytl()+ cost.getRytl());
+				cost.setRz(woc.getRz()+ cost.getRz());
+				cost.setSb(woc.getSb()+ cost.getSb());
+				cost.setSf(woc.getSf()+ cost.getSf());
+				cost.setYl(woc.getYl()+ cost.getYl());
+			}
+		}
 	}
 	
 }
