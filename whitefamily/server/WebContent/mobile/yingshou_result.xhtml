@@ -1,0 +1,201 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+
+<title>补货清单</title>
+<body>
+	<div id="container">
+		<div id="content">
+			<h:form id="pform">
+				<div class="page-header">
+					<div class="container-fluid">
+						<div class="pull-right">
+							<a href="yingshou.xhtml" data-toggle="tooltip" title="取消"
+								class="btn btn-default"><i class="fa fa-reply"></i></a>
+						</div>
+						<h1>提交成功</h1>
+						<ul class="breadcrumb">
+							<li><a href="#"></a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="container-fluid">
+					<c:if test="${not empty shopBean.errMsg}">
+						<div class="alert alert-danger">
+							<i class="fa fa-exclamation-circle"></i>
+							<h:outputText value="#{shopBean.errMsg}"></h:outputText>
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+						</div>
+					</c:if>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">营收</div>
+						<div class="panel-body">
+							<table class="table table-striped  table-hover">
+								<tbody>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >总流水</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.zls}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >现金</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.cash}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >微信</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.weixin}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >支付宝</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.ali}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >闪惠(扣除费用前)</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.dazhong}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >闪惠(扣除费用后)</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.dazhongaf}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >糯米闪惠(扣除费用前)</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.nuomi}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >糯米闪惠(扣除费用后)</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.nuomiaf}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >其他</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.other}</label></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">支出</div>
+						<div class="panel-body">
+							<table class="table table-striped  table-hover">
+								<tbody>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >日用调料</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costRYTL}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >烧饼</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costSB}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >补菜</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costBC}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >伙食费</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costHSF}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >饮料</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costYL}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >水费</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costSF}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >电费</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costDF}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >燃气费</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costRQF}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >房费</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costFF}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >工资</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costGZ}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >日杂</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costRZ}</label></td>
+									</tr>
+									<tr>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >其他</label></td>
+										<td class="text-center"><label class="control-label"
+												for="input-name" style="color:#000000" >#{shopBean.shopIncoming.costQT}</label></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</h:form>
+		</div>
+			<div class="bottom">
+		<ul>
+			<li><a class="index" href="index.xhtml"></a></li>
+			<li><a class="wine " href="yingshou.xhtml"></a></li>
+			<li><a class="shopping_cart " href="damage_report.xhtml"></a></li>
+			<li><a class="user self" href="inventory_report_detail.xhtml"></a></li>
+
+		</ul>
+		<div class="clear"></div>
+	</div>
+	</div>
+
+</body>
+</html>

@@ -52,28 +52,49 @@
                 <label class="control-label" for="input-name"><h:outputText value="&#160;" /></label>
                 <h:commandLink  action="#{incomingBean.query}"  class="btn btn-primary pull-left"  ><i class="fa fa-search"></i>查询
                </h:commandLink>
-              
+                <label class="control-label" for="input-name"><h:outputText value="&#160;" /></label>
            </div>
           </div>
         </div>
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
-                <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td></tr>
+                <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td><td class="text-center" colspan="2">备货成本</td></tr>
                 <tr>
                      <td class="text-center">总流水</td> <td class="text-center">#{incomingBean.incoming.zls}</td>
                      <td class="text-center">日用调料</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                     <td class="text-center">青菜</td><td class="text-center">#{incomingBean.cost.rytl}</td>
                 </tr>
                 <tr>
                      <td class="text-center">现金</td><td class="text-center">#{incomingBean.incoming.cash}</td>
                      <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
+                     <td class="text-center">丸子</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                </tr>
+                 <tr>
+                     <td class="text-center">糯米闪惠</td><td class="text-center">#{incomingBean.incoming.nuomiaf}</td>
+                     <td class="text-center">房费</td><td class="text-center">#{incomingBean.cost.ff}</td>
+                     <td class="text-center">干调</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                </tr>
+                 <tr>
+                     <td class="text-center">闪惠</td><td class="text-center">#{incomingBean.incoming.dazhongaf}</td>
+                     <td class="text-center">补菜</td><td class="text-center">#{incomingBean.cost.bc}</td>
+                     <td class="text-center">水发</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                </tr>
+                 <tr>
+                     <td class="text-center">外卖美团</td><td class="text-center">#{incomingBean.incoming.other}</td>
+                     <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
+                     <td class="text-center">副食</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                </tr>
+                 <tr>
+                     <td class="text-center">外卖百度</td><td class="text-center">#{incomingBean.incoming.weixin}</td>
+                     <td class="text-center">饮料</td><td class="text-center">#{incomingBean.cost.yl}</td>
                 </tr>
                 <tr>
                      <td class="text-center">微信</td><td class="text-center">#{incomingBean.incoming.weixin}</td>
-                     <td class="text-center">房费</td><td class="text-center">#{incomingBean.cost.ff}</td>
+                     <td class="text-center">水费</td><td class="text-center">#{incomingBean.cost.sf}</td>
                 </tr>
                 <tr>
-                     <td class="text-center">外卖</td> <td class="text-center">#{incomingBean.incoming.delivery}</td>
+                     <td class="text-center">支付宝</td> <td class="text-center">#{incomingBean.incoming.ali}</td>
                      <td class="text-center">工资</td><td class="text-center">#{incomingBean.cost.gz}</td>
                 </tr>
               </thead>
@@ -113,7 +134,9 @@
   });
 </script>
 
-  <script type="text/javascript"><!--
+  <script type="text/javascript">
+   //<![CDATA[
+var name_all ='全部';
 
 $('input[name=\'pform:shopName\']').autocomplete({
 	'source': function(request, response) {
@@ -122,10 +145,10 @@ $('input[name=\'pform:shopName\']').autocomplete({
 			dataType: 'json',
 			success: function(json) {
 				json.unshift({
-					shop_id: 0,
-					name: ''
+					id: 0,
+					name: '全部'
 				});
-
+                console.log(json);
 				response($.map(json, function(item) {
 					return {
 						label: item['name'],
@@ -140,9 +163,9 @@ $('input[name=\'pform:shopName\']').autocomplete({
 		$('input[name=\'pform:shop_id\']').val(item['value']);
 	}
 });
+ //]]>
 
-
-//--></script>
+</script>
 
 
 
