@@ -20,6 +20,8 @@ public class WFDelivery {
 	protected List<Item> itemList;
 	
 	protected boolean isLoadItem;
+	
+	protected long inventoryRequestId;
 
 
 	public long getId() {
@@ -82,6 +84,16 @@ public class WFDelivery {
 	}
 	
 	
+	
+	
+	public long getInventoryRequestId() {
+		return inventoryRequestId;
+	}
+
+	public void setInventoryRequestId(long inventoryRequestId) {
+		this.inventoryRequestId = inventoryRequestId;
+	}
+
 	public void updateItem(WFGoods goods, float realCount) {
 		int size = itemList == null ? 0 : itemList.size();
 		Item item;
@@ -89,6 +101,19 @@ public class WFDelivery {
 			item = itemList.get(i);
 			if (goods.getId() == item.getGoods().getId()) {
 				item.realCount = realCount;
+				break;
+			}
+		}
+	}
+	
+	public void updateItem(WFGoods goods, float realCount, float price) {
+		int size = itemList == null ? 0 : itemList.size();
+		Item item;
+		for (int i = 0; i < size; i++) {
+			item = itemList.get(i);
+			if (goods.getId() == item.getGoods().getId()) {
+				item.realCount = realCount;
+				item.price = price;
 				break;
 			}
 		}

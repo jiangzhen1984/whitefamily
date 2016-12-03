@@ -576,6 +576,7 @@ public class ShopBean {
 	public String prepareDelivery() {
 		 delivery = new WFDelivery();
 		 delivery.setShop(inventoryRequestdetail.getShop());
+		 delivery.setInventoryRequestId(inventoryRequestdetail.getId());
 		 List<Item> list =  inventoryRequestdetail.getItemList();
 		 for (WFInventoryRequest.Item wri : list) {
 			 delivery.addItem(wri.getGoods(), wri.getCount(), wri.getCount(), 0, false);

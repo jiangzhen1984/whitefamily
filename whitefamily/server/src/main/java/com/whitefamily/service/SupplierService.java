@@ -13,20 +13,22 @@ import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
+import com.whitefamily.po.delivery.DeliveryRecord;
+import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFSupplier;
 import com.whitefamily.service.vo.WFSupplierMapping;
-import com.whitefamily.service.vo.WFInventoryRequest.Item;
 
 public class SupplierService extends BaseService implements ISupplierService {
 	
 
 	private List<WFSupplierMapping> cacheList = new ArrayList<WFSupplierMapping>(20);
 	
-	
+	private IShopService shopService;
 	
 
 	@Override
@@ -102,29 +104,54 @@ public class SupplierService extends BaseService implements ISupplierService {
 
 		Session sess = getSession();
 		
-		
-		InventoryRequestRecord irr = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, req.getId());
-		if (irr == null) {
-			return Result.ERR_EXIST_INVENTORY_RECORD;
-		}
-		irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
-		
-		
-		WFInventory inventory =  new WFInventory();
-		inventory.setDatetime(new Date());
-		inventory.setIt(InventoryType.IN);
-		inventory.setOperator(supplier);
-		
-		List<Item> list = req.getItemList();
-		for (WFInventoryRequest.Item wfi : list) {
-			inventory.addInventoryItem(wfi.getGoods(), null, null, wfi.getRealCount(), wfi.getPrice(), 0, 0, false);
-		}
+		Query drquery = sess.createQuery(" from DeliveryRecord where inventoryRequestId = ? ");
+		drquery.setLong(0, req.getId());
+		boolean update  = drquery.list().size() > 0? true : false;
 		
 		Transaction tr = sess.beginTransaction();
-		createInventory(sess, inventory, req);
-		
-		sess.update(irr);
-		
+		if (!update) {
+			WFShop shop = shopService.getShop(req.getShop().getId());
+			DeliveryRecord dr = new DeliveryRecord();
+			dr.setDatetime(new Date());
+			dr.setInventoryRequestId(req.getId());
+			dr.setShop(shop);
+			dr.setOperator(supplier);
+			dr.setShopAddress(shop.getAddress());
+			dr.setShopId(shop.getId());
+			dr.setShopName(shop.getName());
+			sess.save(dr);
+			
+			for (WFInventoryRequest.Item wfi : req.getItemList()) {
+				DeliveryRecordGoods g = new DeliveryRecordGoods();
+				g.setGoods(wfi.getGoods());
+				g.setPrice(wfi.getPrice());
+				g.setInventoryPrice(wfi.getPrice());
+				g.setRecord(dr);
+				g.setInventoryId(req.getId());
+				g.setDeliverCount(wfi.getRealCount());
+				g.setInventoryCount(wfi.getRealCount());
+				g.setRequestCount(wfi.getCount());
+				sess.save(g);
+			}
+		} else {
+			//Update
+			Query  updateQuery = null;
+			for (WFInventoryRequest.Item wfi : req.getItemList()) {
+				updateQuery = sess.createQuery(" from DeliveryRecordGoods where inventoryId = ? and goods.id = ? ");
+				updateQuery.setLong(0, req.getId());
+				updateQuery.setLong(1, wfi.getGoods().getId());
+				
+				DeliveryRecordGoods g = (DeliveryRecordGoods)updateQuery.list().iterator().next();
+				g.setGoods(wfi.getGoods());
+				g.setPrice(wfi.getPrice());
+				g.setInventoryPrice(wfi.getPrice());
+				g.setInventoryId(req.getId());
+				g.setDeliverCount(wfi.getRealCount());
+				g.setInventoryCount(wfi.getRealCount());
+				g.setRequestCount(wfi.getCount());
+				sess.update(g);
+			}
+		}
 		
 		tr.commit();
 		
@@ -163,4 +190,15 @@ public class SupplierService extends BaseService implements ISupplierService {
 		sess.flush();
 	}
 
+	public IShopService getShopService() {
+		return shopService;
+	}
+
+	public void setShopService(IShopService shopService) {
+		this.shopService = shopService;
+	}
+
+	
+	
+	
 }

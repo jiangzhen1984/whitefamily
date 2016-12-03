@@ -40,13 +40,10 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><INPUT type="checkbox" id="ck"/></td>
-                  <td class="text-center"> 
-                    <a href="#" >产品</a>
-                     </td>
-                  <td class="text-center"> 
-                    <a href="#" >数量</a>
-                     </td>
-                      <td class="text-center"> 配送数量 </td>
+                  <td class="text-center">产品</td>
+                  <td class="text-center">数量</td>
+                  <td class="text-center">配送数量 </td>
+                  <td class="text-center">配送价格</td>
                 </tr>
               </thead>
               <tbody id="ct">
@@ -57,6 +54,7 @@
                   <td class="text-center">#{item.goods.name}</td>
                   <td class="text-center">#{item.count}</td>
                   <td class="text-center"><INPUT type="text" name="g_count" value="#{item.realCount}"  class="form-control" /></td>
+                  <td class="text-center">#{item.price}</td>
                 </tr>
                 </ui:repeat>
               </tbody>

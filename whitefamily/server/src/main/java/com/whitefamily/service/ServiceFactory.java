@@ -104,6 +104,7 @@ public class ServiceFactory {
 			if (iis == null) {
 				getInventoryService();
 			}
+			((SupplierService)getRealSupplierService()).setShopService(getRealShopService());
 			isups = (ISupplierService)getProxy(ISupplierService.class.getClassLoader(), ISupplierService.class, getRealSupplierService());
 		}
 		return isups;

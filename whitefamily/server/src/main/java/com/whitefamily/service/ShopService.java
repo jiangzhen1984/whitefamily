@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -62,6 +64,7 @@ import com.whitefamily.service.vo.WFUser;
 
 public class ShopService extends BaseService implements IShopService {
 
+	private static Log logger = LogFactory.getLog("ShopService");
 	private static boolean cachedShop;
 	private static Map<Long, WFShop> shopCache;
 	
@@ -935,8 +938,8 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice() * item.getCount()) , chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice1()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice1() * item.getCount()) , chapterFont1)));
         	sum += item.getGoods().getPrice() * item.getCount();
         }   
        
@@ -1041,8 +1044,8 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice() * item.getCount()) , chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice1()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice1() * item.getCount()) , chapterFont1)));
         	sum += item.getGoods().getPrice() * item.getCount();
         }   
        
@@ -1078,6 +1081,7 @@ public class ShopService extends BaseService implements IShopService {
 		Session sess = getSession();
 		
 		DeliveryRecord dr = new DeliveryRecord();
+		dr.setInventoryRequestId(de.getId());
 		dr.setShop(de.getShop());
 		dr.setDatetime(de.getDatetime());
 		dr.setOperator(user);
@@ -1133,6 +1137,17 @@ public class ShopService extends BaseService implements IShopService {
 		}
 		
 		//Update inventory and update goods price.
+		
+		Query irrQuery = sess.createQuery(" from InventoryRequestRecord where parentId = ? ");
+		irrQuery.setLong(0, dr.getInventoryRequestId());
+		List<InventoryRequestRecord> irrList = irrQuery.list();
+		logger.info(" Update suppliery InventoryRequestRecord size : " + irrList.size());
+		for (InventoryRequestRecord irr : irrList) {
+			irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
+			sess.update(irr);
+			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
+		}
+
 		
 		tr.commit();
 		

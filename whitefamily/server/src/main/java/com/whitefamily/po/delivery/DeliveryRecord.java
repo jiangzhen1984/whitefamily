@@ -43,6 +43,9 @@ public class DeliveryRecord extends Record {
 	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
 	private String userName;
 	
+	@Column(name = "WF_INVENT_REQ_ID")
+	private Long inventoryRequestId;
+	
 	@Transient
 	protected List<DeliveryRecord> subRecords;
 	
@@ -205,5 +208,15 @@ public class DeliveryRecord extends Record {
 		this.parent = parent;
 		this.setParentId(this.parent == null ? 0 : this.parent.getId());
 	}
+
+	public Long getInventoryRequestId() {
+		return inventoryRequestId;
+	}
+
+	public void setInventoryRequestId(Long inventoryRequestId) {
+		this.inventoryRequestId = inventoryRequestId;
+	}
+	
+	
 
 }
