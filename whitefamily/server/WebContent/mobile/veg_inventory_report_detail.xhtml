@@ -46,10 +46,12 @@
                                           <td class="text-center" style="color:#000000;">#{g.datetime}</td>
                                           <td class="text-center" style="color:#000000;">#{g.is.value}</td>
 										  <td class="text-center">
-										       <h:commandLink  action="#{supplierBean.gotoViewShopInventoryRequestDetail}" type="submit"  form="form-product" data-toggle="tooltip" title="产品详情" class="btn btn-primary">
-										       <f:setPropertyActionListener target="#{supplierBean.inventoryRequestDetailIdxFromAll}" value="#{itemStatus.index}" />
-													<i class="fa fa-pencil"></i>
-											   </h:commandLink>
+										         <h:commandLink action="#{supplierBean.prepareDelivery}"
+																type="submit" form="form-product" data-toggle="tooltip"
+																title="提交" class="btn btn-primary">
+																<i class="fa fa-save"></i>配货处理
+													<f:setPropertyActionListener target="#{supplierBean.inventoryRequestDetailIdxFromAll}" value="#{itemStatus.index}" />
+												</h:commandLink>
 										  </td>
 										</tr>
 									</ui:repeat>

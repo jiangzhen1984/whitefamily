@@ -46,5 +46,7 @@ public interface IInventoryService {
 	
 	public List<WFInventory> queryInventoryAccordingToRequest(long requestId);
 	
+	public List<WFInventory> querySubInventoryRequest(long requestId);
+	
 
 }

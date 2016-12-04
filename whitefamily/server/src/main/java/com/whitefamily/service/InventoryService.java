@@ -19,6 +19,8 @@ import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
+import com.whitefamily.po.delivery.DeliveryRecord;
+import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
@@ -531,6 +533,37 @@ public class InventoryService extends BaseService implements IInventoryService {
 			list.add(wfi);
 		}
 		
+		return list;
+	}
+	
+	
+	
+	public List<WFInventory> querySubInventoryRequest(long requestId) {
+		Session sess = getSession();
+
+		Query query = sess.createQuery(" from InventoryUpdateRecord where requestInventoryId = ?");
+		query.setLong(0, requestId);
+		
+		List<InventoryUpdateRecord> iurList =query.list();
+		List<WFInventory> list = new ArrayList<WFInventory>(iurList.size());
+		for (InventoryUpdateRecord iur : iurList) {
+			WFInventory wfi = new WFInventory();
+			wfi.setId(iur.getId());
+			wfi.setDatetime(iur.getDatetime());
+			Query goodsQuery = sess.createQuery(" from InventoryGoods where record.id = ? ");
+			goodsQuery.setLong(0, iur.getId());
+			List<InventoryGoods> irgList = goodsQuery.list();
+			for (InventoryGoods irg : irgList) {
+				wfi.addInventoryItem(
+						goodsService.getGoods(irg.getGoods().getId()),
+						goodsService.getBrand(irg.getBrandName()),
+						goodsService.getVendor(irg.getVendorName()),
+						irg.getCount(), irg.getPrice(), 0,
+						0, true);
+			}
+			
+			list.add(wfi);
+		}
 		return list;
 	}
 }

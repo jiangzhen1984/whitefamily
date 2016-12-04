@@ -73,14 +73,13 @@ public class SupplierService extends BaseService implements ISupplierService {
 	@Override
 	public List<WFInventoryRequest> querySupplierDeliveryRequest(WFSupplier suppler, Date date) {
 		StringBuffer hqlBuf = new StringBuffer();
-		hqlBuf.append(" from InventoryRequestRecord where supplierRecd = ? and status = ?");
+		hqlBuf.append(" from InventoryRequestRecord where status = ?");
 		
 		hqlBuf.append(" order by status, datetime asc ");
 		
 		Session sess = getSession();
 		Query query = sess.createQuery(hqlBuf.toString());
-		query.setInteger(0, InventoryRequestRecord.TYPE_IS_SUPPLIER);
-		query.setInteger(1, InventoryStatus.REQUEST.ordinal());
+		query.setInteger(0, InventoryStatus.REQUEST.ordinal());
 		
 		List<InventoryRequestRecord>  list = query.list();
 		List<WFInventoryRequest> wflist = new ArrayList<WFInventoryRequest>(list.size());
@@ -94,7 +93,6 @@ public class SupplierService extends BaseService implements ISupplierService {
 			wflist.add(wf);
 		}
 		
-		sess.close();
 		return wflist;
 	}
 	
@@ -104,51 +102,43 @@ public class SupplierService extends BaseService implements ISupplierService {
 
 		Session sess = getSession();
 		
-		Query drquery = sess.createQuery(" from DeliveryRecord where inventoryRequestId = ? ");
+		Query drquery = sess.createQuery(" from InventoryUpdateRecord where requestInventoryId = ? ");
 		drquery.setLong(0, req.getId());
-		boolean update  = drquery.list().size() > 0? true : false;
-		
+		List<InventoryUpdateRecord> iruList =  drquery.list();
+		boolean update  = iruList.size() > 0? true : false;
 		Transaction tr = sess.beginTransaction();
 		if (!update) {
-			WFShop shop = shopService.getShop(req.getShop().getId());
-			DeliveryRecord dr = new DeliveryRecord();
-			dr.setDatetime(new Date());
-			dr.setInventoryRequestId(req.getId());
-			dr.setShop(shop);
-			dr.setOperator(supplier);
-			dr.setShopAddress(shop.getAddress());
-			dr.setShopId(shop.getId());
-			dr.setShopName(shop.getName());
-			sess.save(dr);
+			InventoryUpdateRecord record = new InventoryUpdateRecord();
+			record.setIt(InventoryType.IN);
+			record.setDatetime(new Date());
+			record.setOperator(supplier);
+			record.setRequestInventoryId(req.getId());
+			sess.save(record);
 			
-			for (WFInventoryRequest.Item wfi : req.getItemList()) {
-				DeliveryRecordGoods g = new DeliveryRecordGoods();
-				g.setGoods(wfi.getGoods());
-				g.setPrice(wfi.getPrice());
-				g.setInventoryPrice(wfi.getPrice());
-				g.setRecord(dr);
-				g.setInventoryId(req.getId());
-				g.setDeliverCount(wfi.getRealCount());
-				g.setInventoryCount(wfi.getRealCount());
-				g.setRequestCount(wfi.getCount());
-				sess.save(g);
+			List<WFInventoryRequest.Item> supplierItemList = req.getSupplierItemList();
+			for (WFInventoryRequest.Item wfi : supplierItemList) {
+				InventoryGoods ig = new InventoryGoods();
+				ig.setGoods(wfi.getGoods());
+				ig.setCount(wfi.getRealCount());
+				ig.setPrice(wfi.getPrice());
+				ig.setRemCount(wfi.getRealCount());
+				ig.setRecord(record);
+				sess.save(ig);
 			}
 		} else {
+			long updateRecordId = iruList.get(0).getId();
 			//Update
 			Query  updateQuery = null;
-			for (WFInventoryRequest.Item wfi : req.getItemList()) {
-				updateQuery = sess.createQuery(" from DeliveryRecordGoods where inventoryId = ? and goods.id = ? ");
-				updateQuery.setLong(0, req.getId());
+			List<WFInventoryRequest.Item> supplierItemList = req.getSupplierItemList();
+			for (WFInventoryRequest.Item wfi : supplierItemList) {
+				updateQuery = sess.createQuery(" from InventoryGoods where record.id = ? and goods.id = ? ");
+				updateQuery.setLong(0, updateRecordId);
 				updateQuery.setLong(1, wfi.getGoods().getId());
 				
-				DeliveryRecordGoods g = (DeliveryRecordGoods)updateQuery.list().iterator().next();
-				g.setGoods(wfi.getGoods());
+				InventoryGoods g = (InventoryGoods)updateQuery.list().iterator().next();
 				g.setPrice(wfi.getPrice());
-				g.setInventoryPrice(wfi.getPrice());
-				g.setInventoryId(req.getId());
-				g.setDeliverCount(wfi.getRealCount());
-				g.setInventoryCount(wfi.getRealCount());
-				g.setRequestCount(wfi.getCount());
+				g.setRemCount(wfi.getRealCount());
+				g.setCount(wfi.getRealCount());
 				sess.update(g);
 			}
 		}

@@ -204,6 +204,17 @@
 			<to-view-id>/mobile/veg_inventory_report_goods_list.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+			<navigation-case>
+			<from-action>#{supplierBean.prepareDelivery}</from-action>
+			<from-outcome>prepareDeliverysuccess</from-outcome>
+			<to-view-id>/mobile/veg_inventory_report_detail.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{supplierBean.prepareDelivery}</from-action>
+			<from-outcome>prepareDeliveryFailed</from-outcome>
+			<to-view-id>/mobile/veg_inventory_report_goods_list_delivery.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	

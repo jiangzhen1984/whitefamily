@@ -37,6 +37,8 @@ import com.whitefamily.po.InventoryGoods;
 import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.po.InventoryType;
+import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.Shop;
 import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.po.delivery.DeliveryRecordGoods;
@@ -55,6 +57,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFIncoming.GroupOnItem;
+import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
@@ -421,10 +424,10 @@ public class ShopService extends BaseService implements IShopService {
 			sess.save(ig);
 			wi.setPersisted(true);
 		}
-		
-		for (LocalMappingSubRecord lmsr : mapping.values()) {
-			saveSubRecord(lmsr);
-		}
+//		
+//		for (LocalMappingSubRecord lmsr : mapping.values()) {
+//			saveSubRecord(lmsr);
+//		}
 
 		tr.commit();
 		sess.close();
@@ -786,7 +789,7 @@ public class ShopService extends BaseService implements IShopService {
 	public List<WFInventoryRequest> queryInventoryRequestList(WFShop shop, Date start, Date end, boolean specificDate, int offset, int count) {
 		
 		StringBuffer hqlBuf = new StringBuffer();
-		hqlBuf.append(" from InventoryRequestRecord where 1 = 1 ");
+		hqlBuf.append(" from InventoryRequestRecord where 1 = 1 and WF_PARENT_REC_ID = 0 ");
 		if (shop != null) {
 			hqlBuf.append(" and shopId = ? ");
 		}
@@ -843,7 +846,6 @@ public class ShopService extends BaseService implements IShopService {
 			wflist.add(wf);
 		}
 		
-		sess.close();
 		return wflist;
 	}
 	
@@ -860,6 +862,19 @@ public class ShopService extends BaseService implements IShopService {
 			ir.addInventoryItem(goodsService.getGoods(g.getGoods().getId()), g.getCount(), true);
 		}
 		ir.setLoadItem(true);
+		
+		query = sess.createQuery(" from InventoryUpdateRecord where requestInventoryId = ?");
+		query.setLong(0, ir.getId());
+		List<InventoryUpdateRecord> drlist = query.list();
+		if (drlist.size() > 0) {
+			InventoryUpdateRecord dr = drlist.get(0);
+			query = sess.createQuery(" from  InventoryGoods  where record.id = ? ");
+			query.setLong(0, dr.getId());
+			List<InventoryGoods> drgList = query.list();
+			for (InventoryGoods drg : drgList) {
+				ir.updateInventoryItem(goodsService.getGoods(drg.getGoods().getId()), drg.getCount(), drg.getPrice());
+			}
+		}
 		return Result.SUCCESS;
 	}
 	
@@ -882,6 +897,14 @@ public class ShopService extends BaseService implements IShopService {
 				throw new RuntimeException(" can not make dir:"+ rootDir);
 			}
 		}
+		
+		  Runtime rt = Runtime.getRuntime();
+	        try {
+				rt.exec("chmod 777 " + dir.getAbsolutePath());
+				 logger.info(" Update dir permisson:" + dir.getAbsolutePath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		
 		File file = new File(rootDir + fileName);
 		if (file.exists()) {
@@ -964,6 +987,13 @@ public class ShopService extends BaseService implements IShopService {
 			 document.close();
 		}
         
+        try {
+			rt.exec("chmod 777 " + file.getAbsolutePath());
+			 logger.info(" Update file permisson:" + file.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
         return file;
        
 	}
@@ -987,6 +1017,16 @@ public class ShopService extends BaseService implements IShopService {
 			if (!dir.mkdirs()) {
 				throw new RuntimeException(" can not make dir:"+ rootDir);
 			}
+			dir.setWritable(true, false);
+			dir.setReadable(true, false);
+			
+			 Runtime rt = Runtime.getRuntime();
+		        try {
+					rt.exec("chmod 777 " + dir.getAbsolutePath());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		        logger.info(" Update dir permisson:" + dir.getAbsolutePath());
 		}
 		
 		File file = new File(rootDir + fileName);
@@ -1043,9 +1083,9 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getCate().getName(), chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
-        	table.addCell(new PdfPCell( new Phrase(item.getCount()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(item.getGoods().getPrice1()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getGoods().getPrice1() * item.getCount()) , chapterFont1)));
+        	table.addCell(new PdfPCell( new Phrase(item.getRealCount()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(item.getPrice()+"", chapterFont1)));
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getPrice() * item.getCount()) , chapterFont1)));
         	sum += item.getGoods().getPrice() * item.getCount();
         }   
        
@@ -1070,6 +1110,14 @@ public class ShopService extends BaseService implements IShopService {
 			 document.close();
 		}
         
+
+        Runtime rt = Runtime.getRuntime();
+        try {
+			rt.exec("chmod 777 " + file.getAbsolutePath());
+			 logger.info(" Update file permisson:" + file.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return file;
        
 	}
@@ -1079,7 +1127,6 @@ public class ShopService extends BaseService implements IShopService {
 	@Override
 	public Result prepareDelivery(WFDelivery de, WFUser user) {
 		Session sess = getSession();
-		
 		DeliveryRecord dr = new DeliveryRecord();
 		dr.setInventoryRequestId(de.getId());
 		dr.setShop(de.getShop());
@@ -1087,7 +1134,7 @@ public class ShopService extends BaseService implements IShopService {
 		dr.setOperator(user);
 		dr.setShopAddress(de.getShop().getAddress());
 		dr.setShopName(de.getShop().getName());
-		dr.setStatus(InventoryStatus.DELIVERING);
+		dr.setStatus(InventoryStatus.DELIVERYED);
 		Transaction tr = sess.beginTransaction();
 		sess.save(dr);
 		sess.flush();
@@ -1113,7 +1160,11 @@ public class ShopService extends BaseService implements IShopService {
 				}
 				g.setDeliverCount(di.getRealCount());
 				g.setRequestCount(di.getCount());
-				g.setPrice(di.getGoods().getPrice());
+				if (di.getGoods().getPrice() <= 0) {
+					g.setPrice(di.getPrice());
+				} else {
+					g.setPrice(di.getGoods().getPrice());
+				}
 				g.setGoods(di.getGoods());
 				g.setBrandName(ig.getBrandName());
 				g.setVendorName(ig.getVendorName());
@@ -1154,6 +1205,37 @@ public class ShopService extends BaseService implements IShopService {
 		//TODO update goods price
 		
 		return Result.SUCCESS;
+	}
+	
+	
+	
+	private void createInventory(Session sess, WFInventory inventory, WFInventoryRequest req) {
+		InventoryUpdateRecord record = new InventoryUpdateRecord();
+		record.setIt(inventory.getIt());
+		record.setDatetime(inventory.getDatetime());
+		record.setOperator(inventory.getOperator());
+		record.setIt(InventoryType.IN);
+		record.setRequestInventoryId(req.getId());
+		sess.save(record);
+		int count = inventory.getItemCount();
+		InventoryGoods ig = null;
+		for (int i = 0; i < count; i++) {
+			WFInventory.Item wi = inventory.getItem(i);
+			if (wi.isPersisted()) {
+				continue;
+			}
+			ig = new InventoryGoods();
+			
+			ig.setGoods(wi.getGoods());
+			ig.setCount(wi.getCount());
+			ig.setPrice(wi.getPrice());
+			ig.setRemCount(wi.getCount());
+			ig.setRecord(record);
+			sess.save(ig);
+			wi.setPersisted(true);
+		}
+
+		sess.flush();
 	}
 	
 	

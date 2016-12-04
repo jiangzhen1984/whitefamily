@@ -23,11 +23,11 @@
 				      </div>
 					</div>
 				</div>
-				<div class="container-fluid">eeeeee
+				<div class="container-fluid">
 					<c:if test="${not empty supplierBean.errMsg}">
 						<div class="alert alert-danger">
 							<i class="fa fa-exclamation-circle"></i>
-							<h:outputText value="#{supplierBean.errMsg}">eeee</h:outputText>
+							<h:outputText value="#{supplierBean.errMsg}"></h:outputText>
 							<button type="button" class="close" data-dismiss="alert">&times;</button>
 						</div>
 					</c:if>
@@ -42,7 +42,7 @@
                                     <td class="text-center" style="color:#000000;">实际数量</td>
                                     <td class="text-center" style="color:#000000;">单价</td>
 								</tr>
-								<ui:repeat id="item" var="item" value="#{supplierBean.inventoryRequestdetail.itemList}" varStatus="itemStatus">
+								<ui:repeat id="item" var="item" value="#{supplierBean.inventoryRequestdetail.supplierItemList}" varStatus="itemStatus">
 								<input type="hidden" name="gi" value="#{item.goods.id}"/>
 								<tr id="it_row#{status.index}">
 									<td class="text-center" style="color:#000000;">#{item.goods.name}</td>

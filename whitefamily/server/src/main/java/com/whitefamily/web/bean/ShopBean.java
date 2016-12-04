@@ -577,19 +577,20 @@ public class ShopBean {
 		 delivery = new WFDelivery();
 		 delivery.setShop(inventoryRequestdetail.getShop());
 		 delivery.setInventoryRequestId(inventoryRequestdetail.getId());
+		 delivery.setId(inventoryRequestdetail.getId());
 		 List<Item> list =  inventoryRequestdetail.getItemList();
 		 for (WFInventoryRequest.Item wri : list) {
-			 delivery.addItem(wri.getGoods(), wri.getCount(), wri.getCount(), 0, false);
+			 delivery.addItem(wri.getGoods(), wri.getCount(), wri.getCount(), wri.getGoods().getPrice(), false);
+			 inventoryRequestdetail.updateInventoryItem(wri.getGoods(), wri.getCount(),  wri.getGoods().getPrice());
 		 }
-		 
-		 List<WFInventory> ilist = inventoryService.queryInventoryAccordingToRequest(inventoryRequestdetail.getId());
+		 List<WFInventory> ilist = inventoryService.querySubInventoryRequest(inventoryRequestdetail.getId());
 		 for (WFInventory wfi : ilist) {
 			 List<WFInventory.Item>  itemList = wfi.getItemList();
 			 if (itemList == null) {
 				 continue;
 			 }
 			 for (WFInventory.Item  wi : itemList) {
-				 delivery.updateItem(wi.getGoods(), wi.getCount());
+				 delivery.updateItem(wi.getGoods(), wi.getCount(), wi.getPrice());
 				 inventoryRequestdetail.updateInventoryItem(wi.getGoods(), wi.getCount(), wi.getPrice());
 			 }
 		 }

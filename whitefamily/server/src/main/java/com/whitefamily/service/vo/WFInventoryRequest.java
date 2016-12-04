@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.customer.User;
+import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
+import com.whitefamily.service.ServiceFactory;
 
 public class WFInventoryRequest {
 
@@ -22,7 +24,17 @@ public class WFInventoryRequest {
 
 	protected List<Item> itemList;
 	
+	protected List<Item> supplierItemList;
+	
 	protected boolean isLoadItem;
+	
+	private List<WFSupplierMapping> mappingList;
+
+
+	public WFInventoryRequest() {
+		super();
+		mappingList  =ServiceFactory.getSupplierService().getMappingList();
+	}
 
 
 	public InventoryStatus getIs() {
@@ -79,18 +91,38 @@ public class WFInventoryRequest {
 	}
 
 	public void addInventoryItem(WFGoods goods, float count, boolean persiste) {
-		if (itemList == null) {
-			itemList = new ArrayList<Item>(10);
-		}
-		itemList.add(new Item(count, goods, persiste));
+		addInventoryItem(goods, count, 0, 0, persiste);
 	}
 	
 	
 	public void addInventoryItem(WFGoods goods, float count, float realCount, float pr, boolean persiste) {
 		if (itemList == null) {
 			itemList = new ArrayList<Item>(10);
+			supplierItemList =  new ArrayList<Item>(10);
 		}
-		itemList.add(new Item(count, pr, realCount, goods, persiste));
+		Item item = new Item(count, pr, realCount, goods, persiste);
+		itemList.add(item);
+		addToSupplierList(item);
+	}
+	
+	
+	
+	private void addToSupplierList(Item item) {
+		for (WFSupplierMapping wfs : mappingList) {
+			if (item.goods.getId() == wfs.getMappingId() && wfs.getMc() == DeliverySupplierConfiguration.MC.GOODS) {
+				supplierItemList.add(item);
+			} else if (wfs.getMc() == DeliverySupplierConfiguration.MC.CATE) {
+				WFCategory wf = (WFCategory)item.goods.getCate();
+				while (wf != null) {
+					if (wf.getId() == wfs.getMappingId()) {
+						supplierItemList.add(item);
+						break;
+					} 
+					
+					wf = wf.getParent();
+				}
+			}
+		}
 	}
 	
 	
@@ -128,6 +160,15 @@ public class WFInventoryRequest {
 		 Collections.sort(itemList);
 		 return itemList;
 	}
+	
+	
+
+	public List<Item> getSupplierItemList() {
+		 Collections.sort(supplierItemList);
+		return supplierItemList;
+	}
+
+
 
 	public class Item implements Comparable<Item> {
 
