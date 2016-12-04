@@ -49,6 +49,7 @@
                       <td class="text-right col-md-2">最小加工数量</td>
                       <td class="text-right col-md-2">分装规格</td>
                       <td class="text-right col-md-2">分装数量</td>
+                      <td class="text-right col-md-2"></td>
                       <td></td>
                     </tr>
                   </thead>
@@ -59,6 +60,7 @@
                       <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="mpu"    id="mpu#{status.index}" value="#{o.minialProduceUnit}" /></td>
                       <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="style"  id="style#{status.index}" value="#{o.style}"  /></td>
                       <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="unit"   id="unit#{status.index}" value="#{o.unit}"  /></td>
+                       <td class="text-right "></td>
                      <td class="text-left"><button type="button" onclick="$('#wfa-row#{status.index}').remove();" data-toggle="tooltip" title="移除加工产品" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                     </tr>
                     </ui:repeat>
@@ -98,7 +100,8 @@
 					un: item['un'],
 					style: item['style'],
 					mn: item['mn'],
-					value: item['id']
+					value: item['id'],
+					source : item['source']
 				}
 			}));
 		}
@@ -151,12 +154,14 @@ $('input[name=\'wfagoodsname\']').autocomplete({
 
 
 function addWfa() {
+ //<![CDATA[
     var html ='';
     html += '<tr id="wfa-row'+wfa_row+'">'
     html += '    <td class="text-left"><input type="text"  name="wfagoodsname" value="#{o.wfg.name}"  placeholder="加工产品" class="form-control" /><input type="hidden" name="ar_id"  id="wfa_id'+wfa_row+'" value="#{o.wfg.id}"  class="form-control" /></td>';
     html += '    <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="mpu"   id="mpu'+wfa_row+'" value="#{o.minialProduceUnit}" /></td>';
     html += '    <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="style" id="style'+wfa_row+'" value="#{o.style}"  /></td>';
     html += '    <td class="text-right"><input type="text"   readonly="readonly" class="form-control" name="unit"  id="unit'+wfa_row+'" value="#{o.unit}"  /></td>';
+    html +='    <td class="text-right" id="ar_source'+wfa_row+'"></td> ';
     html += '   <td class="text-left"><button type="button" onclick="$(\'#wfa-row'+wfa_row+'\').remove();" data-toggle="tooltip" title="移除加工产品" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
     html += '</tr>';
 
@@ -167,6 +172,7 @@ function addWfa() {
     var v_elstyle = $("input[name=\'style\']:last");
     var v_elunit = $("input[name=\'unit\']:last");
      var v_elar_id = $("input[name=\'ar_id\']:last");
+     var v_elar_source_id = $("#ar_source" + wfa_row);
     v_el.autocomplete({
 	  source: f_auto_complete_source_goods,
 	  'select': function(item) {
@@ -175,10 +181,16 @@ function addWfa() {
 	       v_elstyle.val(item['style']);
 	       v_elunit.val(item['un']);
 	       v_elar_id.val(item['value']);
+	       var sts = item['source'];
+	       for (var j = 0; j < sts.length; j++) {
+	           console.log(v_elar_source_id.innerHTML);
+	           v_elar_source_id.html(v_elar_source_id.html() + sts[j]['name'] +" : " + sts[j]['sv']+"<br />");
+	       }
 	 }
    });
 
 	wfa_row++;
+	//]]>
 }
 
 </script>

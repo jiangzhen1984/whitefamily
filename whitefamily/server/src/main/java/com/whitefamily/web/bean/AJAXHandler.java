@@ -520,6 +520,16 @@ public class AJAXHandler extends HttpServlet {
 				o.put("un", sg.unit);
 				o.put("mn", sg.minialProduceUnit);
 				o.put("id", wfa.getId());
+				JSONArray jsa = new JSONArray();
+				JSONObject source = null;
+				for (StaffGoods sf : wfa.getStaffGoods()) {
+					source = new JSONObject();
+					source.put("name", sf.getWfg().getName());
+					source.put("sv", sf.getUnit());
+					source.put("ss", sf.getStyle());
+					jsa.put(source);
+				}
+				o.put("source", jsa);
 				data.put(o);
 			}
 		}
@@ -531,3 +541,4 @@ public class AJAXHandler extends HttpServlet {
 	}
 
 }
+
