@@ -94,4 +94,15 @@ public class WFCategory extends Category implements Comparable<WFCategory>{
 	
 	
 	
+	public WFCategory getRootCategory() {
+		WFCategory root = this;
+		while (root != null) {
+			if (root.getParent() == null) {
+				break;
+			} else {
+				root = root.getParent();
+			}
+		}
+		return root;
+	}
 }

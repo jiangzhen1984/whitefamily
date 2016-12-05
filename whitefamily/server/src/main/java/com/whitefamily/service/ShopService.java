@@ -3,6 +3,8 @@ package com.whitefamily.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,6 +64,7 @@ import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFShopInventoryCost;
 import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFUser;
 
@@ -1370,5 +1373,81 @@ public class ShopService extends BaseService implements IShopService {
 		return Result.SUCCESS;
 	}
 	
+	
+	
+	public List<WFDelivery> queryDelivery(WFShop shop, Date start, Date end) {
+		Session sess = getSession();
+		if (start == null || end == null) {
+			return null;
+		}
+		
+		Query query = null;
+		if (shop == null) {
+			query = sess.createQuery(" from DeliveryRecord  where datetime >= ? and datetime <=? ");
+			query.setDate(0, start);
+			query.setDate(1, end);
+		} else {
+			query = sess.createQuery(" from DeliveryRecord  where shopId =? and datetime >= ? and datetime <=? ");
+			query.setLong(0, shop.getId());
+			query.setDate(1, start);
+			query.setDate(2, end);
+		}
+		List<DeliveryRecord> drlist = (List<DeliveryRecord>)query.list();
+		List<WFDelivery> wfdlist = new ArrayList<WFDelivery>(drlist.size());
+		WFDelivery wfd = null;
+		for (DeliveryRecord dr : drlist) {
+			wfd = new WFDelivery();
+			wfd.setDatetime(dr.getDatetime());
+			wfd.setId(dr.getId());
+			wfd.setInventoryRequestId(dr.getInventoryRequestId());
+			wfd.setShop(this.getShop(dr.getShopId()));
+		}
+		
+		return wfdlist;
+	}
+	
+	
+	
+	public List<WFShopInventoryCost> queryShopInventoryCost(WFShop shop, Date start, Date end) {
+		Session sess = getSession();
+		if (start == null || end == null) {
+			return null;
+		}
+		
+		Query query = null;
+		if (shop == null) {
+			query = sess.createSQLQuery(
+					"select g.wf_good_id, g.wf_de_price, g.wf_de_count from WF_DELIVERY_RECORD  r join WF_DELIVER_RECORD_GOODS g on r.id = g.wf_rec_id  where r.WF_OPT_TIMESTAMP >= ? and r.WF_OPT_TIMESTAMP <=? ");
+			query.setDate(0, start);
+			query.setDate(1, end);
+		} else {
+			query = sess.createSQLQuery(
+					"select g.wf_good_id, g.wf_de_price, g.wf_de_count from WF_DELIVERY_RECORD  r join WF_DELIVER_RECORD_GOODS g on r.id = g.wf_rec_id   where r.shopId =? and r.WF_OPT_TIMESTAMP >= ? and r.WF_OPT_TIMESTAMP <=? ");
+			query.setLong(0, shop.getId());
+			query.setDate(1, start);
+			query.setDate(2, end);
+		}
+		
+		Map<WFCategory, WFShopInventoryCost> costMap = new HashMap<WFCategory, WFShopInventoryCost>();
+		List<Object[]> list = query.list();
+		WFGoods wfg = null;
+		WFCategory cateRoot = null;
+		for (Object[] obj : list) {
+			BigInteger gid = (BigInteger)obj[0];
+			BigDecimal pr = (BigDecimal)obj[1];
+			BigDecimal count = (BigDecimal)obj[2];
+			wfg = this.goodsService.getGoods(gid.longValue());
+			cateRoot = wfg.getRootCategory();
+			WFShopInventoryCost wic = costMap.get(cateRoot);
+			if (wic == null) {
+				wic = new WFShopInventoryCost(cateRoot);
+				costMap.put(cateRoot, wic);
+			}
+			wic.addCost(pr.doubleValue() * count.floatValue());
+		}
+		
+		return new ArrayList<WFShopInventoryCost>(costMap.values());
+		
+	}
 	
 }

@@ -59,31 +59,26 @@
           <div class="table-responsive">
             <table class="table table-bordered table-hover">
               <thead>
-                <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td><td class="text-center" colspan="2">备货成本</td></tr>
+                <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td></tr>
                 <tr>
                      <td class="text-center">总流水</td> <td class="text-center">#{incomingBean.incoming.zls}</td>
                      <td class="text-center">日用调料</td><td class="text-center">#{incomingBean.cost.rytl}</td>
-                     <td class="text-center">青菜</td><td class="text-center">0</td>
                 </tr>
                 <tr>
                      <td class="text-center">现金</td><td class="text-center">#{incomingBean.incoming.cash}</td>
                      <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
-                     <td class="text-center">丸子</td><td class="text-center">0</td>
                 </tr>
                  <tr>
                      <td class="text-center">糯米闪惠</td><td class="text-center">#{incomingBean.incoming.nuomiaf}</td>
                      <td class="text-center">房费</td><td class="text-center">#{incomingBean.cost.ff}</td>
-                     <td class="text-center">干调</td><td class="text-center">0</td>
                 </tr>
                  <tr>
                      <td class="text-center">闪惠</td><td class="text-center">#{incomingBean.incoming.dazhongaf}</td>
                      <td class="text-center">补菜</td><td class="text-center">#{incomingBean.cost.bc}</td>
-                     <td class="text-center">水发</td><td class="text-center">0</td>
                 </tr>
                  <tr>
                      <td class="text-center">外卖美团</td><td class="text-center">#{incomingBean.incoming.other}</td>
                      <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
-                     <td class="text-center">副食</td><td class="text-center">0</td>
                 </tr>
                  <tr>
                      <td class="text-center">外卖百度</td><td class="text-center">#{incomingBean.incoming.weixin}</td>
@@ -101,6 +96,20 @@
             </table>
           </div>
         <div class="row">
+         <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i>库存成本</h3>
+      </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <ui:repeat id="g" var="g" value="#{incomingBean.inventoryCost}" varStatus="itemStatus">
+                <tr>
+                     <td class="text-center">#{g.cate.name}</td> <td class="text-center">#{g.cost}</td>
+                </tr>
+                </ui:repeat>
+              </thead>
+            </table>
+          </div>
         </div>
       </div>
     </div>

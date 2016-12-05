@@ -150,4 +150,10 @@ public class WFGoods extends Goods {
 			return this.cate.getOrder();
 		}
 	}
+	
+	
+	public WFCategory getRootCategory() {
+		WFCategory wf = (WFCategory) this.cate;
+		return wf.getRootCategory();
+	}
 }

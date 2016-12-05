@@ -12,6 +12,7 @@ import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFShopInventoryCost;
 import com.whitefamily.service.vo.WFUser;
 
 public interface IShopService {
@@ -84,5 +85,10 @@ public interface IShopService {
 	public Result handleInternalDelivery(WFDelivery de, WFUser user);
 	
 	
+	
+	public List<WFDelivery> queryDelivery(WFShop shop, Date start, Date end);
+	
+	
+	public List<WFShopInventoryCost> queryShopInventoryCost(WFShop shop, Date start, Date end);
 
 }

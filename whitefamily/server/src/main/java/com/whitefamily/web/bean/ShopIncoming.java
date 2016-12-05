@@ -1,11 +1,18 @@
 package com.whitefamily.web.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.whitefamily.po.incoming.DeliveryType;
 import com.whitefamily.po.incoming.GroupOnType;
+import com.whitefamily.service.vo.WFCategory;
+import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFOperationCost;
+import com.whitefamily.service.vo.WFShopInventoryCost;
 
 public class ShopIncoming {
 
@@ -118,7 +125,7 @@ public class ShopIncoming {
 	private float costQT;
 	
 	
-	
+	private Map<WFCategory, WFShopInventoryCost> inventoryCostMap;
 
 
 	public float getZls() {
@@ -734,6 +741,28 @@ public class ShopIncoming {
 	public void setNuomiaf(float nuomiaf) {
 		this.nuomiaf = nuomiaf;
 	}
+	
+	
+	public void addInventoryCost(WFGoods wfg, double cost) {
+		if (wfg == null) {
+			return;
+		}
+		synchronized (this) {
+			if (inventoryCostMap == null) {
+				inventoryCostMap = new HashMap<WFCategory, WFShopInventoryCost>();
+			}
+		}
+		
+		WFCategory wfc = wfg.getRootCategory();
+		WFShopInventoryCost wic = inventoryCostMap.get(wfc);
+		synchronized (inventoryCostMap) {
+			if (wic == null) {
+				wic = new WFShopInventoryCost(wfc);
+				inventoryCostMap.put(wfc, wic);
+			}
+		}
+		wic.addCost(cost);
+	}
 
 	public void reset() {
 		zls = 0;
@@ -913,5 +942,14 @@ public class ShopIncoming {
 		//其他
 		cost.setQt(costQT);
 		return cost;
+	}
+	
+	
+	public List<WFShopInventoryCost> buildshopInventoryCost() {
+		if (inventoryCostMap == null || inventoryCostMap.size() <= 0) {
+			return null;
+		} else {
+			return new ArrayList<WFShopInventoryCost>(inventoryCostMap.values());
+		}
 	}
 }

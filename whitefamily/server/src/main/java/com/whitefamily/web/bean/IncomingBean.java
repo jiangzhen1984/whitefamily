@@ -10,6 +10,7 @@ import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFOperationCost;
+import com.whitefamily.service.vo.WFShopInventoryCost;
 
 @ManagedBean(name = "incomingBean", eager = false)
 @SessionScoped
@@ -19,6 +20,7 @@ public class IncomingBean {
 	
 	private WFIncoming incoming;
 	private WFOperationCost  cost;
+	private List<WFShopInventoryCost> inventoryCost;
 	
 	private Date startDate;
 	private Date endDate;
@@ -91,6 +93,15 @@ public class IncomingBean {
 	public void setType(int type) {
 		this.type = type;
 	}
+	
+	
+
+
+	public List<WFShopInventoryCost> getInventoryCost() {
+		return inventoryCost;
+	}
+
+
 
 
 	public void query() {
@@ -136,6 +147,8 @@ public class IncomingBean {
 				cost.setYl(woc.getYl()+ cost.getYl());
 			}
 		}
+		
+		inventoryCost = shopService.queryShopInventoryCost(shopService.getShop(shopId), startDate, endDate);
 	}
 	
 }
