@@ -90,5 +90,11 @@ public interface IShopService {
 	
 	
 	public List<WFShopInventoryCost> queryShopInventoryCost(WFShop shop, Date start, Date end);
+	
+	
+	public double queryTotalIncoming();
+	
+	
+	public double queryTotalOperationCost();
 
 }

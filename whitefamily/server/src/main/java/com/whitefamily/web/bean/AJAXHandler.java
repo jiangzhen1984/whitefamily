@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import com.sun.faces.context.FacesContextFactoryImpl;
 import com.sun.faces.lifecycle.LifecycleImpl;
 import com.whitefamily.service.IGoodsService;
+import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFArtifact;
@@ -75,6 +76,8 @@ public class AJAXHandler extends HttpServlet {
 			handleChartAction(req, resp);
 		} else if ("artifact".equalsIgnoreCase(action)) {
 			handleArtifactSearchAction(req, resp);
+		} else if ("statist".equalsIgnoreCase(action)) {
+			handleStatistAction(req, resp);
 		}
 
 	}
@@ -537,6 +540,24 @@ public class AJAXHandler extends HttpServlet {
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.print(data.toString());
+		out.flush();
+	}
+	
+	
+	private void handleStatistAction(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		IInventoryService iis = ServiceFactory.getInventoryService();
+		JSONObject ret = new JSONObject();
+		double inventorycost = iis.queryCurrentInventoryCost();
+		ret.put("ic", inventorycost);
+		double totalIncoming = ServiceFactory.getShopService().queryTotalIncoming();
+		ret.put("si", totalIncoming);
+		double operationCost = ServiceFactory.getShopService().queryTotalOperationCost();
+		ret.put("sc", operationCost);
+		
+		resp.setContentType("application/json");
+		PrintWriter out = resp.getWriter();
+		out.print(ret.toString());
 		out.flush();
 	}
 

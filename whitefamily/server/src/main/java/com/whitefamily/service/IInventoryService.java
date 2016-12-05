@@ -48,5 +48,7 @@ public interface IInventoryService {
 	
 	public List<WFInventory> querySubInventoryRequest(long requestId);
 	
+	
+	public double queryCurrentInventoryCost();
 
 }

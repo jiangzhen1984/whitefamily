@@ -24,12 +24,12 @@
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-6">
         <div class="tile">
-           <div class="tile-heading">销售额 <span class="pull-right">
+           <div class="tile-heading">店铺营收 <span class="pull-right">
             <i class="fa fa-caret-up"></i>
             <i class="fa fa-caret-down"></i>
             1%</span></div>
           <div class="tile-body"><i class="fa fa-shopping-cart"></i>
-            <h2 class="pull-right">123￥</h2>
+            <h2 class="pull-right" id="si">123￥</h2>
           </div>
           <div class="tile-footer"><a href="">查看详细信息</a></div>
        </div>
@@ -41,19 +41,19 @@
             <i class="fa fa-caret-down"></i>
             1%</span></div>
           <div class="tile-body"><i class="fa fa-credit-card"></i>
-            <h2 class="pull-right">5313￥</h2>
+            <h2 class="pull-right" id="ic" >5313￥</h2>
           </div>
           <div class="tile-footer"><a href="">查看详细信息</a></div>
        </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-6">
       <div class="tile">
-           <div class="tile-heading">店铺统计 <span class="pull-right">
+           <div class="tile-heading">店铺支出 <span class="pull-right">
             <i class="fa fa-caret-up"></i>
             <i class="fa fa-caret-down"></i>
             1%</span></div>
           <div class="tile-body"><i class="fa fa-user"></i>
-            <h2 class="pull-right">1230￥</h2>
+            <h2 class="pull-right" id="sc">1230￥</h2>
           </div>
           <div class="tile-footer"><a href="">查看详细信息</a></div>
        </div>
@@ -259,7 +259,6 @@
     
     
     function queryIncomingSelect(sl, shop) {
-         console.log(sl.value);
     	 $.ajax({
 			url: 'chart.ajax?action=chart&amp;type=incoming&amp;shop='+shop+'&amp;date='+sl.value+'&amp;t=month',
 			dataType: 'json',
@@ -283,7 +282,6 @@
     }
     
       function queryCostSelect(sl, shop) {
-         console.log(sl.value);
     	 $.ajax({
 			url: 'chart.ajax?action=chart&amp;type=cost&amp;shop='+shop+'&amp;date='+sl.value+'&amp;t=month',
 			dataType: 'json',
@@ -292,9 +290,24 @@
 			}
 		});
     }
+      
+      
+    function queryStatist() {
+    	 $.ajax({
+ 			url: 'statist.ajax?action=statist&amp;',
+ 			dataType: 'json',
+ 			success: function(json) {
+ 			   console.log(json)
+ 			   $("#ic").html(json['ic']);
+ 			   $("#si").html(json['si']);
+ 			   $("#sc").html(json['sc']);
+ 			}
+ 		});
+    }
     
     var cd = new Date();
     queryIncoming('', (cd.getFullYear() +'-' + (cd.getMonth() + 1) + "-" + cd.getDate()));
     queryCost('', (cd.getFullYear() +'-' + (cd.getMonth() + 1) + "-" + cd.getDate()));
+    queryStatist();
 </script>
 </body></html>

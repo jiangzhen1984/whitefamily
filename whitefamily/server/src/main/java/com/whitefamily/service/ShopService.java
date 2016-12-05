@@ -1450,4 +1450,39 @@ public class ShopService extends BaseService implements IShopService {
 		
 	}
 	
+	
+	public double queryTotalIncoming() {
+		Session sess = getSession();
+		Query query = sess.createSQLQuery("  select sum(WF_ZLS) from wf_incoming ");
+		List<BigDecimal> list = query.list();
+		if (list != null && list.size() > 0) {
+			BigDecimal bd = list.get(0);
+			if (bd != null) {
+				return bd.doubleValue();
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+	
+	
+	public double queryTotalOperationCost() {
+		Session sess = getSession();
+		Query query = sess.createSQLQuery(
+				"  select sum(WF_RYTL + WF_BC + WF_SB + WF_HSF + WF_YL + WF_SF + WF_DF + WF_FF + WF_RQF + WF_GZ +WF_RZ + WF_QT) from WF_OPERATION_COST ");
+		List<BigDecimal> list = query.list();
+		if (list != null && list.size() > 0) {
+			BigDecimal bd = list.get(0);
+			if (bd != null) {
+				return bd.doubleValue();
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
+	
 }

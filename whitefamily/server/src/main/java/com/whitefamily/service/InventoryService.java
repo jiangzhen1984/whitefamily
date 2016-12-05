@@ -566,4 +566,21 @@ public class InventoryService extends BaseService implements IInventoryService {
 		}
 		return list;
 	}
+	
+	
+	public double queryCurrentInventoryCost() {
+		Session sess = getSession();
+		Query query = sess.createSQLQuery("  select sum(wf_price * WF_UNIT_COUNT) from wf_inventory_goods ");
+		List<BigDecimal> list = query.list();
+		if (list != null && list.size() > 0) {
+			BigDecimal bd = list.get(0);
+			if (bd != null) {
+				return bd.doubleValue();
+			} else {
+				return 0;
+			}
+		} else {
+			return 0;
+		}
+	}
 }
