@@ -570,7 +570,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 	
 	public double queryCurrentInventoryCost() {
 		Session sess = getSession();
-		Query query = sess.createSQLQuery("  select sum(wf_price * WF_UNIT_COUNT) from wf_inventory_goods ");
+		Query query = sess.createSQLQuery("  select sum(wf_price * WF_UNIT_REM_COUNT) from wf_inventory_goods where WF_UNIT_REM_COUNT > 0 ");
 		List<BigDecimal> list = query.list();
 		if (list != null && list.size() > 0) {
 			BigDecimal bd = list.get(0);
