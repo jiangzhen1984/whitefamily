@@ -1,5 +1,8 @@
 package com.whitefamily.service.vo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WFShopInventoryCost {
 	
 	private long id;
@@ -8,6 +11,7 @@ public class WFShopInventoryCost {
 	
 	private double cost;
 	
+	private Map<WFGoods, GoodsCost> goodsCost;
 	
 
 	public WFShopInventoryCost(WFCategory cate) {
@@ -17,16 +21,30 @@ public class WFShopInventoryCost {
 		}
 		this.cate = cate;
 		this.id = this.cate.getId();
+		goodsCost = new HashMap<WFGoods, GoodsCost>();
 	}
 	
-	public void addCost(double cost) {
+	public void addCost(WFGoods wfg, double cost) {
 		this.cost += cost;
+		updateGoodsCost(wfg, cost);
 	}
 	
-	public void addCost(float cost) {
+	public void addCost(WFGoods wfg, float cost) {
 		this.cost += cost;
+		updateGoodsCost(wfg, cost);
 	}
 	
+	
+	private void updateGoodsCost(WFGoods wfg, double cost) {
+		GoodsCost gc = goodsCost.get(wfg);
+		if (gc == null) {
+			gc = new GoodsCost();
+			goodsCost.put(wfg, gc);
+		}
+		gc.wfg = wfg;
+		gc.cost += cost;
+		gc.rate = gc.cost / this.cost * 100;
+	}
 	
 	public void clearCost() {
 		this.cost = 0;
@@ -40,6 +58,12 @@ public class WFShopInventoryCost {
 
 	public WFCategory getCate() {
 		return cate;
+	}
+	
+	
+
+	public Map<WFGoods, GoodsCost> getGoodsCost() {
+		return goodsCost;
 	}
 
 	@Override
@@ -65,5 +89,24 @@ public class WFShopInventoryCost {
 	}
 	
 	
+	
+	
+	public class GoodsCost {
+		WFGoods wfg;
+		double cost;
+		double rate;
+		public WFGoods getWfg() {
+			return wfg;
+		}
+				public double getCost() {
+			return cost;
+		}
+				public double getRate() {
+					return rate;
+				}
+		
+				
+				
+	}
 
 }

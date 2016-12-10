@@ -104,7 +104,13 @@
               <thead>
                 <ui:repeat id="g" var="g" value="#{incomingBean.inventoryCost}" varStatus="itemStatus">
                 <tr>
-                     <td class="text-center">#{g.cate.name}</td> <td class="text-center">#{g.cost}</td>
+                     <td class="text-center">#{g.cate.name}</td>
+                     <td class="text-center">#{g.cost}</td>
+                     <td class="text-center">
+                     <h:commandLink  action="incoming_delivery_list.xhtml" type="submit"  form="form-product" data-toggle="tooltip" title="查看明细" class="btn btn-primary">
+                          <f:setPropertyActionListener target="#{incomingBean.detailInventoryIndex}" value="#{itemStatus.index}" />
+                          <i class="fa fa-trash">查看菜品明细</i>
+                      </h:commandLink></td>
                 </tr>
                 </ui:repeat>
               </thead>

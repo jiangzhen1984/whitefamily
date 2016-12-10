@@ -29,6 +29,8 @@ public class IncomingBean {
 	
 	private long shopId;
 	
+	private WFShopInventoryCost detail;
+	
 	
 	public IncomingBean() {
 		type = 1;
@@ -104,6 +106,13 @@ public class IncomingBean {
 
 
 
+	public WFShopInventoryCost getDetail() {
+		return detail;
+	}
+
+
+
+
 	public void query() {
 		incoming = new WFIncoming();
 		cost = new WFOperationCost();
@@ -149,6 +158,16 @@ public class IncomingBean {
 		}
 		
 		inventoryCost = shopService.queryShopInventoryCost(shopService.getShop(shopId), startDate, endDate);
+	}
+	
+	
+	
+	public String selectDetailInventoryCost(int index) {
+		return "incoming_delivery_detail";
+	}
+	
+	public void setDetailInventoryIndex(int index) {
+		detail = inventoryCost.get(index);
 	}
 	
 }

@@ -761,7 +761,7 @@ public class ShopIncoming {
 				inventoryCostMap.put(wfc, wic);
 			}
 		}
-		wic.addCost(cost);
+		wic.addCost(wfg, cost);
 	}
 
 	public void reset() {

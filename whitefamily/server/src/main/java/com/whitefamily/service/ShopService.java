@@ -1443,7 +1443,7 @@ public class ShopService extends BaseService implements IShopService {
 				wic = new WFShopInventoryCost(cateRoot);
 				costMap.put(cateRoot, wic);
 			}
-			wic.addCost(pr.doubleValue() * count.floatValue());
+			wic.addCost(wfg, pr.doubleValue() * count.floatValue());
 		}
 		
 		return new ArrayList<WFShopInventoryCost>(costMap.values());
