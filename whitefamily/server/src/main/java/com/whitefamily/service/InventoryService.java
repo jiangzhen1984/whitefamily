@@ -19,8 +19,6 @@ import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
-import com.whitefamily.po.delivery.DeliveryRecord;
-import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
@@ -28,6 +26,7 @@ import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFVendor;
 
@@ -389,7 +388,6 @@ public class InventoryService extends BaseService implements IInventoryService {
 			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()),
 					iur.getCount(), true);
 		}
-		sess.close();
 	}
 
 	@Override
@@ -582,5 +580,39 @@ public class InventoryService extends BaseService implements IInventoryService {
 		} else {
 			return 0;
 		}
+	}
+	
+	
+	
+	public WFInventoryRequest queryShopWFInventoryRequest(WFShop shop, Date date) {
+		if (shop == null) {
+			return null;
+		}
+		StringBuffer hsqlBuffer = new StringBuffer();
+		hsqlBuffer.append(" from InventoryRequestRecord shopId = ? and date(datetime) =?");
+		
+		Session sess = getSession();
+		Query query = sess.createQuery(hsqlBuffer.toString());
+		query.setLong(0, shop.getId());
+		query.setDate(1, date);
+		
+
+		List<InventoryRequestRecord> list = query.list();
+		if (list.size() <= 0) {
+			return null;
+		}
+		InventoryRequestRecord iur = list.get(0);
+		WFInventoryRequest wf = new WFInventoryRequest();
+		wf.setId(iur.getId());
+		wf.setDatetime(iur.getDatetime());
+		if (iur.getOperator() != null) {
+			wf.setOperator(userService.getUser(iur.getOperator().getId()));
+		}
+		wf.setIs(iur.getStatus());
+		wf.setShop(shopService.getShop(iur.getId()));
+		
+		queryInventoryRequestDetail(wf);
+		return wf;
+	
 	}
 }

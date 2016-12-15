@@ -7,6 +7,7 @@ import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFShop;
 
 public interface IInventoryService {
 	
@@ -28,6 +29,8 @@ public interface IInventoryService {
     public List<WFInventoryRequest> queryWFInventoryRequest(int start, int count, InventoryStatus is);
     
     public List<WFInventoryRequest> queryWFInventoryRequest(int start, int count, InventoryStatus[] isArr);
+    
+    public WFInventoryRequest queryShopWFInventoryRequest(WFShop shop, Date date);
 	
 	public void queryInventoryRequestDetail(WFInventoryRequest wf);
 	
