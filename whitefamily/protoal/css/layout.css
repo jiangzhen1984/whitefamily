@@ -1,0 +1,156 @@
+/* CSS Document */
+html { background:#000; color:#FFF; height: 100%; }
+
+.body {  position:absolute; top:0px; left:0px; right:0px; bottom:0px; margin:auto;}
+.bodyRelative { position:relative; height:100%;}
+
+.clearfix {clear:both; zoom:1;}
+.clearfix:after{width:0px;height:0px;clear:both;display:block;content:".";visibility:hidden;line-height:0; font-size:0;}
+
+
+#logo {background:url(../img/logo_da.png) no-repeat top left; width:163px; height:138px; position:fixed; top:50px; left:8px; z-index:999; }
+
+.languageWrapper { position:fixed; top:10px; right:10px; z-index:999; }
+.languageWrapper ul li {margin-top:10px;}
+.languageWrapper ul li:first-child { margin-top:0px;}
+
+
+
+.navigationWrapper { position:fixed; z-index:999; height:353px; bottom:10px;} 
+
+.navigationWrapper .nav_main1 {width:83px; height:175px;}
+.navigationWrapper .nav_main1 .link {cursor:pointer; width:93px; height:23px; display:block; margin-top: 10px;}
+.navigationWrapper .nav_main1 .link a { height: 23px; margin-left: 10px; width: 73px; display: block; }
+.navigationWrapper .nav_main1 .link:hover { background:#784311;}
+
+
+
+
+.navigationWrapper .nav_main1 .link#aboutus a { background:url(../img/navi1_white.png) no-repeat center left;   }
+.navigationWrapper .nav_main1 .link#business a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#pro a { background:url(../img/navi33_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#location a { background:url(../img/navi3_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#news a { background:url(../img/navi4_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main1 .link#aboutus1 a { background:url(../img/navi1_white1.png) no-repeat center left;   }
+.navigationWrapper .nav_main1 .link#business1 a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#business2 a { background:url(../img/navi2_white1.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#pro1 a { background:url(../img/navi33_white1.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#location1 a { background:url(../img/navi3_white1.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#news1 a { background:url(../img/navi4_white1.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link#contact1 a { background:url(../img/navi5_white1.png) no-repeat center left;}
+
+.navigationWrapper .nav_main1 .link.black#aboutus a { background:url(../img/navi1_black.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black#business a { background:url(../img/navi2_black.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black#location a { background:url(../img/navi3_black.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black#news a { background:url(../img/navi4_black.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main1 .link.black:hover#aboutus a { background:url(../img/navi1_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#business a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#location a { background:url(../img/navi3_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#news a { background:url(../img/navi4_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:active#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main1 .link:first-child { margin-top:0px;}
+
+
+.navigationWrapper .nav_main1 .link.black:hover#aboutus1 a { background:url(../img/navi1_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#business1 a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#location1 a { background:url(../img/navi3_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#news1 a { background:url(../img/navi4_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:hover#contact1 a { background:url(../img/navi5_white.png) no-repeat center left;}
+.navigationWrapper .nav_main1 .link.black:active#contact1 a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+
+
+
+
+
+.navigationWrapper .nav_main2 {width:83px; height:175px;}
+.navigationWrapper .nav_main2 .link {cursor:pointer; width:93px; height:23px; display:block; margin-top: 10px;}
+.navigationWrapper .nav_main2 .link a { height: 23px; margin-left: 10px; width: 73px; display: block; }
+.navigationWrapper .nav_main2 .link:hover { background:#784311;}
+.navigationWrapper .nav_main2 .link.active { background:#784311;}
+
+
+
+.navigationWrapper .nav_main2 .link#aboutus a { background:url(../img/navi1_white.png) no-repeat center left;   }
+.navigationWrapper .nav_main2 .link#business a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link#pro a { background:url(../img/navi33_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link#location a { background:url(../img/navi3_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link#news a { background:url(../img/navi4_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main2 .link.black#aboutus a { background:url(../img/navi1_black.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black#business a { background:url(../img/navi2_black.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black#location a { background:url(../img/navi3_black.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black#news a { background:url(../img/navi4_black.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main2 .link.black:hover#aboutus a { background:url(../img/navi1_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black:hover#business a { background:url(../img/navi2_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black:hover#location a { background:url(../img/navi3_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black:hover#news a { background:url(../img/navi4_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black:hover#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+.navigationWrapper .nav_main2 .link.black:active#contact a { background:url(../img/navi5_white.png) no-repeat center left;}
+
+.navigationWrapper .nav_main2 .link:first-child { margin-top:0px;}
+
+
+
+
+
+
+.navigationWrapper .nav_main2 { margin-top: 60px;}
+.navigationWrapper .nav_main2 li { margin-top:10px; margin-left:10px;}
+.navigationWrapper .nav_main2 li:first-child { margin-top:0px;}
+
+.footerWrapper {position: fixed; z-index: 999; right:0px; bottom: 0px;}
+
+.dim {height:100%;			width:100%;			position:fixed;			left:0;			top:0;			z-index:999999999 !important;			background-color:#050403; display:none;
+filter: alpha(opacity=90); /* internet explorer */
+-khtml-opacity: 0.95;      /* khtml, old safari */
+-moz-opacity: 0.95;       /* mozilla, netscape */
+opacity: 0.95;           /* fx, safari, opera */
+}
+
+.tncWrapper{max-width:800px; height:100%; margin:0px auto;padding-left:100px;padding-right:100px;}
+.tncWrapper .btnright{text-align:right;}
+.tncWrapper .contenttxt {height:100%;}
+
+.privacyWrapper{max-width:800px; height:100%; margin:0px auto;padding-left:100px;padding-right:100px;}
+.privacyWrapper .btnright{text-align:right;}
+.privacyWrapper .contenttxt {height:100%;}
+
+.wechatWrapper{width:100%; height:100%; text-align:center; margin:0 auto; }
+.wechatWrapper .btnright{position: fixed; top: 50%; left: 60%; margin-top: -250px; margin-left: 70px; z-index:99; }
+.wechatWrapper .contenttxt {  position: fixed; top: 50%; left: 50%; margin-top: -200px; margin-left: -160px;}
+.wechatWrapper .qrcode{display: block; width:300px;}
+
+
+
+
+
+
+a{ color:#666666; font-size:14px; text-decoration:none;}
+a:hover{ color:#666666; font-size:14px; text-decoration:none;}
+
+
+
+
+
+
+
+
+.menu_zhy{ width:83px;}
+.menu_zhy a{ display:block; width:83px; color:#FFF; line-height:26px; text-decoration:none; height:26px; font-size:15px; font-weight:bold; text-align:center; margin-bottom:5px; font-family: "微软雅黑"; }
+.menu_zhy a:hover{ background:#784311;}
+.menu_zhy a.dq{ background:#784311; color:#FFF;}
+
+.menu_zhy2{ width:83px;}
+.menu_zhy2 a{ display:block; width:83px; color:#563b35; line-height:26px; text-decoration:none; height:26px; font-size:15px; font-weight:bold; text-align:center; margin-bottom:5px; font-family: "微软雅黑"; }
+.menu_zhy2 a:hover{ background:#784311; color:#FFF;}
+.menu_zhy2 a.dq{ background:#784311; color:#FFF;}
