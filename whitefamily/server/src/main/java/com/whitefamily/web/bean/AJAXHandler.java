@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,6 +41,8 @@ import com.whitefamily.service.vo.WFVendor;
 
 public class AJAXHandler extends HttpServlet {
 
+	Log logger = LogFactory.getLog(AJAXHandler.class);
+	
 	public AJAXHandler() {
 		super();
 		// service = new BreakfastBasicService();
@@ -555,6 +559,7 @@ public class AJAXHandler extends HttpServlet {
 		double operationCost = ServiceFactory.getShopService().queryTotalOperationCost();
 		ret.put("sc", operationCost);
 		
+		logger.info("==> " + ret.toString());
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.print(ret.toString());

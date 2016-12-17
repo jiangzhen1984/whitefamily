@@ -630,6 +630,7 @@ public class ShopService extends BaseService implements IShopService {
 		WFIncoming wf = null;
 		for (Incoming in : inList) {
 			wf = new WFIncoming();
+			wf.setZls(in.getZls());
 			wf.setCash( in.getCash());
 			wf.setAli( in.getAli());
 			wf.setDazhong( in.getDazhong());
@@ -703,6 +704,7 @@ public class ShopService extends BaseService implements IShopService {
 		for (Incoming in : inList) {
 			wf = new WFIncoming();
 			wf.setShop(this.getShop(in.getShop().getId()));
+			wf.setZls(in.getZls());
 			wf.setCash( in.getCash());
 			wf.setAli( in.getAli());
 			wf.setDazhong( in.getDazhong());

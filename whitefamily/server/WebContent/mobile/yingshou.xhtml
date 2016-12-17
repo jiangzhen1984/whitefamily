@@ -159,17 +159,7 @@
 									<f:setPropertyActionListener target="#{shopBean.iType}"
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="3" />大众 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="4" />美团 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="5" />口碑 </h:commandLink>
 							</h:panelGroup>
 							<h:panelGroup rendered="${shopBean.subType == '2'}">
 								<h:commandLink type="submit" class="menu_head">
@@ -186,17 +176,7 @@
 									<f:setPropertyActionListener target="#{shopBean.iType}"
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="3" />大众 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="4" />美团 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="5" />口碑 </h:commandLink>
 							</h:panelGroup>
 							<h:panelGroup rendered="${shopBean.subType == '3'}">
 								<h:commandLink type="submit" class="menu_head">
@@ -209,21 +189,11 @@
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="2" />百度 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head current">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="3" />大众 </h:commandLink>
 								<h:commandLink type="submit" class="menu_head">
 									<f:setPropertyActionListener target="#{shopBean.iType}"
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="4" />美团 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="5" />口碑 </h:commandLink>
 							</h:panelGroup>
 							<h:panelGroup rendered="${shopBean.subType == '4'}">
 								<h:commandLink type="submit" class="menu_head">
@@ -236,21 +206,11 @@
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="2" />百度 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head ">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="3" />大众 </h:commandLink>
 								<h:commandLink type="submit" class="menu_head current">
 									<f:setPropertyActionListener target="#{shopBean.iType}"
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="4" />美团 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="5" />口碑 </h:commandLink>
 							</h:panelGroup>
 							<h:panelGroup rendered="${shopBean.subType == '5'}">
 								<h:commandLink type="submit" class="menu_head">
@@ -263,21 +223,11 @@
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="2" />百度 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head ">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="3" />大众 </h:commandLink>
 								<h:commandLink type="submit" class="menu_head">
 									<f:setPropertyActionListener target="#{shopBean.iType}"
 										value="4" />
 									<f:setPropertyActionListener target="#{shopBean.subType}"
 										value="4" />美团 </h:commandLink>
-								<h:commandLink type="submit" class="menu_head current">
-									<f:setPropertyActionListener target="#{shopBean.iType}"
-										value="4" />
-									<f:setPropertyActionListener target="#{shopBean.subType}"
-										value="5" />口碑 </h:commandLink>
 							</h:panelGroup>
 						</div>
 					</h:panelGroup>
@@ -680,7 +630,7 @@
 								<td class="text-left"><label class="control-label"
 									for="input-name">有效订单</label></td>
 								<td class="text-right"><h:inputText
-										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										value="#{shopBean.shopIncoming.deValid}" a:placeholder="有效订单"
 										class="form-control" /></td>
 							</tr>
 							<tr>
@@ -735,7 +685,7 @@
 								<td class="text-left"><label class="control-label"
 									for="input-name">有效订单</label></td>
 								<td class="text-right"><h:inputText
-										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										value="#{shopBean.shopIncoming.dbValid}" a:placeholder="有效订单"
 										class="form-control" /></td>
 							</tr>
 							<tr>
@@ -756,7 +706,7 @@
 						</tbody>
 
 					</h:panelGroup>
-					<h:panelGroup rendered="${shopBean.subType == '3'}">
+					<h:panelGroup rendered="${shopBean.subType == '4'}">
 						<tbody>
 							<tr>
 								<td class="text-left"><label class="control-label"
@@ -790,7 +740,7 @@
 								<td class="text-left"><label class="control-label"
 									for="input-name">有效订单</label></td>
 								<td class="text-right"><h:inputText
-										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										value="#{shopBean.shopIncoming.dmValid}" a:placeholder="有效订单"
 										class="form-control" /></td>
 							</tr>
 							<tr>
@@ -811,7 +761,7 @@
 						</tbody>
 
 					</h:panelGroup>
-					<h:panelGroup rendered="${shopBean.subType == '4'}">
+					<h:panelGroup rendered="${shopBean.subType == '3'}">
 						<tbody>
 							<tr>
 								<td class="text-left"><label class="control-label"
@@ -845,7 +795,7 @@
 								<td class="text-left"><label class="control-label"
 									for="input-name">有效订单</label></td>
 								<td class="text-right"><h:inputText
-										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										value="#{shopBean.shopIncoming.ddValid}" a:placeholder="有效订单"
 										class="form-control" /></td>
 							</tr>
 							<tr>
@@ -899,7 +849,7 @@
 								<td class="text-left"><label class="control-label"
 									for="input-name">有效订单</label></td>
 								<td class="text-right"><h:inputText
-										value="#{shopBean.shopIncoming.gdDje}" a:placeholder="有效订单"
+										value="#{shopBean.shopIncoming.dkValid}" a:placeholder="有效订单"
 										class="form-control" /></td>
 							</tr>
 							<tr>

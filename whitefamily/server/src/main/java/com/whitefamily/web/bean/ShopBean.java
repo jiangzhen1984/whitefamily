@@ -199,6 +199,7 @@ public class ShopBean {
 		shopIncoming.setZls(wfi.getZls());
 		shopIncoming.setCash(wfi.getCash());
 		shopIncoming.setDazhong(wfi.getDazhong());
+		shopIncoming.setDazhongaf(wfi.getDazhongaf());
 		shopIncoming.setAli(wfi.getAli());
 		shopIncoming.setWeixin(wfi.getWeixin());
 		shopIncoming.setNuomi(wfi.getNuomi());
