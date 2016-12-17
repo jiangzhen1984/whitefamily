@@ -1,0 +1,97 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+		
+		<div id="content">
+			<div class="page-header">
+				<div class="container-fluid">
+					<div class="pull-right">
+						
+					<a href="category_list.xhtml" data-toggle="tooltip" title=" $button_cancel" class="btn btn-default"><i class="fa fa-reply"></i></a>
+
+					</div>
+					<h1> 产品管理</h1>
+					<ul class="breadcrumb">
+						<li><a href="category_list.xhtml">分类管理</a></li>
+					</ul>
+				</div>
+			</div>
+			<h:form>
+			<div class="container-fluid">
+			 <c:if test="${not empty categoryBean.errMsg}">
+				<div class="alert alert-danger">
+					<i class="fa fa-exclamation-circle"></i> <h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+				</div>
+				</c:if>
+				<div class="panel panel-default">
+					<div class="panel-body">
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover">
+								<thead>
+										<tr>
+											<td class="text-left">分类名称</td>
+											<td class="text-right">上级分类</td>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat id="cate" var="cate"
+											value="#{categoryBean.subCate.subs}" varStatus="itemStatus">
+											<tr>
+												<td class="text-left">
+												 <h:commandLink  action="#{categoryBean.showSubCategory}" type="submit"  form="form-product" data-toggle="tooltip" title="下属" >
+								                          <f:setPropertyActionListener target="#{categoryBean.categoryId}" value="#{cate.id}" />
+								                         #{cate.name}
+								                 </h:commandLink>
+												</td>
+												<td class="text-right"><c:when
+														test="${not empty cate.parent}">#{cate.parent.name}</c:when></td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+								
+								
+								<table class="table table-bordered table-hover">
+								<thead>
+										<tr>
+											<td class="text-left">产品</td>
+											<td class="text-right"></td>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat id="g" var="g"
+											value="#{categoryBean.goodsList}" varStatus="itemStatus">
+											<tr>
+												<td class="text-left">#{g.name}</td>
+												<td class="text-right">#{g.cate.name}</td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+							</div>
+						<div class="row">
+							<div class="col-sm-6 text-left"></div>
+							<div class="col-sm-6 text-right"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</h:form>
+		</div>
+		
+		<footer id="footer">
+			<br />
+		</footer>
+	</div>
+</body>
+</html>

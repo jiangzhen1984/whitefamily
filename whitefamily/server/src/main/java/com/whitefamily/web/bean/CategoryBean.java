@@ -3,6 +3,7 @@ package com.whitefamily.web.bean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,9 +12,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.whitefamily.service.ICategoryService;
+import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.Result;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFCategory;
+import com.whitefamily.service.vo.WFGoods;
 
 @ManagedBean(name = "categoryBean", eager = false)
 @SessionScoped
@@ -24,15 +27,19 @@ public class CategoryBean {
 	private String name;
 	private int type;
 	private long parentCategoryId;
+	private WFCategory subCate;
 
 	private String errMsg;
-
+	private List<WFGoods> goodsList;
+	private IGoodsService goodsService;
+	
 	ICategoryService service;
 
 	public CategoryBean() {
 		super();
 		service = ServiceFactory.getCategoryService();
 		categoryList = service.getAllCategory();
+		goodsService = ServiceFactory.getGoodsService();
 	}
 
 	public List<WFCategory> getCategoryList() {
@@ -233,6 +240,60 @@ public class CategoryBean {
 		this.type = type;
 	}
 
+	
+	
+	public String showSubCategory() {
+		subCate = findCategory(categoryList, categoryId);
+		if (subCate.getParent() != null) {
+			prepareGoods(subCate);
+		} else {
+			goodsList = null;
+		}
+		return "subcategory";
+	}
+
+	public WFCategory getSubCate() {
+		return subCate;
+	}
+	
+	
+	
+	public List<WFGoods> getGoodsList() {
+		return goodsList;
+	}
+
+	public void prepareGoods(WFCategory cate) {
+		if (cate == null) {
+			return;
+		}
+		goodsList = goodsService.queryGoods(getAllSubCates(cate), 0, 200, 0);
+	}
+	
+	
+	
+	private List<WFCategory> getAllSubCates(WFCategory cate) {
+		if (cate == null) {
+			return null;
+		}
+		 List<WFCategory> list = new ArrayList<WFCategory>(20);
+		 Stack<WFCategory> stack = new Stack<WFCategory>();
+		 WFCategory el = cate;
+		 list.add(el);
+		 while (el != null) {
+			 if (el.getSubs() != null) {
+				 for (WFCategory wf : el.getSubs()) {
+					 stack.push(wf);
+					 list.add(wf);
+				 }
+			 }
+			 if (!stack.isEmpty()) {
+				 el = stack.pop();
+			 } else {
+				 el = null;
+			 }
+		 }
+		 return list;
+	}
 	
 	
 }

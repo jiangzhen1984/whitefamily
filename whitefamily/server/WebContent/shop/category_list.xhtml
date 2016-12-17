@@ -19,7 +19,7 @@
 					    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
 					      <button type="button" class="close" data-dismiss="alert">&times;</button>
 					    </div>
-					    </c:if>
+					   </c:if>
 					<div class="pull-right">
 						<a href="category_form.xhtml" data-toggle="tooltip" title=""
 							class="btn btn-primary"><i class="fa fa-plus"></i></a> 
@@ -72,9 +72,11 @@
 										<ui:repeat id="cate" var="cate"
 											value="#{categoryBean.categoryList}" varStatus="itemStatus">
 											<tr>
-												<td class="text-center"><input type="checkbox"
-													name="selected[]" value="#{cate.id}" /></td>
-												<td class="text-left">#{cate.name}</td>
+												<td class="text-center"></td>
+												<td class="text-left">
+												<h:commandLink  action="#{categoryBean.showSubCategory}" type="submit"  form="form-product" data-toggle="tooltip" title="下属" >
+												#{cate.name}
+												</h:commandLink></td>
 												<td class="text-right"><c:when
 														test="${not empty cate.parent}">#{cate.parent.name}</c:when></td>
 												<td class="text-right">
@@ -89,7 +91,6 @@
 								                          <f:setPropertyActionListener target="#{categoryBean.categoryId}" value="#{cate.id}" />
 								                          <i class="fa fa-trash"></i>
 								                      </h:commandLink>
-													
 												</td>
 													
 													
