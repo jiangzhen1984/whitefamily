@@ -11,6 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.whitefamily.service.ICategoryService;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.Result;
@@ -22,6 +25,7 @@ import com.whitefamily.service.vo.WFGoods;
 @SessionScoped
 public class CategoryBean {
 
+	private Log logger = LogFactory.getLog(CategoryBean.class);
 	private List<WFCategory> categoryList;
 	private long categoryId;
 	private String name;
@@ -38,7 +42,8 @@ public class CategoryBean {
 	public CategoryBean() {
 		super();
 		service = ServiceFactory.getCategoryService();
-		categoryList = service.getAllCategory();
+		service.getAllCategory();
+		categoryList = service.getTopCategory();
 		goodsService = ServiceFactory.getGoodsService();
 	}
 
@@ -243,8 +248,11 @@ public class CategoryBean {
 	
 	
 	public String showSubCategory() {
+		logger.info("==>" + categoryList.size());
+		
 		subCate = findCategory(categoryList, categoryId);
-		if (subCate.getParent() != null) {
+		
+		if (subCate != null && subCate.getParent() != null) {
 			prepareGoods(subCate);
 		} else {
 			goodsList = null;

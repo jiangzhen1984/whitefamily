@@ -16,7 +16,7 @@
 				<div class="container-fluid">
 					<div class="pull-right">
 						
-					<a href="category_list.xhtml" data-toggle="tooltip" title=" $button_cancel" class="btn btn-default"><i class="fa fa-reply"></i></a>
+					<a href="category_list.xhtml" data-toggle="tooltip" title="返回" class="btn btn-default"><i class="fa fa-reply"></i></a>
 
 					</div>
 					<h1> 产品管理</h1>
@@ -65,7 +65,10 @@
 								<thead>
 										<tr>
 											<td class="text-left">产品</td>
-											<td class="text-right"></td>
+											<td class="text-right">分类</td>
+											<td class="text-left">规格</td>
+                       						<td class="text-left">出货价</td>
+                       						<td class="text-left">编辑</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -74,6 +77,20 @@
 											<tr>
 												<td class="text-left">#{g.name}</td>
 												<td class="text-right">#{g.cate.name}</td>
+												<td class="text-left">#{g.unit}</td>
+                  								<td class="text-left">#{g.price}</td>
+                  								<td>
+                  								 <h:outputText value="&#160;" />
+							                       <h:commandLink  action="#{goodsBean.viewGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑产品" class="btn btn-primary">
+							                          <f:setPropertyActionListener target="#{goodsBean.updateGoodsId}" value="#{g.id}" />
+							                          <i class="fa fa-pencil"></i>
+							                      </h:commandLink>
+							                       <h:outputText value="&#160;" />
+							                       <h:commandLink  action="#{goodsBean.removeGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="删除产品" class="btn btn-primary">
+							                          <f:setPropertyActionListener target="#{goodsBean.goodsId}" value="#{g.id}" />
+							                          <i class="fa fa-trash"></i>
+							                      </h:commandLink>
+                  								</td>
 											</tr>
 										</ui:repeat>
 									</tbody>

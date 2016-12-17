@@ -22,7 +22,9 @@
 					   </c:if>
 					<div class="pull-right">
 						<a href="category_form.xhtml" data-toggle="tooltip" title=""
-							class="btn btn-primary"><i class="fa fa-plus"></i></a> 
+							class="btn btn-primary"><i class="fa fa-plus">添加分类</i></a> 
+							<a href="product_form.xhtml" data-toggle="tooltip" title=""
+							class="btn btn-primary"><i class="fa fa-plus">添加产品</i></a>
 							
 						  <!--   <a href=""
 							data-toggle="tooltip" title=" $button_rebuild"
@@ -75,6 +77,7 @@
 												<td class="text-center"></td>
 												<td class="text-left">
 												<h:commandLink  action="#{categoryBean.showSubCategory}" type="submit"  form="form-product" data-toggle="tooltip" title="下属" >
+												     <f:setPropertyActionListener target="#{categoryBean.categoryId}" value="#{cate.id}" />
 												#{cate.name}
 												</h:commandLink></td>
 												<td class="text-right"><c:when
