@@ -51,6 +51,26 @@
 			<to-view-id>/shop/category_sub_list.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
+	
+	<navigation-rule>
+		<from-view-id>/shop/category_sub_list.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{categoryBean.editCategory}</from-action>
+			<from-outcome>failed</from-outcome>
+			<to-view-id>/shop/category_list.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{categoryBean.editCategory}</from-action>
+			<from-outcome>editcate</from-outcome>
+			<to-view-id>/shop/category_form.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{categoryBean.showSubCategory}</from-action>
+			<from-outcome>subcategory</from-outcome>
+			<to-view-id>/shop/category_sub_list.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 
 
 

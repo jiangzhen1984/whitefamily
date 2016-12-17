@@ -41,6 +41,7 @@
 										<tr>
 											<td class="text-left">分类名称</td>
 											<td class="text-right">上级分类</td>
+											<td class="text-right">编辑</td>
 										</tr>
 									</thead>
 									<tbody>
@@ -55,6 +56,17 @@
 												</td>
 												<td class="text-right"><c:when
 														test="${not empty cate.parent}">#{cate.parent.name}</c:when></td>
+												<td  class="text-right"> <h:commandLink action="#{categoryBean.editCategory}" 
+													data-toggle="tooltip" title="编辑 #{cate.name}	"
+													class="btn btn-primary"><i class="fa fa-pencil"></i>
+      													<f:param id="id" name="id" value="#{cate.id}"></f:param>
+													</h:commandLink>
+													
+													    <h:outputText value="&#160;" />
+								                       <h:commandLink  action="#{categoryBean.removeCategory}" type="submit"  form="form-product" data-toggle="tooltip" title="删除品类" class="btn btn-primary">
+								                          <f:setPropertyActionListener target="#{categoryBean.categoryId}" value="#{cate.id}" />
+								                          <i class="fa fa-trash"></i>
+								                      </h:commandLink></td>
 											</tr>
 										</ui:repeat>
 									</tbody>

@@ -98,7 +98,7 @@ public class AJAXHandler extends HttpServlet {
 				cartBean = (CategoryBean) context.getApplication().evaluateExpressionGet(context, "#{categoryBean}", CategoryBean.class);
 			}
 		} 
-		List<WFCategory> list = cartBean.getCategoryList();
+		List<WFCategory> list =  ServiceFactory.getCategoryService().getAllCategory();
 		if (list != null) {
 			boolean needFilter = filter == null || filter.isEmpty() ? false: true;
 			int len = 1;

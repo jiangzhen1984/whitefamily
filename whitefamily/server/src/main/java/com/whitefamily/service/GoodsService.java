@@ -157,12 +157,6 @@ public class GoodsService extends BaseService implements IGoodsService {
 		
 		Transaction tr = sess.beginTransaction();
 		Goods g = (Goods)sess.get(Goods.class, wfg.getId());
-		Query bq = sess.createQuery(" from Brand where goods.id= ? ");
-		bq.setLong(0, g.getId());
-		List<Brand> brandList = bq.list();
-		for (Brand b : brandList) {
-			sess.delete(b);
-		}
 		sess.delete(g);
 		tr.commit();
 		
