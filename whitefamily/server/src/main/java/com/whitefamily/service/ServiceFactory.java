@@ -73,6 +73,7 @@ public class ServiceFactory {
 			}
 			((ShopService)getRealShopService()).setUserService(getRealUserService());
 			((ShopService)getRealShopService()).setSupplierService(getRealSupplierService());
+			((ShopService)getRealShopService()).setInventoryService(getRealInventoryService());
 			iss = (IShopService)getProxy(IShopService.class.getClassLoader(), IShopService.class, getRealShopService());
 		}
 		return iss;

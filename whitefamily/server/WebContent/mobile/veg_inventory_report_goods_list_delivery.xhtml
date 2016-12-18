@@ -47,8 +47,8 @@
 								<tr id="it_row#{status.index}">
 									<td class="text-center" style="color:#000000;">#{item.goods.name}</td>
                                      <td class="text-center" style="color:#000000;">#{item.count}</td>
-                                     <td class="text-center" style="color:#000000;"><input type="text" name="rc" value="#{item.realCount}" placeholder="请输入数量"  class="form-control" maxlenght="7"/></td>
-                                     <td class="text-center" style="color:#000000;"><input type="text" name="gp" value="#{item.price}" placeholder="请输入单价"  class="form-control" maxlenght="7"/></td>
+                                     <td class="text-center" style="color:#000000;"><input type="text" name="rc" value="#{item.realCount}" placeholder="请输入数量"  class="form-control" maxlenght="7" onfocus="if (this.value == '0.0') this.value=''"/></td>
+                                     <td class="text-center" style="color:#000000;"><input type="text" name="gp" value="#{item.price}" placeholder="请输入单价"  class="form-control" maxlenght="7"  onfocus="if (this.value == '0.0') this.value=''"/></td>
 								</tr>
 								</ui:repeat>
 								</tbody>
