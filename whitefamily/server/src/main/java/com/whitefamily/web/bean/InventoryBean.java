@@ -1,5 +1,6 @@
 package com.whitefamily.web.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFBrand;
+import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
@@ -32,9 +34,14 @@ public class InventoryBean {
 	private long detailInventoryId;
 	
 	private List<WFInventoryGoods> wfiList;
-	
+	private List<WFInventoryGoods> cacheiList;
 	private WFInventoryRequest inventoryRequest;
 	
+	
+	// for filter goods
+	private String filterGoodsName;
+	private String filterCateName;
+	private long filterCateId;
 	
 	
 	public InventoryBean() {
@@ -258,6 +265,7 @@ public class InventoryBean {
 	public List<WFInventoryGoods> getWfiList() {
 		if (wfiList == null) {
 			wfiList = this.inventoryService.queryCurrentStock();
+			cacheiList = wfiList;
 		}
 		return wfiList;
 	}
@@ -267,8 +275,88 @@ public class InventoryBean {
 	public void setWfiList(List<WFInventoryGoods> wfiList) {
 		this.wfiList = wfiList;
 	}
+
+
+
+	public String getFilterGoodsName() {
+		return filterGoodsName;
+	}
+
+
+
+	public void setFilterGoodsName(String filterGoodsName) {
+		this.filterGoodsName = filterGoodsName;
+	}
+
+
+
+	public String getFilterCateName() {
+		return filterCateName;
+	}
+
+
+
+	public void setFilterCateName(String filterCateName) {
+		this.filterCateName = filterCateName;
+	}
+
+
+
+	public long getFilterCateId() {
+		return filterCateId;
+	}
+
+
+
+	public void setFilterCateId(long filterCateId) {
+		this.filterCateId = filterCateId;
+	}
 	
 	
+	public void filterGoods() {
+		if (this.filterCateId <=0 && (this.filterGoodsName == null || this.filterGoodsName.isEmpty())) {
+			wfiList = this.cacheiList;
+			return;
+		}
+		
+		// filter goods
+		List<WFInventoryGoods> newList = new ArrayList<WFInventoryGoods>(wfiList.size());
+
+		List<WFInventoryGoods> dbList = wfiList;
+		
+		if (this.filterCateId > 0) {
+			int len = dbList.size();
+			for (int i = 0; i < len; i++) {
+				WFInventoryGoods wig = dbList.get(i);
+				WFCategory wfc = (WFCategory) wig.getGoods().getCate();
+				while (wfc != null) {
+					if (wfc.getId() == filterCateId) {
+						newList.add(wig);
+						break;
+					}
+					wfc = wfc.getParent();
+				}
+
+			}
+			this.wfiList = newList;
+			return;
+		}
+
+		if (filterGoodsName != null && !this.filterGoodsName.isEmpty()) {
+			int len = dbList.size();
+			for (int i = 0; i < len; i++) {
+				WFInventoryGoods wig = dbList.get(i);
+				if (wig.getGoods().getName().contains(this.filterGoodsName)
+						|| wig.getGoods().getAbbr().contains(this.filterGoodsName)) {
+					newList.add(wig);
+				}
+			}
+			this.wfiList = newList;
+			return;
+		}
+		
+		this.wfiList = dbList;
+	}
 	
 	
 }

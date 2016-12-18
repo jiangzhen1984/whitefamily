@@ -1121,6 +1121,16 @@ public class ShopService extends BaseService implements IShopService {
 		}
 
 		
+		irrQuery = sess.createQuery(" from InventoryRequestRecord where id = ? ");
+		irrQuery.setLong(0, dr.getInventoryRequestId());
+		irrList = irrQuery.list();
+		logger.info(" Update suppliery InventoryRequestRecord size : " + irrList.size());
+		for (InventoryRequestRecord irr : irrList) {
+			irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
+			sess.update(irr);
+			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
+		}
+		
 		tr.commit();
 		
 		//TODO update goods price
