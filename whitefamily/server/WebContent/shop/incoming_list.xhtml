@@ -105,7 +105,11 @@
                 <ui:repeat id="g" var="g" value="#{incomingBean.inventoryCost}" varStatus="itemStatus">
                 <tr>
                      <td class="text-center">#{g.cate.name}</td>
-                     <td class="text-center">#{g.cost}</td>
+                     <td class="text-center">
+                       <h:outputText value="#{g.cost}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                      </td>
                      <td class="text-center">
                      <h:commandLink  action="incoming_delivery_list.xhtml" type="submit"  form="form-product" data-toggle="tooltip" title="查看明细" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{incomingBean.detailInventoryIndex}" value="#{itemStatus.index}" />

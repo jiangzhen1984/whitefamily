@@ -36,7 +36,17 @@
               <thead>
                 <ui:repeat  var="entry" value="#{incomingBean.detail.goodsCost.entrySet().toArray()}" varStatus="itemStatus">
                 <tr>
-                     <td class="text-center">#{entry.value.wfg.name}</td> <td class="text-center">#{entry.value.cost}</td><td class="text-center">#{entry.value.rate}%</td>
+                     <td class="text-center">#{entry.value.wfg.name}</td>
+                     <td class="text-center">
+                     <h:outputText value="#{entry.value.cost}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
+                     <td class="text-center">
+                      <h:outputText value="#{entry.value.rate}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     %</td>
                 </tr>
                 </ui:repeat>
               </thead>

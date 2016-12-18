@@ -1005,13 +1005,14 @@ public class ShopService extends BaseService implements IShopService {
         	table.addCell(new PdfPCell( new Phrase(item.getGoods().getUnit() , chapterFont1)));
         	table.addCell(new PdfPCell( new Phrase(item.getRealCount()+"", chapterFont1)));
         	table.addCell( new PdfPCell( new Phrase(item.getPrice()+"", chapterFont1)));
-        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getPrice() * item.getCount()) , chapterFont1)));
-        	sum += item.getGoods().getPrice() * item.getCount();
-        }   
+        	table.addCell( new PdfPCell( new Phrase(String.format("%.2f", item.getPrice() * item.getRealCount()) , chapterFont1)));
+        	sum += (item.getPrice() * item.getRealCount());
+        	logger.info(item.getGoods().getName()+"  : " + item.getPrice() + "  "  +item.getRealCount() +"  sum:" + sum);
+        } 
        
         
         chapter.add(table);
-        
+        logger.info( String.format("%.2f", sum));
         PdfPTable table1 = new PdfPTable(1);
         table1.addCell(new Phrase("总计： " + String.format("%.2f", sum), chapterFont1));
         chapter.add(table1);
