@@ -41,6 +41,9 @@ public class ArtifactStaff {
 	@JoinColumn(name = "WF_ARTI_ID", insertable = true, updatable = true, nullable = false)
 	protected ArtifactProduct artifact;
 	
+	@Column(name = "WF_DESC", columnDefinition = "VARCHAR(400)")
+	protected String desc;
+	
 	
 	
 
@@ -108,6 +111,14 @@ public class ArtifactStaff {
 
 	public void setStyle(String style) {
 		this.style = style;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 	
 	

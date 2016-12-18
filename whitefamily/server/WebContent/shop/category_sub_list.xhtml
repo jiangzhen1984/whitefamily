@@ -80,6 +80,7 @@
 											<td class="text-right">分类</td>
 											<td class="text-left">规格</td>
                        						<td class="text-left">出货价</td>
+                       						<td class="text-left">可见性</td>
                        						<td class="text-left">编辑</td>
 										</tr>
 									</thead>
@@ -91,6 +92,7 @@
 												<td class="text-right">#{g.cate.name}</td>
 												<td class="text-left">#{g.unit}</td>
                   								<td class="text-left">#{g.price}</td>
+                  								<td class="text-left"><h:outputText value="#{g.typeDisMessage}" /></td>
                   								<td>
                   								 <h:outputText value="&#160;" />
 							                       <h:commandLink  action="#{goodsBean.viewGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑产品" class="btn btn-primary">

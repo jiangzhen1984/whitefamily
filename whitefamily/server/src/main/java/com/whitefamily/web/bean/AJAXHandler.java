@@ -130,16 +130,8 @@ public class AJAXHandler extends HttpServlet {
 			HttpServletResponse resp) throws ServletException, IOException {
 		String filter = req.getParameter("filter");
 		JSONArray ret = new JSONArray();
-		HttpSession session = req.getSession();
-		GoodsBean goodsBean = (GoodsBean) session.getAttribute("goodsBean");
-		if (goodsBean == null) {
-			FacesContextFactory facesContextFactory = new FacesContextFactoryImpl();
-			FacesContext context =  facesContextFactory.getFacesContext
-					   (req.getServletContext(), req, resp, new LifecycleImpl());
-			goodsBean = (GoodsBean) context.getApplication().evaluateExpressionGet(context, "#{goodsBean}", GoodsBean.class);
-		}
 		
-		List<WFGoods> list = goodsBean.getGoodsList();
+		List<WFGoods> list = ServiceFactory.getGoodsService().queryGoods(0, 300, -1);
 		if (list != null) {
 			boolean needFilter = filter == null || filter.isEmpty() ? false: true;
 			int len = 1;
@@ -524,16 +516,17 @@ public class AJAXHandler extends HttpServlet {
 				//FIXME should update structure for support mulit-goods query
 				o.put("name", sg.wfg.getName());
 				o.put("style", sg.style);
-				o.put("un", sg.unit);
+				o.put("un", String.format("%.2f", sg.getUnit()));
 				o.put("mn", sg.minialProduceUnit);
 				o.put("id", wfa.getId());
+				o.put("pdesc", wfa.getDesc());
 				JSONArray jsa = new JSONArray();
 				JSONObject source = null;
 				for (StaffGoods sf : wfa.getStaffGoods()) {
 					source = new JSONObject();
 					source.put("name", sf.getWfg().getName());
-					source.put("sv", sf.getUnit());
-					source.put("ss", sf.getStyle());
+					source.put("sv", String.format("%.2f", sf.getUnit()));
+					source.put("ss", sf.getWfg().getUnit());
 					jsa.put(source);
 				}
 				o.put("source", jsa);
@@ -541,6 +534,7 @@ public class AJAXHandler extends HttpServlet {
 			}
 		}
 
+		logger.info(data.toString());
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.print(data.toString());

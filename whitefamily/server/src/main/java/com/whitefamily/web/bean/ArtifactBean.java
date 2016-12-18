@@ -56,6 +56,7 @@ public class ArtifactBean {
 		String[] input_goods_unit = map.get("asgunit");
 		String[] output_goods_id = map.get("atg_id");
 		String[] output_goods_unit = map.get("atgunit");
+		String[] output_goods_desc = map.get("atgdesc");
 		String[] waste_goods_id = map.get("waste_g");
 		String[] styles = map.get("style");
 		String[] minals = map.get("minal");
@@ -147,6 +148,9 @@ public class ArtifactBean {
 			artifact.addWFGoods(ArtifactStaffType.OUTPUT, outputg[i], Float.parseFloat(output_goods_unit[i]), minals[i], styles[i]);
 		}
 		
+		if (output_goods_desc != null && output_goods_desc.length > 0) {
+			artifact.setDesc(output_goods_desc[0]);
+		}
 		goodsService.createWFArtifact(artifact);
 		errMsg = null;
 		return "success";

@@ -15,6 +15,8 @@ public class WFArtifact extends ArtifactProduct {
 	
 	private List<StaffGoods> staffCostGoods;
 	
+	private String desc;
+	
 	
 	public void addWFGoods(ArtifactStaffType type, WFGoods goods, float unit, String minalProduceUnit, String style) {
 		List<StaffGoods> tg = null;
@@ -50,6 +52,7 @@ public class WFArtifact extends ArtifactProduct {
 		public float unit;
 		public String style;
 		public String minialProduceUnit;
+		public String desc;
 		public StaffGoods(WFGoods wfg, float unit) {
 			super();
 			this.wfg = wfg;
@@ -85,6 +88,12 @@ public class WFArtifact extends ArtifactProduct {
 		}
 		public void setMinialProduceUnit(String minialProduceUnit) {
 			this.minialProduceUnit = minialProduceUnit;
+		}
+		public String getDesc() {
+			return desc;
+		}
+		public void setDesc(String desc) {
+			this.desc = desc;
 		}
 		
 		
@@ -148,6 +157,18 @@ public class WFArtifact extends ArtifactProduct {
 	public void setStaffCostGoods(List<StaffGoods> staffCostGoods) {
 		this.staffCostGoods = staffCostGoods;
 	}
+
+
+	public String getDesc() {
+		return desc;
+	}
+
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	
+	
 	
 	
 	

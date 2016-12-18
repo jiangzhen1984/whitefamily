@@ -522,6 +522,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 	public Result createWFArtifact(WFArtifact wff) {
 		
 		ArtifactProduct ap = new ArtifactProduct();
+		ap.setDesc(wff.getDesc());
 		Session sess = getSession();
 		Transaction tr = sess.beginTransaction();
 		sess.save(ap);
@@ -606,6 +607,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		
 		WFArtifact wfa = new WFArtifact();
 		wfa.setId(ap.getId());
+		wfa.setDesc(wfa.getDesc());
 		Set<ArtifactStaff> sets = ap.getStaffs();
 		WFGoods wfg = null;
 		for (ArtifactStaff as : sets) {
@@ -628,6 +630,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		WFArtifact wfa = null;
 		for (ArtifactProduct ap : apList) {
 			wfa = new WFArtifact();
+			wfa.setDesc(ap.getDesc());
 			wfa.setId(ap.getId());
 			list.add(wfa);
 			for (ArtifactStaff as : ap.getStaffs()) {

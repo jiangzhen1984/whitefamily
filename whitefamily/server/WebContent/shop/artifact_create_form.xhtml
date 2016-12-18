@@ -49,6 +49,7 @@
                       <td class="text-right col-md-2">最小加工数量</td>
                       <td class="text-right col-md-2">分装规格</td>
                       <td class="text-right col-md-2">分装数量</td>
+                      <td class="text-right col-md-2">描述</td>
                       <td  class="text-right col-md-1"></td>
                     </tr>
                   </thead>
@@ -59,6 +60,7 @@
                       <td class="text-right"><input type="text" name="minal" value="#{o.minialProduceUnit}" placeholder="最小生产数量" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="style" value="#{o.style}" placeholder="分装规格" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="atgunit" value="#{o.unit}" placeholder="分装数量" class="form-control" /></td>
+                      <td class="text-right"><input type="text" name="atgunit" value="#{o.desc}" placeholder="描述" class="form-control" /></td>
                       <td class="text-left"><button type="button" onclick="$('#atg-row#{status.index}').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                     </tr>
                     </ui:repeat>
@@ -183,6 +185,7 @@ function addArtifactProduct() {
 	html += ' <td class="text-right"><input type="text" name="minal" value="" placeholder="最小生产数量" class="form-control" /></td>';
 	html += ' <td class="text-right"><input type="text" name="style" value="" placeholder="分装规格" class="form-control" /></td>';
 	html += ' <td class="text-right"><input type="text" name="atgunit" value="" placeholder="分装数量" class="form-control" /></td>';
+	html += ' <td class="text-right"><input type="text" name="atgdesc" value="" placeholder="描述" class="form-control" /></td>'
 	html += ' <td class="text-left"><button type="button" onclick="$(\'#atg-row' + atg_row + '\').remove();" data-toggle="tooltip" title="echo $button_remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	html += '</tr>';
 

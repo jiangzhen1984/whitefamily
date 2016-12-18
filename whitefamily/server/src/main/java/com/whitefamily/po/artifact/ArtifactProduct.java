@@ -3,6 +3,7 @@ package com.whitefamily.po.artifact;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,10 @@ public class ArtifactProduct {
 	@OneToMany
 	@JoinColumn(name="WF_ARTI_ID")
 	protected Set<ArtifactStaff> staffs;
+	
+	
+	@Column(name = "WF_DESC", columnDefinition = "VARCHAR(400)")
+	protected String desc;
 	
 	
 
@@ -52,6 +57,18 @@ public class ArtifactProduct {
 		}
 		this.staffs.add(as);
 	}
+
+
+	public String getDesc() {
+		return desc;
+	}
+
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	
+	
 	
 	
 }

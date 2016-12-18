@@ -101,7 +101,8 @@
 					style: item['style'],
 					mn: item['mn'],
 					value: item['id'],
-					source : item['source']
+					source : item['source'],
+					pdesc : item['pdesc']
 				}
 			}));
 		}
@@ -184,8 +185,10 @@ function addWfa() {
 	       var sts = item['source'];
 	       for (var j = 0; j < sts.length; j++) {
 	           console.log(v_elar_source_id.innerHTML);
-	           v_elar_source_id.html(v_elar_source_id.html() + sts[j]['name'] +" : " + sts[j]['sv']+"<br />");
+	           v_elar_source_id.html(v_elar_source_id.html() + sts[j]['name'] +" : " + sts[j]['sv']+'  '+sts[j]['ss']+" <br />");
 	       }
+	      
+	        v_elar_source_id.html(v_elar_source_id.html() + item['pdesc'] +" <br />");
 	 }
    });
 
