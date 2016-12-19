@@ -513,6 +513,32 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	
+	<navigation-rule>
+		<from-view-id>/shop/incoming_monthly_report.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{incomingBean.gotoReportMonthlyReport}</from-action>
+			<from-outcome>gotoMonthlyReport</from-outcome>
+			<to-view-id>/shop/incoming_monthly_report_add.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/shop/incoming_monthly_report_add.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{incomingBean.gotoReportMonthlyReport}</from-action>
+			<from-outcome>monthlyReportFailed</from-outcome>
+			<to-view-id>/shop/incoming_monthly_report_add.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{incomingBean.gotoReportMonthlyReport}</from-action>
+			<from-outcome>monthlyShow</from-outcome>
+			<to-view-id>/shop/incoming_monthly_report.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/mobile/inventory_report_detail.xhtml</from-view-id>
 		<navigation-case>

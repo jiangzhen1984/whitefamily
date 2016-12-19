@@ -51,10 +51,13 @@ import com.whitefamily.po.incoming.Delivery;
 import com.whitefamily.po.incoming.GroupOn;
 import com.whitefamily.po.incoming.Incoming;
 import com.whitefamily.po.incoming.OperationCost;
+import com.whitefamily.po.incoming.OperationMonthlyCost;
+import com.whitefamily.po.incoming.OperationSalaryCost;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFDelivery.Item;
+import com.whitefamily.service.vo.WFEmployee;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
@@ -1411,6 +1414,115 @@ public class ShopService extends BaseService implements IShopService {
 		} else {
 			return 0;
 		}
+	}
+	
+	
+	public void addMonthlyOperationCost(WFOperationCost operation) {
+		if (operation == null) {
+			logger.error(" object is null for operation ");
+			return;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		//TODO check current month exist record?
+		Session sess = getSession();
+		OperationMonthlyCost omc =  new OperationMonthlyCost();
+		omc.setDate(operation.getDate());
+		omc.setDesc(operation.getDesc());
+		omc.setDf(operation.getMonthlyDf());
+		omc.setFf(operation.getMonthlyFf());
+		omc.setGz(operation.getSalary());
+		omc.setRqf(operation.getMonthlyRqf());
+		omc.setSf(operation.getMonthlySf());
+		omc.setShop(operation.getShop());
+		omc.setDateStr(sdf.format(operation.getDate()));
+		//TODO check exist yl item if so get yl item
+		
+		Transaction tr = sess.beginTransaction();
+		sess.save(omc);
+		
+		List<WFEmployee> list = operation.getEmployeesCost();
+		if (list != null) {
+			OperationSalaryCost osc = null;
+			for (WFEmployee e : list) {
+				osc = new OperationSalaryCost();
+				osc.setDate(operation.getDate());
+				osc.setDesc(operation.getDesc());
+				osc.setEmployee(e.getName());
+				osc.setSalary(e.getSalary());
+				osc.setShop(operation.getShop());
+				osc.setDateStr(sdf.format(operation.getDate()));
+				sess.save(osc);
+			}
+		}
+		else {
+			logger.error(" no employee information ");
+		}
+		tr.commit();
+	}
+	
+	
+	public  List<WFOperationCost>   queryShopMonthlyOperationCost(WFShop shop, Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		String da = sdf.format(date);
+		String sql = "from OperationMonthlyCost where dateStr = ? ";
+		if (shop != null) {
+			sql += " and shop.id = ? order by shop.id";
+		}
+		Session sess = getSession();
+		Query query = sess.createQuery(sql);
+		query.setString(0, da);
+		if (shop != null) {
+			query.setLong(1, shop.getId());
+		}
+		List<OperationMonthlyCost> qlist = query.list();
+		List<WFOperationCost> list = new ArrayList<WFOperationCost>(qlist.size());
+		
+		sql = "from OperationSalaryCost where dateStr = ? ";
+		if (shop != null) {
+			sql += " and shop.id = ? order by shop.id";
+		}
+		query = sess.createQuery(sql);
+		query.setString(0, da);
+		if (shop != null) {
+			query.setLong(1, shop.getId());
+		}
+		List<OperationSalaryCost> qslist = query.list();
+		
+		OperationMonthlyCost omc = null;
+		OperationSalaryCost osc = null;
+		WFOperationCost woc = null;
+		for (int i = 0, j = 0; i < qlist.size() || j < qslist.size();) {
+			if (i < qlist.size()) {
+				omc = qlist.get(i);
+			}
+			if (j < qslist.size()) {
+				osc = qslist.get(j);
+			}
+			
+			if (list.size() > i) {
+				woc = list.get(i);
+			} else {
+				woc = null;
+			}
+			if (woc == null && omc != null) {
+				woc = new WFOperationCost();
+				woc.setDate(omc.getDate());
+				woc.setMonthlyDf(omc.getDf());
+				woc.setMonthlySf(omc.getSf());
+				woc.setMonthlyFf(omc.getFf());
+				woc.setMonthlyRqf(omc.getRqf());
+				list.add(woc);				
+			} else {
+				if (osc != null && osc.getShop().getId() == omc.getShop().getId() && j < qslist.size()) {
+					woc.addEmployeeCost(osc.getEmployee(), osc.getSalary());
+					j++;
+				} else {
+					i++;
+				}
+			}
+		}
+		
+		return list;
 	}
 	
 }

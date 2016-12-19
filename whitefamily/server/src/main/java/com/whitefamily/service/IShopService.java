@@ -96,5 +96,11 @@ public interface IShopService {
 	
 	
 	public double queryTotalOperationCost();
+	
+	
+	public void addMonthlyOperationCost(WFOperationCost operation);
+	
+	
+	public  List<WFOperationCost>   queryShopMonthlyOperationCost(WFShop shop, Date date);
 
 }

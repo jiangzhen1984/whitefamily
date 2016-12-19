@@ -2,14 +2,19 @@ package com.whitefamily.web.bean;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFOperationCost;
+import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFShopInventoryCost;
 
 @ManagedBean(name = "incomingBean", eager = false)
@@ -35,6 +40,7 @@ public class IncomingBean {
 	public IncomingBean() {
 		type = 1;
 		shopService = ServiceFactory.getShopService();
+		monthlyCost = new WFOperationCost();
 	}
 
 
@@ -162,6 +168,14 @@ public class IncomingBean {
 	
 	
 	
+	public void queryMonthly() {
+		List<WFOperationCost> lc = shopService.queryShopMonthlyOperationCost(shopService.getShop(shopId), startDate);
+		if (lc != null && lc.size()  > 0) {
+			monthlyCost = lc.get(0);
+		}
+	}
+	
+	
 	public String selectDetailInventoryCost(int index) {
 		return "incoming_delivery_detail";
 	}
@@ -169,5 +183,110 @@ public class IncomingBean {
 	public void setDetailInventoryIndex(int index) {
 		detail = inventoryCost.get(index);
 	}
+	
+	
+	private String errMsg;
+	private long rshopId;
+	private String rshopName;
+	private WFOperationCost monthlyCost;
+	public String reportMonthlyCost() {
+		if (rshopId <=0) {
+			errMsg =" 请选择店铺信息";
+			return "monthly_report_failed";
+		}
+		WFShop wfs = shopService.getShop(rshopId);
+		if (wfs == null) {
+			errMsg =" 请选择店铺信息";
+			return "monthlyReportFailed";
+		}
+		
+		//TODO check
+		List<WFOperationCost> list = shopService.queryShopMonthlyOperationCost(wfs, new Date());
+		if (list != null && list.size() > 0) {
+			errMsg =wfs.getName()+" 当月已经填报过月报表，无法重复填报";
+			return "monthlyReportFailed";
+		}
+		monthlyCost.setShop(wfs);
+		monthlyCost.setDate(new Date());
+		if (monthlyCost.getEmployeesCost() != null) {
+			monthlyCost.getEmployeesCost().clear();
+		}
+		
+		Map<String, String[]> map = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterValuesMap();
+		String[] names = map.get("names");
+		String[] salarys = map.get("salars");
+		
+		if (salarys != null) {
+			boolean ma;
+			for (int i = 0; i < salarys.length; i++) {
+				String str = salarys[i];
+				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  str);
+				if (!ma) {
+					errMsg = "工资应为数字";
+					return "monthlyReportFailed";
+				}
+				
+				monthlyCost.addEmployeeCost(names.length > i ? names[i]: "", Float.parseFloat(str));
+			}
+		}
+		
+		
+		shopService.addMonthlyOperationCost(monthlyCost);
+		rshopId = 0;
+		rshopName = null;
+		return "monthlyShow";
+	}
+
+
+
+
+	public long getRshopId() {
+		return rshopId;
+	}
+
+
+
+
+	public void setRshopId(long rshopId) {
+		this.rshopId = rshopId;
+	}
+
+
+
+
+	public String getRshopName() {
+		return rshopName;
+	}
+
+
+
+
+	public void setRshopName(String rshopName) {
+		this.rshopName = rshopName;
+	}
+
+
+
+
+	public WFOperationCost getMonthlyCost() {
+		return monthlyCost;
+	}
+	
+	
+	
+	public String gotoReportMonthlyReport() {
+		monthlyCost = new WFOperationCost();
+		return "gotoMonthlyReport";
+	}
+
+
+
+
+	public String getErrMsg() {
+		return errMsg;
+	}
+	
+	
 	
 }

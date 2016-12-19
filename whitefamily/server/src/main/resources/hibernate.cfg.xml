@@ -63,6 +63,8 @@
 		<mapping class="com.whitefamily.po.incoming.Incoming" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.GroupOn" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.Delivery" ></mapping>
+		<mapping class="com.whitefamily.po.incoming.OperationSalaryCost" ></mapping>
+		<mapping class="com.whitefamily.po.incoming.OperationMonthlyCost" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryRequestRecord" ></mapping>
 		<mapping class="com.whitefamily.po.InventoryRequestGoods" />
 		<mapping class="com.whitefamily.po.delivery.DeliverySupplierConfiguration" />

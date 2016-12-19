@@ -24,7 +24,7 @@ public class User {
 	private String password;
 	
 	@Column(name = "WF_NAME", columnDefinition = "VARCHAR(100)")
-	private String name;
+	protected String name;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Role role;
