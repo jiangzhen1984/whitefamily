@@ -43,7 +43,6 @@ public class WFShopInventoryCost {
 		}
 		gc.wfg = wfg;
 		gc.cost += cost;
-		gc.rate = gc.cost / this.cost * 100;
 	}
 	
 	public void clearCost() {
@@ -102,7 +101,7 @@ public class WFShopInventoryCost {
 			return cost;
 		}
 				public double getRate() {
-					return rate;
+					return this.cost / WFShopInventoryCost.this.cost * 100;
 				}
 		
 				
