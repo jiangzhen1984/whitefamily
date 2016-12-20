@@ -359,4 +359,16 @@ public class InventoryBean {
 	}
 	
 	
+	private List<WFGoods> alertingList =null;
+	public List<WFGoods> getAlertingList() {
+		if (alertingList == null) {
+			alertingList = this.inventoryService.queryStockAlerting();
+		}
+		return alertingList;
+	}
+	
+	
+	public void refreshAltering() {
+		alertingList = null;
+	}
 }

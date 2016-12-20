@@ -19,6 +19,8 @@ public interface IGoodsService {
 	public void updateGoods(WFGoods wfg);
 	
 	
+	public Result updateGoodsStockBar(WFGoods wfg, float stockbar);
+	
 	public Result removeGoods(WFGoods wfg);
 	
 	

@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.github.stuxuhai.jpinyin.PinyinHelper;
+
 @Entity
 @Table(name = "WF_GOODS")
 public class Goods {
@@ -56,6 +58,9 @@ public class Goods {
 	
 	@Column(name = "WF_STOCK", columnDefinition = "NUMERIC(9,2) default 0 ")
 	protected Float stock;
+	
+	@Column(name = "WF_STOCK_BAR", columnDefinition = "NUMERIC(9,2) default 0 ")
+	protected float stockBar;
 
 	public long getId() {
 		return id;
@@ -156,6 +161,18 @@ public class Goods {
 	}
 
 	public void setStock(float stock) {
+		this.stock = stock;
+	}
+
+	public float getStockBar() {
+		return stockBar;
+	}
+
+	public void setStockBar(float stockBar) {
+		this.stockBar = stockBar;
+	}
+
+	public void setStock(Float stock) {
 		this.stock = stock;
 	}
 	

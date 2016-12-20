@@ -32,7 +32,8 @@
 					<i class="fa fa-exclamation-circle"></i> <h:outputText value="#{categoryBean.errMsg}" ></h:outputText>
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 				</div>
-				</c:if>
+			</c:if>
+			<div id="msgbox"></div>
 				<div class="panel panel-default">
 					<div class="panel-body">
 							<div class="table-responsive">
@@ -81,6 +82,7 @@
 											<td class="text-left">规格</td>
                        						<td class="text-left">出货价</td>
                        						<td class="text-left">可见性</td>
+                       						<td class="text-left">库存提醒</td>
                        						<td class="text-left">编辑</td>
 										</tr>
 									</thead>
@@ -93,6 +95,12 @@
 												<td class="text-left">#{g.unit}</td>
                   								<td class="text-left">#{g.price}</td>
                   								<td class="text-left"><h:outputText value="#{g.typeDisMessage}" /></td>
+                  								<td class="text-left">
+                  								        <input type="text" id="sb#{g.id}" value="#{g.stockBar}" form="form-product" />
+                  								       <a href="#" data-toggle="tooltip" title="编辑" class="btn btn-default" onclick="updatestockbar('sb#{g.id}', '#{g.id}','#{g.name}')">
+                  								        <i class="fa fa-pencil"></i>
+                  								        </a>
+                  								</td>
                   								<td>
                   								 <h:outputText value="&#160;" />
 							                       <h:commandLink  action="#{goodsBean.viewGoods}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑产品" class="btn btn-primary">
@@ -124,5 +132,40 @@
 			<br />
 		</footer>
 	</div>
+
+ <script type="text/javascript">
+ //<![CDATA[
+   function updatestockbar(iid, gid, name) {
+	   var stock = $("#"+iid).val();
+	   $.ajax({
+			url: 'goodsstockbarupdate.ajax?action=goodsstockbarupdate&gid=' + gid+"&bar="+stock,
+			dataType: 'json',
+			success: function(json) {
+				var ret = json['ret'];
+				var msg=name+": 库存标线";
+				if (ret == 0) {
+					msg+='更新成功';
+				} else if (ret == -1) {
+					msg+='参数错误';
+				} else if (ret == -2) {
+					msg+='应为数字';
+				}
+				showMsg(msg);
+			}
+		});
+   }
+   
+   
+   function showMsg(msg) {
+		var box = $("#msgbox");
+		box.append()
+	    var html ='<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><LABEL id="msg">'+msg+'</LABEL>';
+	    html +='<button type="button" class="close" data-dismiss="alert">&times;</button></div>';
+	    box.append(html);
+   }
+            
+ //]]>
+
+</script>
 </body>
 </html>

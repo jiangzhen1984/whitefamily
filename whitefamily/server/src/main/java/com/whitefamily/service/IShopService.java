@@ -7,6 +7,7 @@ import java.util.List;
 import com.whitefamily.po.DamageStatus;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
+import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
@@ -102,5 +103,6 @@ public interface IShopService {
 	
 	
 	public  List<WFOperationCost>   queryShopMonthlyOperationCost(WFShop shop, Date date);
+	
 
 }

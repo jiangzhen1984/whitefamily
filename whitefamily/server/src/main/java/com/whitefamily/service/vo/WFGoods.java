@@ -34,6 +34,8 @@ public class WFGoods extends Goods {
 		this.setGoodsDesc(c.getGoodsDesc());
 		this.setPrice(c.getPrice());
 		this.setPrice1(c.getPrice1());
+		this.setStock(c.getStock());
+		this.setStockBar(c.getStockBar());
 		this.abbr =  PinyinHelper.getShortPinyin(this.name);
 	}
 	
@@ -48,6 +50,15 @@ public class WFGoods extends Goods {
 	}
 	
 	
+	
+	
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+		this.abbr =  PinyinHelper.getShortPinyin(this.name);
+	}
+
+
 	public String getAbbr() {
 		return abbr;
 	}

@@ -615,4 +615,21 @@ public class InventoryService extends BaseService implements IInventoryService {
 		return wf;
 	
 	}
+	
+	
+	public List<WFGoods> queryStockAlerting() {
+		Session sess = getSession();
+		String sql ="select wf.id, b.sc,wf.wf_goods_name,wf.wf_stock_bar from wf_goods as wf, " +
+		            "  (select wf_good_id,sum(wf_unit_rem_count) sc from wf_inventory_goods group by wf_good_id) as b " +
+				    "  where wf.id = b.wf_good_id and b.sc <wf. wf_stock_bar";
+		Query query = sess.createSQLQuery(sql);
+		List<Object[]> list = query.list();
+		List<WFGoods> goodsList = new ArrayList<WFGoods>(list.size());
+		for (Object[] obj : list) {
+			WFGoods wf = goodsService.getGoods(((BigInteger)obj[0]).longValue());
+			wf.setStock(((BigDecimal)obj[1]).floatValue());
+			goodsList.add(wf);
+		}
+		return goodsList;
+	}
 }

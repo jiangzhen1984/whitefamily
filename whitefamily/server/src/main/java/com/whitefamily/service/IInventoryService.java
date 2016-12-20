@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -53,5 +54,7 @@ public interface IInventoryService {
 	
 	
 	public double queryCurrentInventoryCost();
+	
+	public List<WFGoods> queryStockAlerting();
 
 }

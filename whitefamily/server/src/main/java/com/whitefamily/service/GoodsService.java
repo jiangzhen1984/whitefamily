@@ -120,6 +120,8 @@ public class GoodsService extends BaseService implements IGoodsService {
 		good.setPrice1(wfg.getPrice1());
 		good.setPrice2(wfg.getPrice2());
 		good.setPrice3(wfg.getPrice3());
+		good.setStock(wfg.getStock());
+		good.setStockBar(wfg.getStockBar());
 		good.setGoodsDesc(wfg.getGoodsDesc());
 		Category cate = new Category();
 		cate.setId(wfg.getCate().getId());
@@ -128,6 +130,21 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Transaction tr = sess.beginTransaction();
 		sess.save(good);
 		tr.commit();
+	}
+	
+	
+	public Result updateGoodsStockBar(WFGoods wfg, float stockbar) {
+		if (wfg == null) {
+			return Result.ERR_NO_SUCH_RECORD;
+		}
+		this.getGoods(wfg.getId()).setStockBar(stockbar);
+		Session sess = getSession();
+		Goods good = (Goods)sess.get(Goods.class, wfg.getId());
+		good.setStockBar(stockbar);
+		Transaction tr = sess.beginTransaction();
+		sess.update(good);
+		tr.commit();
+		return Result.SUCCESS;
 	}
 
 	@Override

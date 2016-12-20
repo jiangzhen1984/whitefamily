@@ -64,6 +64,7 @@ public class AJAXHandler extends HttpServlet {
 			throws ServletException, IOException {
 		resp.setCharacterEncoding("utf-8");
 		String action = req.getParameter("action");
+		JSONObject ret = null;
 		if ("filterCategory".equalsIgnoreCase(action)) {
 			handleCategoryFilter(req, resp);
 		} else if ("filterGoods".equals(action)) {
@@ -82,8 +83,16 @@ public class AJAXHandler extends HttpServlet {
 			handleArtifactSearchAction(req, resp);
 		} else if ("statist".equalsIgnoreCase(action)) {
 			handleStatistAction(req, resp);
+		} else if ("goodsstockbarupdate".equalsIgnoreCase(action)) {
+			ret = handleGoodsStockBarUpdate(req, resp);
 		}
 
+		if (ret != null) {
+			resp.setContentType("application/json");
+			PrintWriter out = resp.getWriter();
+			out.print(ret.toString());
+			out.flush();
+		}
 	}
 
 	private void handleCategoryFilter(HttpServletRequest req,
@@ -558,6 +567,32 @@ public class AJAXHandler extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 		out.print(ret.toString());
 		out.flush();
+	}
+	
+	
+	private JSONObject handleGoodsStockBarUpdate(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		String gid = req.getParameter("gid");
+		String bar = req.getParameter("bar");
+		JSONObject ret = new JSONObject();
+		if (gid == null || bar == null) {
+			ret.put("ret", -1);
+		} else {
+			boolean gidflag = Pattern.matches("([0-9]+)+",  gid);
+			boolean barflag = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  bar);
+			if (!gidflag || !barflag) {
+				ret.put("ret", -2);
+			} else {
+				WFGoods wfg = ServiceFactory.getGoodsService().getGoods(Long.parseLong(gid));
+				if (wfg == null) {
+					ret.put("ret", -3);
+				} else {
+					ServiceFactory.getGoodsService().updateGoodsStockBar(wfg, Float.parseFloat(bar));
+					ret.put("ret", 0);
+				}
+			}
+		}
+		return ret;
 	}
 
 }
