@@ -97,8 +97,8 @@ public class WFInventoryRequest {
 	
 	public void addInventoryItem(WFGoods goods, float count, float realCount, float pr, boolean persiste) {
 		if (itemList == null) {
-			itemList = new ArrayList<Item>(10);
-			supplierItemList =  new ArrayList<Item>(10);
+			itemList = new ArrayList<Item>(30);
+			supplierItemList =  new ArrayList<Item>(20);
 		}
 		Item item = new Item(count, pr, realCount, goods, persiste);
 		itemList.add(item);
@@ -126,7 +126,7 @@ public class WFInventoryRequest {
 	}
 	
 	
-	public void updateInventoryItem(WFGoods goods, float realCount, float pr) {
+	public void updateInventoryItem(WFGoods goods, float realCount, float pr, float currentStock) {
 		int size = itemList == null ? 0 : itemList.size();
 		Item item;
 		for (int i = 0; i < size; i++) {
@@ -134,6 +134,7 @@ public class WFInventoryRequest {
 			if (goods.getId() == item.getGoods().getId()) {
 				item.price = pr;
 				item.realCount = realCount;
+				item.curretStock = currentStock;
 				break;
 			}
 		}
@@ -181,6 +182,8 @@ public class WFInventoryRequest {
 		float price;
 		
 		float realCount;
+		
+		float curretStock;
 
 		public Item(float count, WFGoods goods, boolean persisted) {
 			super();
@@ -238,6 +241,16 @@ public class WFInventoryRequest {
 			this.realCount = realCount;
 		}
 		
+		
+		
+		public float getCurretStock() {
+			return curretStock;
+		}
+
+		public void setCurretStock(float curretStock) {
+			this.curretStock = curretStock;
+		}
+
 		@Override
 		public int compareTo(Item o) {
 			if (o.goods.getSortOrder() == this.goods.getSortOrder()) {

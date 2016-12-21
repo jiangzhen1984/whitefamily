@@ -891,7 +891,7 @@ public class ShopService extends BaseService implements IShopService {
 			query.setLong(0, dr.getId());
 			List<InventoryGoods> drgList = query.list();
 			for (InventoryGoods drg : drgList) {
-				ir.updateInventoryItem(goodsService.getGoods(drg.getGoods().getId()), drg.getCount(), drg.getPrice());
+				ir.updateInventoryItem(goodsService.getGoods(drg.getGoods().getId()), drg.getCount(), drg.getPrice(), drg.getCount());
 			}
 		}
 		return Result.SUCCESS;
@@ -1051,6 +1051,14 @@ public class ShopService extends BaseService implements IShopService {
 	@Override
 	public Result prepareDelivery(WFDelivery de, WFUser user) {
 		Session sess = getSession();
+		
+		InventoryRequestRecord irrr = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, de.getId());
+		if (irrr.getStatus() != InventoryStatus.REQUEST) {
+			logger.warn(" inventory request already handled ==>"+de.getId());
+			return Result.ERR_INVENTOY_REQUEST_HANDLED;
+		}
+		
+		
 		DeliveryRecord dr = new DeliveryRecord();
 		dr.setInventoryRequestId(de.getId());
 		dr.setShop(de.getShop());
@@ -1124,15 +1132,15 @@ public class ShopService extends BaseService implements IShopService {
 		}
 
 		
-		irrQuery = sess.createQuery(" from InventoryRequestRecord where id = ? ");
-		irrQuery.setLong(0, dr.getInventoryRequestId());
-		irrList = irrQuery.list();
-		logger.info(" Update suppliery InventoryRequestRecord size : " + irrList.size());
-		for (InventoryRequestRecord irr : irrList) {
-			irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
-			sess.update(irr);
-			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
-		}
+//		irrQuery = sess.createQuery(" from InventoryRequestRecord where id = ? ");
+//		irrQuery.setLong(0, dr.getInventoryRequestId());
+//		irrList = irrQuery.list();
+//		logger.info(" Update suppliery InventoryRequestRecord size : " + irrList.size());
+//		for (InventoryRequestRecord irr : irrList) {
+//			irr.setStatus(InventoryStatus.PREPARING_INVENTORY);
+//			sess.update(irr);
+//			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
+//		}
 		
 		tr.commit();
 		

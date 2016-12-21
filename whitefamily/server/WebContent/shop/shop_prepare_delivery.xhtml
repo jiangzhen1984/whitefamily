@@ -44,6 +44,7 @@
                   <td class="text-center">数量</td>
                   <td class="text-center">配送数量 </td>
                   <td class="text-center">配送价格</td>
+                   <td class="text-center">当前库存</td>
                 </tr>
               </thead>
               <tbody id="ct">
@@ -55,6 +56,7 @@
                   <td class="text-center">#{item.count}</td>
                   <td class="text-center"><INPUT type="text" name="g_count" value="#{item.realCount}"  class="form-control" /></td>
                   <td class="text-center">#{item.price}</td>
+                  <td class="text-center">#{item.curretStock}</td>
                 </tr>
                 </ui:repeat>
               </tbody>

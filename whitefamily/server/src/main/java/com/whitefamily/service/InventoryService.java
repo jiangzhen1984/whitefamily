@@ -506,6 +506,21 @@ public class InventoryService extends BaseService implements IInventoryService {
 	}
 	
 	
+	public Map<WFGoods, Float> queryCurrentStockMap() {
+		Session sess = getSession();
+		Query query = sess.createSQLQuery("  select wf_good_id, sum(wf_unit_count), sum(wf_unit_rem_count) from wf_inventory_goods where wf_unit_rem_count >0  group by wf_good_id ");
+		List<Object[]> list = query.list();
+		Map<WFGoods, Float> maps = new HashMap<WFGoods, Float>();
+		WFGoods wfg = null;
+		for (Object[] obj : list) {
+			long gid = ((BigInteger)obj[0]).longValue();
+			wfg = goodsService.getGoods(gid);
+			maps.put(wfg, ((BigDecimal)obj[2]).floatValue());
+		}
+		return maps;
+	}
+	
+	
 	public List<WFInventory> queryInventoryAccordingToRequest(long requestId) {
 		Session sess = getSession();
 		Query query = sess.createQuery(" from InventoryUpdateRecord where requestInventoryId = ?");

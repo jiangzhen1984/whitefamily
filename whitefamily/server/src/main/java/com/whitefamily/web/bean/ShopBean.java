@@ -580,10 +580,15 @@ public class ShopBean {
 		 delivery.setInventoryRequestId(inventoryRequestdetail.getId());
 		 delivery.setId(inventoryRequestdetail.getId());
 		 List<Item> list =  inventoryRequestdetail.getItemList();
+		 Map<WFGoods, Float> stockMap = this.inventoryService.queryCurrentStockMap();
+		 Float stock;
 		 for (WFInventoryRequest.Item wri : list) {
 			 delivery.addItem(wri.getGoods(), wri.getCount(), wri.getCount(), wri.getGoods().getPrice(), false);
-			 inventoryRequestdetail.updateInventoryItem(wri.getGoods(), wri.getCount(),  wri.getGoods().getPrice());
+			 stock = stockMap.get(wri.getGoods());
+			 inventoryRequestdetail.updateInventoryItem(wri.getGoods(), wri.getCount(),  wri.getGoods().getPrice(), stock == null ? 0 : stock);
 		 }
+		 
+		 //Query from vendor and confirm real delivery counts like vegetable vendor
 		 List<WFInventory> ilist = inventoryService.querySubInventoryRequest(inventoryRequestdetail.getId());
 		 for (WFInventory wfi : ilist) {
 			 List<WFInventory.Item>  itemList = wfi.getItemList();
@@ -592,7 +597,7 @@ public class ShopBean {
 			 }
 			 for (WFInventory.Item  wi : itemList) {
 				 delivery.updateItem(wi.getGoods(), wi.getCount(), wi.getPrice());
-				 inventoryRequestdetail.updateInventoryItem(wi.getGoods(), wi.getCount(), wi.getPrice());
+				 inventoryRequestdetail.updateInventoryItem(wi.getGoods(), wi.getCount(), wi.getPrice(), wi.getCount());
 			 }
 		 }
 		return "perparedelivery";
@@ -642,7 +647,7 @@ public class ShopBean {
 			delivery.updateItem(g,  Float.parseFloat(realCount[Integer.parseInt(str[1])]));
 		}
 		delivery.setDatetime(new Date());
-		
+		//TODO update item according to selected checkbox
 		
 		Result ret = shopService.prepareDelivery(delivery, userBean.getUser());
 		if (ret == Result.ERR_OUT_OF_STOCK) {

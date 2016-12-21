@@ -124,7 +124,7 @@ public class SupplierBean {
 				return "prepareDeliveryFailed";
 			}
 			
-			inventoryRequestdetail.updateInventoryItem(g,  Float.parseFloat(realCount[i]),  Float.parseFloat(price[i]));
+			inventoryRequestdetail.updateInventoryItem(g,  Float.parseFloat(realCount[i]),  Float.parseFloat(price[i]), Float.parseFloat(realCount[i]));
 		}
 		inventoryRequestdetail.setDatetime(new Date());
 		

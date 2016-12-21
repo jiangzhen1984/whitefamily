@@ -2,6 +2,7 @@ package com.whitefamily.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.service.vo.WFGoods;
@@ -56,5 +57,8 @@ public interface IInventoryService {
 	public double queryCurrentInventoryCost();
 	
 	public List<WFGoods> queryStockAlerting();
+	
+	
+	public Map<WFGoods, Float> queryCurrentStockMap();
 
 }
