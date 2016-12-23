@@ -27,6 +27,7 @@ import com.whitefamily.service.vo.WFArtifact.StaffGoods;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsVisible;
 import com.whitefamily.service.vo.WFVendor;
 
 public class GoodsService extends BaseService implements IGoodsService {
@@ -185,7 +186,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 	
 	public WFGoods getGoods(long id) {
 		if (goodsCache == null || goodsCache.size() <=0) {
-			queryGoods(0, 300, -1);
+			queryGoods(0, IGoodsService.CATCH_SIZE, IGoodsService.VISIBLE_ALL);
 		}
 		return goodsCache.get(Long.valueOf(id));
 	}
@@ -302,7 +303,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 // 		}
 //		
 //		
-		if (cacheList != null && cacheList.size() >0) {
+		if (cacheList != null && cacheList.size() >0 && type < WFGoodsVisible.DELIVERY_STAFF.ordinal()) {
 			return cacheList;
 		}
 		Session sess = getSession();
@@ -350,11 +351,11 @@ public class GoodsService extends BaseService implements IGoodsService {
 //			cacheGoods.caches.addAll(wfList);
 //		}
 		
-		String sql = type == -1 ? "from Goods order by id" : "from Goods g where g.type = ? order by id ";
+		String sql = type == VISIBLE_ALL ? "from Goods order by id" : "from Goods g where g.type >= ? order by id ";
 		Query query = sess.createQuery(sql);
 //		query.setFirstResult(start);
 //		query.setMaxResults(start - count);
-		if (type != -1) {
+		if (type != VISIBLE_ALL) {
 			query.setInteger(0, type);
 		}
 		List<Goods> list = query.list();
@@ -363,13 +364,19 @@ public class GoodsService extends BaseService implements IGoodsService {
 			WFGoods wf = new WFGoods(g);
 			wf.setCate(cateService.getCategory(g.getCate().getId()));
 			wfList.add(wf);
-			goodsCache.put(wf.getId(), wf);
+			if (type == VISIBLE_ALL) {
+				goodsCache.put(wf.getId(), wf);
+			}
 		}
-//		
-//		int size = cacheGoods.caches.size();
-//		return cacheGoods.caches.subList(start, size > start + count ? start + count : size);
-		cacheList = wfList;
-		return cacheList;
+		
+		if (type == VISIBLE_ALL) {
+			this.cacheList = wfList;
+		}
+			
+	//		
+	//		int size = cacheGoods.caches.size();
+	//		return cacheGoods.caches.subList(start, size > start + count ? start + count : size);
+		return wfList;
 		
 	}
 	
@@ -395,8 +402,8 @@ public class GoodsService extends BaseService implements IGoodsService {
 			}
 		}
 		
-		if (type != -1) {
-			hsql.append(" and g.type = ? ");
+		if (type != VISIBLE_ALL) {
+			hsql.append(" and g.type >= ? ");
 		}
 		
 		hsql.append(" order by id ");
@@ -470,7 +477,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 			vendorsList.add(wf);
 		}
 		
-		this.queryGoods(0, 300, -1);
+		this.queryGoods(0, IGoodsService.CATCH_SIZE, IGoodsService.VISIBLE_ALL);
 		
 		this.loadArtifacts();
 	}

@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,6 +21,7 @@ import com.whitefamily.service.Result;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsVisible;
 
 @ManagedBean(name = "categoryBean", eager = false)
 @SessionScoped
@@ -45,6 +47,19 @@ public class CategoryBean {
 		service.getAllCategory();
 		categoryList = service.getTopCategory();
 		goodsService = ServiceFactory.getGoodsService();
+		goodsVisible = new SelectItem[]{new SelectItem(WFGoodsVisible.DELIVERY_STAFF.ordinal()+"", "库管可见"),
+				new SelectItem(WFGoodsVisible.SHOP.ordinal()+"", "店长可见"),
+				new SelectItem(WFGoodsVisible.FRANCHISEE.ordinal()+"", "加盟商可见")};
+	}
+	
+	
+	private SelectItem[]  goodsVisible;
+
+	
+	
+
+	public SelectItem[] getGoodsVisible() {
+		return goodsVisible;
 	}
 
 	public List<WFCategory> getCategoryList() {

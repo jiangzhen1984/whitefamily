@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.Result;
@@ -12,6 +13,7 @@ import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsVisible;
 
 @ManagedBean(name = "goodsBean", eager = false)
 @SessionScoped
@@ -54,10 +56,15 @@ public class GoodsBean {
 	private String filterGoodsName;
 	private String filterCateName;
 	private long filterCateId;
+	
+	private SelectItem[]  goodsVisible;
 
 	public GoodsBean() {
 		goodsService = ServiceFactory.getGoodsService();
 		filterGoods();
+		goodsVisible = new SelectItem[]{new SelectItem(WFGoodsVisible.DELIVERY_STAFF.ordinal()+"", "库管可见"),
+				new SelectItem(WFGoodsVisible.SHOP.ordinal()+"", "店长可见"),
+				new SelectItem(WFGoodsVisible.FRANCHISEE.ordinal()+"", "加盟商可见")};
 	}
 
 	public List<WFGoods> getGoodsList() {
@@ -66,6 +73,11 @@ public class GoodsBean {
 
 	public int getPageNo() {
 		return pageNo;
+	}
+
+	
+	public SelectItem[] getGoodsVisible() {
+		return goodsVisible;
 	}
 
 	public void setPageNo(int pageNo) {
@@ -258,7 +270,7 @@ public class GoodsBean {
 		List<WFGoods> newList = new ArrayList<WFGoods>(PAGE_COUNT);
 
 		List<WFGoods> dbList = goodsService.queryGoods((pageNo - 1)
-				* PAGE_COUNT, PAGE_COUNT, -1);
+				* PAGE_COUNT, PAGE_COUNT, IGoodsService.VISIBLE_ALL);
 		if (this.filterCateId > 0) {
 			int len = dbList.size();
 			for (int i = 0; i < len; i++) {

@@ -12,6 +12,9 @@ import com.whitefamily.service.vo.WFVendor;
 
 public interface IGoodsService {
 	
+	public static final int VISIBLE_ALL = -1;
+	
+	public static final int CATCH_SIZE = 300;
 	
 	public void addGoods(WFGoods goods);
 	

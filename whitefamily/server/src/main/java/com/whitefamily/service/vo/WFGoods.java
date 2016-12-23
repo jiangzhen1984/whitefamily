@@ -42,10 +42,14 @@ public class WFGoods extends Goods {
 	
 	
 	public String getTypeDisMessage() {
-		if (type == 0) {
+		if (type == WFGoodsVisible.SHOP.ordinal()) {
 			return "店长可见";
+		} else if (type == WFGoodsVisible.FRANCHISEE.ordinal()){
+			return "加盟商可见";
+		} else if (type == WFGoodsVisible.DELIVERY_STAFF.ordinal()){
+			return "库管可见";
 		} else {
-			return "配货员可见";
+			return "未知";
 		}
 	}
 	

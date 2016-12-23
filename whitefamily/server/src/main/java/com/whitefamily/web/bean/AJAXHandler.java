@@ -140,7 +140,7 @@ public class AJAXHandler extends HttpServlet {
 		String filter = req.getParameter("filter");
 		JSONArray ret = new JSONArray();
 		
-		List<WFGoods> list = ServiceFactory.getGoodsService().queryGoods(0, 300, -1);
+		List<WFGoods> list = ServiceFactory.getGoodsService().queryGoods(0, IGoodsService.CATCH_SIZE, IGoodsService.VISIBLE_ALL);
 		if (list != null) {
 			boolean needFilter = filter == null || filter.isEmpty() ? false: true;
 			int len = 1;

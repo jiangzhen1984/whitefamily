@@ -67,10 +67,7 @@
                          <td class="text-left">可见性</td>
                          <td class="text-left"> 
                              <h:selectOneMenu value="#{goodsBean.type}"   class="form-control">
-                                 <f:selectItem itemValue="0" itemLabel="店长可见" />
-                                 <f:selectItem itemValue="1" itemLabel="配货人员可见" />
-                                 <f:selectItem itemValue="2" itemLabel="市场可见" />
-                                 <f:selectItem itemValue="3" itemLabel="管理员可见" />                                 
+                                  <f:selectItems value="#{goodsBean.goodsVisible}" />                   
                              </h:selectOneMenu>	
                          </td>
                    </tr>

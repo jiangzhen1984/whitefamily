@@ -7,13 +7,16 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import com.whitefamily.po.customer.Role;
 import com.whitefamily.service.ICategoryService;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsVisible;
 
 
 @ManagedBean(name = "mallBean", eager = false)
@@ -33,6 +36,10 @@ public class MallBean {
 	private long cateId;
 	private String searchText;
 	
+	
+	@ManagedProperty("#{userBean}")
+	private UserBean userBean;
+	
 	public MallBean() {
 		cateservice = ServiceFactory.getCategoryService();
 		goodsService = ServiceFactory.getGoodsService();
@@ -46,13 +53,13 @@ public class MallBean {
 			cateId = currentCate.getId();
 		}
 		
-		updateGoodsList(currentCate);
 	}
 	
 	
 	
 	private void updateGoodsList(WFCategory cate) {
-		goodsList = goodsService.queryGoods(getAllSubCates(cate), 0, 200, 0);
+		goodsList = goodsService.queryGoods(getAllSubCates(cate), 0, IGoodsService.CATCH_SIZE,
+				userBean.getUser().getRole() == Role.FRANCHISEE ? WFGoodsVisible.FRANCHISEE.ordinal() : WFGoodsVisible.SHOP.ordinal());
 	}
 	
 	
@@ -146,7 +153,8 @@ public class MallBean {
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
-		goodsList = goodsService.queryGoods(0, 200, 0);
+		//FIXME should use comfortable value according logged user
+		goodsList = goodsService.queryGoods(0, IGoodsService.CATCH_SIZE, WFGoodsVisible.FRANCHISEE.ordinal());
 	
 		List<WFGoods> list = new ArrayList<WFGoods>(100);
 		if (this.searchText != null || !this.searchText.isEmpty()) {
@@ -162,6 +170,19 @@ public class MallBean {
 		}
 		
 		goodsList = list;
+	}
+
+
+
+	public void setUserBean(UserBean userBean) {
+		this.userBean = userBean;
+		updateGoodsList(currentCate);
+	}
+
+
+
+	public UserBean getUserBean() {
+		return userBean;
 	}
 	
 	
