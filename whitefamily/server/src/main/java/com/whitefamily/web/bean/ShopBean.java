@@ -719,5 +719,10 @@ public class ShopBean {
 		}
 	}
 	
+	
+	public void clearFilter() {
+		shopFilterInventory = null;
+	}
+	
 
 }

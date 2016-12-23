@@ -381,7 +381,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 	public void queryInventoryRequestDetail(WFInventoryRequest wf) {
 		Session sess = getSession();
 		Query query = sess
-				.createQuery(" from InventoryReqiestGoods  where record.id = ? ");
+				.createQuery(" from InventoryRequestGoods  where record.id = ? ");
 		query.setLong(0, wf.getId());
 		List<InventoryRequestGoods> list = query.list();
 		for (InventoryRequestGoods iur : list) {
@@ -604,7 +604,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			return null;
 		}
 		StringBuffer hsqlBuffer = new StringBuffer();
-		hsqlBuffer.append(" from InventoryRequestRecord shopId = ? and date(datetime) =?");
+		hsqlBuffer.append(" from InventoryRequestRecord where shopId = ? and date(datetime) =?");
 		
 		Session sess = getSession();
 		Query query = sess.createQuery(hsqlBuffer.toString());
@@ -624,7 +624,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			wf.setOperator(userService.getUser(iur.getOperator().getId()));
 		}
 		wf.setIs(iur.getStatus());
-		wf.setShop(shopService.getShop(iur.getId()));
+		wf.setShop(shop);
 		
 		queryInventoryRequestDetail(wf);
 		return wf;
