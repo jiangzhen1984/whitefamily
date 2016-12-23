@@ -537,28 +537,38 @@ public class ShopBean {
 		} else {
 			inventoryRequest = new WFInventoryRequest();
 		}
+		
+		boolean errorFlag = false;
 		boolean ma = false;
+		errMsg = "";
 		for (int i = 0; i < goods_id.length; i++) {
 			if (goods_id[i] == null || goods_id[i].isEmpty()) {
-				errMsg = "请输入产品信息";
-				return "inventoryrequestfailed";
+				errMsg += "请输入产品信息"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
 
 			if (g == null) {
-				errMsg = "没有找到相关产品： " + goods_id[i];
-				return "inventoryrequestfailed";
+				errMsg += "没有找到相关产品： " + goods_id[i]+"\n";
+				errorFlag = true;
+				continue;
 			}
 
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", count[i]);
 			if (!ma) {
-				errMsg = "报损数量应为数字";
-				return "inventoryrequestfailed";
+				errMsg += g.getName()+"配货数量应为数字"+"\n";
+				errorFlag = true;
+				continue;
 			}
 
 			inventoryRequest.addInventoryItem(g, Float.parseFloat(count[i]),
 					false);
 		}
+		if (errorFlag) {
+			return "inventoryrequestfailed";
+		}
+		
 		inventoryRequest.setDatetime(new Date());
 		// inventoryRequest.setShop(((WFManager)userBean.getUser()).getShop());
 		if (userBean.getUser() == null || userBean == null
@@ -566,6 +576,8 @@ public class ShopBean {
 			errMsg = "非法用户";
 			return "inventoryrequestfailed";
 		}
+		
+		
 		shopService.requestInventory(inventoryRequest,
 				((WFManager) userBean.getUser()).getShop(), userBean.getUser());
 

@@ -121,6 +121,8 @@ public class InventoryBean {
 		String[] prs = map.get("prs");
 		String[] count = map.get("count");
 		
+		boolean errorFlag = false;
+		errMsg = "";
 		if (goods_id == null || prs == null || count == null || brands == null || vendors == null) {
 			errMsg ="请输入要更新的库存的产品信息";
 			return "createinventoryfailed";
@@ -139,51 +141,59 @@ public class InventoryBean {
 		boolean ma = false;
 		for (int i = 0; i < goods_id.length; i++) {
 			if (goods_id[i] == null || goods_id[i].isEmpty()) {
-				errMsg ="请输入要更新的库存的产品信息";
-				return "createinventoryfailed";
+				errMsg +="请输入要更新的库存的产品信息"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
 			
 			if (g == null) {
-				errMsg ="没有找到相关产品： " + goods_id[i];
-				return "createinventoryfailed";
+				errMsg  += "没有找到相关产品： " + goods_id[i]+"\n";
+				errorFlag = true;
+				continue;
 			}
 			
 			if (brands[i] == null || brands[i].isEmpty()) {
-				errMsg ="产品品牌必须输入";
-				return "createinventoryfailed";
+				errMsg  += g.getName()+"产品品牌必须输入"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			
 			if (vendors[i] == null || vendors[i].isEmpty()) {
-				errMsg ="品牌供应商必须输入";
-				return "createinventoryfailed";
+				errMsg  += g.getName()+"品牌供应商必须输入"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", count[i]);
 			if (!ma) {
-				errMsg ="产品数量应为数字";
-				return "createinventoryfailed";
+				errMsg  += g.getName()+"产品数量应为数字"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", prs[i]);
 			if (!ma) {
-				errMsg ="产品价格应为数字";
-				return "createinventoryfailed";
+				errMsg  += g.getName()+"产品价格应为数字"+"\n";
+				errorFlag = true;
+				continue;
 			}
 			
 			if (rate[i] != null) {
 				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", rate[i]);
 				if (!ma) {
-					errMsg ="出货价格比例应为数字";
-					return "createinventoryfailed";
+					errMsg += g.getName()+"出货价格比例应为数字"+"\n";
+					errorFlag = true;
+					continue;
 				}
 			}
 			
 			if (rate1[i] != null) {
 				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", rate1[i]);
 				if (!ma) {
-					errMsg ="出货加盟商价格比例应为数字";
-					return "createinventoryfailed";
+					errMsg += g.getName()+"出货加盟商价格比例应为数字"+"\n";
+					errorFlag = true;
+					continue;
 				}
 			}
 			
@@ -206,6 +216,10 @@ public class InventoryBean {
 					false);
 			inventory.setDatetime(new Date());
 			inventory.setIt(InventoryType.IN);
+		}
+		
+		if (errorFlag) {
+			return "createinventoryfailed";
 		}
 		inventoryService.createInventory(inventory);
 		

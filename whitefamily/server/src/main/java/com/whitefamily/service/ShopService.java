@@ -1131,7 +1131,8 @@ public class ShopService extends BaseService implements IShopService {
 			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
 		}
 
-		
+		irrr.setStatus(InventoryStatus.PREPARING_INVENTORY);
+		sess.update(irrr);
 //		irrQuery = sess.createQuery(" from InventoryRequestRecord where id = ? ");
 //		irrQuery.setLong(0, dr.getInventoryRequestId());
 //		irrList = irrQuery.list();

@@ -27,7 +27,7 @@
 					<c:if test="${not empty shopBean.errMsg}">
 						<div class="alert alert-danger">
 							<i class="fa fa-exclamation-circle"></i>
-							<h:outputText value="#{shopBean.errMsg}"></h:outputText>
+							<h:outputText value="#{shopBean.errMsg}"  style="white-space: pre-wrap"></h:outputText>
 							<button type="button" class="close" data-dismiss="alert">&times;</button>
 						</div>
 					</c:if>

@@ -95,36 +95,43 @@ public class SupplierBean {
 			errMsg = "请输入配送价格和数量";
 			return "prepareDeliveryFailed";
 		}
-		
-	
+		errMsg = "";
+	    boolean errorFlag = false;
 		
 		boolean ma = false;
 		for (int i = 0; i < goods_id.length; i++) {
 			if (goods_id[i] == null || goods_id[i].isEmpty()) {
 				errMsg = "请输入产品信息";
-				return "prepareDeliveryFailed";
+				errorFlag = true;
+				continue;
 			}
 			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
 
 			if (g == null) {
-				errMsg = "没有找到相关产品： " + goods_id[i];
-				return "prepareDeliveryFailed";
+				errMsg = "没有找到相关产品： " + goods_id[i] +" \n";
+				errorFlag = true;
+				continue;
 			}
 
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", realCount[i]);
 			if (!ma) {
-				errMsg = g.getName()+"配送数量应为数字";
-				return "prepareDeliveryFailed";
+				errMsg += g.getName()+"配送数量应为数字" +" \n";
+				errorFlag = true;
+				continue;
 			}
 
 			
 			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", price[i]);
 			if (!ma) {
-				errMsg = g.getName()+" 配送价格应为数字";
-				return "prepareDeliveryFailed";
+				errMsg += g.getName()+" 配送价格应为数字";
+				errorFlag = true;
+				continue;
 			}
 			
 			inventoryRequestdetail.updateInventoryItem(g,  Float.parseFloat(realCount[i]),  Float.parseFloat(price[i]), Float.parseFloat(realCount[i]));
+		}
+		if (errorFlag) {
+			return "prepareDeliveryFailed";
 		}
 		inventoryRequestdetail.setDatetime(new Date());
 		

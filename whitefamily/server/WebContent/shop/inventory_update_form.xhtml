@@ -28,7 +28,7 @@
   </div>
   <div class="container-fluid">
     <c:if test="${not empty inventoryBean.errMsg}">
-    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{inventoryBean.errMsg}" ></h:outputText>
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{inventoryBean.errMsg}"   style="white-space: pre-wrap" ></h:outputText>
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     </c:if>
