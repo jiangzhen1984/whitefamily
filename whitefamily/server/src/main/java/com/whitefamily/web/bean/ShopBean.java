@@ -69,6 +69,8 @@ public class ShopBean {
 	private String subType;
 	
 	private WFDelivery delivery;
+	
+	private WFInventoryRequest shopFilterInventory;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -706,8 +708,16 @@ public class ShopBean {
 	public void setViewShopInventoryDate(Date viewShopInventoryDate) {
 		this.viewShopInventoryDate = viewShopInventoryDate;
 	}
+
+	public WFInventoryRequest getShopFilterInventory() {
+		return shopFilterInventory;
+	}
 	
-	
+	public void filterInventory() {
+		if (userBean.getUser().getRole() == Role.MANAGER) {
+			shopFilterInventory = this.inventoryService.queryShopWFInventoryRequest(((WFManager)(userBean.getUser())).getShop(), viewShopInventoryDate);
+		}
+	}
 	
 
 }
