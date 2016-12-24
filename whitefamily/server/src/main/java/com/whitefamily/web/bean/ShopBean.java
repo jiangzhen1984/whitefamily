@@ -12,8 +12,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import com.whitefamily.ServerConstants;
+import com.whitefamily.po.ShopType;
 import com.whitefamily.po.customer.Role;
 import com.whitefamily.po.incoming.DeliveryType;
 import com.whitefamily.po.incoming.GroupOnType;
@@ -34,6 +36,7 @@ import com.whitefamily.service.vo.WFInventoryRequest.Item;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFShopInventory;
 
 @ManagedBean(name = "shopBean", eager = false)
 @SessionScoped
@@ -44,6 +47,7 @@ public class ShopBean {
 	private long shopId;
 	private String errMsg;
 	private String nameRequire;
+	private int shopType;
 
 	IShopService shopService;
 	IGoodsService goodsService;
@@ -51,6 +55,8 @@ public class ShopBean {
 
 	private long reportId;
 	private WFDamageReport report;
+	private WFShopInventory shopInventoryReport;
+	private String reportResultType;
 	private WFInventoryRequest inventoryRequest;
 	private ShopIncoming shopIncoming;
 	private long viewShopIncomingId;
@@ -74,6 +80,9 @@ public class ShopBean {
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
+	
+	
+	private SelectItem[] shopTypes;
 
 	public ShopBean() {
 		super();
@@ -82,6 +91,9 @@ public class ShopBean {
 		inventoryService = ServiceFactory.getInventoryService();
 		shopIncoming = new ShopIncoming();
 		iType = "1";
+		shopTypes = new SelectItem[] {
+				new SelectItem(ShopType.DIRECT_SALE.ordinal() + "", "直营店"),
+				new SelectItem(ShopType.FRANCHISE_SALE.ordinal() + "", "加盟店") };
 	}
 
 	public List<WFShop> getShopList() {
@@ -404,6 +416,7 @@ public class ShopBean {
 		}
 		name = wf.getName();
 		address = wf.getAddress();
+		shopType = wf.getType().ordinal();
 		return "gotoupdateshop";
 	}
 
@@ -418,11 +431,13 @@ public class ShopBean {
 			wf = new WFShop();
 			wf.setName(name);
 			wf.setAddress(address);
+			wf.setType(this.shopType == ShopType.DIRECT_SALE.ordinal() ? ShopType.DIRECT_SALE : ShopType.FRANCHISE_SALE);
 			shopService.addShop(wf);
 		} else {
 			wf = shopService.getShop(shopId);
 			wf.setName(name);
 			wf.setAddress(address);
+			wf.setType(this.shopType == ShopType.DIRECT_SALE.ordinal() ? ShopType.DIRECT_SALE : ShopType.FRANCHISE_SALE);
 			shopService.updateShop(wf);
 		}
 
@@ -516,8 +531,60 @@ public class ShopBean {
 		shopService.reportDamage(report,
 				((WFManager) userBean.getUser()).getShop(), userBean.getUser());
 
+		reportResultType = "damage";
 		return "damageReportsuccess";
+	}
+	
+	
+	
+	public String reportShopInventory() {
+		shopInventoryReport = null;
+		Map<String, String[]> map = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterValuesMap();
+		String[] goods_id = map.get("igoodsname_id");
+		String[] count = map.get("igoodscount");
+		if (goods_id == null && count == null) {
+			errMsg = "请输入要盘点的菜品信息";
+			return "shopInventoryReportfailed";
+		}
+		if (shopInventoryReport != null) {
+			shopInventoryReport.clearItems();
+		} else {
+			shopInventoryReport = new WFShopInventory();
+		}
+		boolean ma = false;
+		for (int i = 0; i < goods_id.length; i++) {
+			if (goods_id[i] == null || goods_id[i].isEmpty()) {
+				errMsg = "请输入要盘点的产品信息";
+				return "shopInventoryReportfailed";
+			}
+			WFGoods g = goodsService.getGoods(Long.parseLong(goods_id[i]));
 
+			if (g == null) {
+				errMsg = "没有找到相关产品： " + goods_id[i];
+				return "shopInventoryReportfailed";
+			}
+
+			ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+", count[i]);
+			if (!ma) {
+				errMsg = "盘点数量应为数字";
+				return "shopInventoryReportfailed";
+			}
+
+			shopInventoryReport.addItem(g, Float.parseFloat(count[i]), false);
+		}
+		shopInventoryReport.setDatetime(new Date());
+		// inventoryRequest.setShop(((WFManager)userBean.getUser()).getShop());
+		if (userBean.getUser() == null || userBean == null
+				|| userBean.getUser().getRole() != Role.MANAGER) {
+			errMsg = "非法用户";
+			return "shopInventoryReportfailed";
+		}
+		shopService.reportShopInventory(shopInventoryReport,
+				((WFManager) userBean.getUser()).getShop(), userBean.getUser());
+
+		reportResultType = "shopInventoryReport";
+		return "shopInventoryReportsuccess";
 	}
 
 	public String requestInventory() {
@@ -723,6 +790,39 @@ public class ShopBean {
 	public void clearFilter() {
 		shopFilterInventory = null;
 	}
+
+	public SelectItem[] getShopTypes() {
+		return shopTypes;
+	}
+
+	public void setShopTypes(SelectItem[] shopTypes) {
+		this.shopTypes = shopTypes;
+	}
+
+	public int getShopType() {
+		return shopType;
+	}
+
+	public void setShopType(int shopType) {
+		this.shopType = shopType;
+	}
+
+	public WFShopInventory getShopInventoryReport() {
+		return shopInventoryReport;
+	}
+
+	public void setShopInventoryReport(WFShopInventory shopInventoryReport) {
+		this.shopInventoryReport = shopInventoryReport;
+	}
+
+	public String getReportResultType() {
+		return reportResultType;
+	}
+
+	public void setReportResultType(String reportResultType) {
+		this.reportResultType = reportResultType;
+	}
 	
 
+	
 }

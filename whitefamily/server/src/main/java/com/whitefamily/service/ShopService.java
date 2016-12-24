@@ -42,6 +42,8 @@ import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.Shop;
+import com.whitefamily.po.ShopInventoryStatisticsGoods;
+import com.whitefamily.po.ShopInventoryStatisticsRecord;
 import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
@@ -67,6 +69,7 @@ import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
+import com.whitefamily.service.vo.WFShopInventory;
 import com.whitefamily.service.vo.WFShopInventoryCost;
 import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFUser;
@@ -147,7 +150,7 @@ public class ShopService extends BaseService implements IShopService {
 		Shop s = new Shop();
 		s.setName(shop.getName());
 		s.setAddress(shop.getAddress());
-		
+		s.setType(shop.getType());
 		Session sess = openSession();
 		Transaction tr = sess.beginTransaction();
 		sess.save(s);
@@ -171,6 +174,7 @@ public class ShopService extends BaseService implements IShopService {
 		
 		s.setName(shop.getName());
 		s.setAddress(shop.getAddress());
+		s.setType(shop.getType());
 		Transaction tr = sess.beginTransaction();
 		sess.update(s);
 		tr.commit();
@@ -316,6 +320,36 @@ public class ShopService extends BaseService implements IShopService {
 		return Result.SUCCESS;
 	}
 	
+	
+	public Result reportShopInventory(WFShopInventory report, WFShop shop, WFUser manager) {
+		ShopInventoryStatisticsRecord record = new ShopInventoryStatisticsRecord();
+		record.setDatetime(report.getDatetime());
+		record.setOperator(manager);
+		record.setShop(shop);
+
+		Session sess = getSession();
+		Transaction tr = sess.beginTransaction();
+		sess.save(record);
+		sess.flush();
+		int count = report.getItemCount();
+		ShopInventoryStatisticsGoods ig = null;
+		for (int i = 0; i < count; i++) {
+			WFShopInventory.Item wi = report.getItem(i);
+			if (wi.isPersisted()) {
+				continue;
+			}
+			ig = new ShopInventoryStatisticsGoods();
+			ig.setGoods(goodsService.getGoods(wi.getGoods().getId()));
+			ig.setCount(wi.getCount());
+			ig.setRecord(record);
+			sess.save(ig);
+			wi.setPersisted(true);
+		}
+
+		tr.commit();
+		sess.close();
+		return Result.SUCCESS;
+	}
 	
 	
 	public void reportIncoming(WFShop shop, WFIncoming incoming, WFOperationCost cost, WFUser manager) {

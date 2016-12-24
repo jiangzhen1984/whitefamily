@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,31 +14,27 @@ import com.whitefamily.po.customer.User;
 
 
 @Entity
-@Table(name = "WF_DAMAGE_REPORT_RECORD")
-public class DamageReportRecord extends Record {
+@Table(name = "WF_SHOP_INVENTORY_STATISTICS_RECORD")
+public class ShopInventoryStatisticsRecord extends Record {
 	
 
 
 	private Shop shop;
 	
 	
-	@Enumerated(EnumType.ORDINAL)
-	private DamageStatus status;
 	
-	
-	@Column(name = "WF_SHOP_ID")
 	private Long shopId;
 
-	@Column(name = "WF_SHOP_NAME", columnDefinition = "VARCHAR(100)")
+	
 	private String shopName;
 
-	@Column(name = "WF_SHOP_ADDRESS", columnDefinition = "VARCHAR(400)")
+	
 	private String shopAddress;
 
-	@Column(name = "WF_OPER_ID")
+	
 	private Long userId;
 
-	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
+	
 	private String userName;
 	
 	
@@ -107,14 +101,7 @@ public class DamageReportRecord extends Record {
 		}
 	}
 
-	public DamageStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(DamageStatus status) {
-		this.status = status;
-	}
-
+	@Column(name = "WF_SHOP_ID")
 	public Long getShopId() {
 		return shopId;
 	}
@@ -123,6 +110,7 @@ public class DamageReportRecord extends Record {
 		this.shopId = shopId;
 	}
 
+	@Column(name = "WF_SHOP_NAME", columnDefinition = "VARCHAR(100)")
 	public String getShopName() {
 		return shopName;
 	}
@@ -131,6 +119,7 @@ public class DamageReportRecord extends Record {
 		this.shopName = shopName;
 	}
 
+	@Column(name = "WF_SHOP_ADDRESS", columnDefinition = "VARCHAR(400)")
 	public String getShopAddress() {
 		return shopAddress;
 	}
@@ -139,6 +128,7 @@ public class DamageReportRecord extends Record {
 		this.shopAddress = shopAddress;
 	}
 
+	@Column(name = "WF_OPER_ID")
 	public Long getUserId() {
 		return userId;
 	}
@@ -147,6 +137,7 @@ public class DamageReportRecord extends Record {
 		this.userId = userId;
 	}
 
+	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
 	public String getUserName() {
 		return userName;
 	}

@@ -2,6 +2,8 @@ package com.whitefamily.po;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +23,10 @@ public class Shop {
 	
 	@Column(name="WF_BR_ADDR", columnDefinition="VARCHAR(1000)")
 	protected String address;
+	
+	@Column(name="WF_SHOP_TYPE", columnDefinition="NUMERIC(1) default 0")
+	@Enumerated(EnumType.ORDINAL)
+	protected ShopType type;
 
 	public long getId() {
 		return id;
@@ -45,6 +51,16 @@ public class Shop {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	public ShopType getType() {
+		return type;
+	}
+
+	public void setType(ShopType type) {
+		this.type = type;
+	}
+	
+	
 	
 	
 }

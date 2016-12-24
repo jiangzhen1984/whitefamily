@@ -50,6 +50,14 @@
                          </c:if>
                          </td>
                    </tr>
+                     <tr>
+                         <td class="text-left">店铺类型</td>
+                         <td class="text-left"> 
+                             <h:selectOneMenu value="#{shopBean.shopType}"   class="form-control">
+                                  <f:selectItems value="#{shopBean.shopTypes}" />                   
+                             </h:selectOneMenu>	
+                         </td>
+                   </tr>
                    <tr>
                          <td class="text-left">店铺地址</td>
                          <td class="text-left"> 

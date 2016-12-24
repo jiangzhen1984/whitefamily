@@ -5,9 +5,8 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
 <ui:include src="../include/header.xhtml" />
-<link rel="stylesheet" href="css/meicai.css" />
-<link rel="stylesheet" href="css/normal.css" />
 <body>
 	<div id="container">
 		<div id="content">
@@ -20,16 +19,19 @@
 						</div>
 						<h1>店铺管理</h1>
 						<ul class="breadcrumb">
-							<li><a href="#">报损结果</a></li>
 						</ul>
 					</div>
 				</div>
 				<div class="container-fluid">
 					<div class="panel panel-default">
-						<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-list"></i>报损结果</h3></div>
+						<div class="panel-heading"><h3 class="panel-title"><i class="fa fa-list"></i>  
+							<c:if test="#{shopBean.reportResultType eq 'damage'}" >报损结果</c:if>
+							<c:if test="#{shopBean.reportResultType eq 'shopInventoryReport'}" >盘点结果</c:if>
+							</h3></div>
 						<div class="panel-body">
 							<table id="item_box" class="table table-striped  table-hover">
 								<tbody>
+								    <c:if test="#{shopBean.reportResultType eq 'damage'}" >
 									<ui:repeat var="o" value="#{shopBean.report.itemList}"
 										varStatus="status">
 										<tr id="it_row#{status.index}">
@@ -37,6 +39,16 @@
                  							<td class="text-left">#{o.count}</td>
 										</tr>
 									</ui:repeat>
+									</c:if>
+									<c:if test="#{shopBean.reportResultType eq 'shopInventoryReport'}" >
+									<ui:repeat var="o" value="#{shopBean.shopInventoryReport.itemList}"
+										varStatus="status">
+										<tr id="it_row#{status.index}">
+  											<td class="text-left">#{o.goods.name}</td>
+                 							<td class="text-left">#{o.count}</td>
+										</tr>
+									</ui:repeat>
+									</c:if>
 								</tbody>
 
 							</table>
@@ -46,14 +58,16 @@
 
 			</h:form>
 		</div>
-		<div class="navigation">
-    	<div class="navigation-wrapper">
-            <a href="mall.xhtml" class="nav-item home-nav"></a>
-            <a href="incoming_report.xhtml" class="nav-item star-nav"></a>
-            <a href="damage_report.xhtml" class="nav-item blog-nav-selected"></a>
-            <a href="inventory_report_detail.xhtml" class="nav-item contact-nav"></a>
-        </div>
-    </div>
+	<div class="bottom">
+		<ul>
+			<li><a class="index" href="index.xhtml"></a></li>
+			<li><a class="wine " href="yingshou.xhtml"></a></li>
+			<li><a class="shopping_cart self" href="damage_report.xhtml"></a></li>
+			<li><a class="user" href="inventory_report_detail.xhtml"></a></li>
+
+		</ul>
+		<div class="clear"></div>
+	</div>
 </div>
 
 </body>

@@ -60,6 +60,8 @@
 		<mapping class="com.whitefamily.po.InventoryGoods" ></mapping>
 		<mapping class="com.whitefamily.po.DamageReportRecord" ></mapping>
 		<mapping class="com.whitefamily.po.DamageReportGoods" ></mapping>
+		<mapping class="com.whitefamily.po.ShopInventoryStatisticsRecord" ></mapping>
+		<mapping class="com.whitefamily.po.ShopInventoryStatisticsGoods" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.Incoming" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.GroupOn" ></mapping>
 		<mapping class="com.whitefamily.po.incoming.Delivery" ></mapping>

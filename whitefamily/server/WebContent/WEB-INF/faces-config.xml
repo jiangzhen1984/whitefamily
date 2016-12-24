@@ -501,6 +501,18 @@
 			<to-view-id>/mobile/damage_report_result.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.reportShopInventory}</from-action>
+			<from-outcome>shopInventoryReportfailed</from-outcome>
+			<to-view-id>/mobile/damage_report.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.reportShopInventory}</from-action>
+			<from-outcome>shopInventoryReportsuccess</from-outcome>
+			<to-view-id>/mobile/damage_report_result.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>

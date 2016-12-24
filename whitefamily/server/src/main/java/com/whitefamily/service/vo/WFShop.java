@@ -18,6 +18,7 @@ public class WFShop extends Shop {
 		this.id = s.getId();
 		this.address = s.getAddress();
 		this.name = s.getName();
+		this.type = s.getType();
 	}
 
 	
