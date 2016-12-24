@@ -41,6 +41,11 @@ import com.whitefamily.service.vo.WFVendor;
 
 public class AJAXHandler extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	Log logger = LogFactory.getLog(AJAXHandler.class);
 	
 	public AJAXHandler() {
@@ -167,10 +172,6 @@ public class AJAXHandler extends HttpServlet {
 	private void handleBrandFilter(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		JSONArray ret = new JSONArray();
-		HttpSession session = req.getSession();
-		GoodsBean goodsBean = (GoodsBean) session.getAttribute("goodsBean");
-
-		String goods_id = req.getParameter("goods_id");
 		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
 		List<WFBrand> list = service.searchBrand(name, 10);
@@ -190,10 +191,6 @@ public class AJAXHandler extends HttpServlet {
 	private void handleVendorFilter(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		JSONArray ret = new JSONArray();
-		HttpSession session = req.getSession();
-		GoodsBean goodsBean = (GoodsBean) session.getAttribute("goodsBean");
-
-		String goods_id = req.getParameter("goods_id");
 		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
 		List<WFVendor> list = service.searchVendor(name, 10);

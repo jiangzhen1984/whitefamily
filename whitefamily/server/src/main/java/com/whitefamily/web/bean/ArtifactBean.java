@@ -57,7 +57,7 @@ public class ArtifactBean {
 		String[] output_goods_id = map.get("atg_id");
 		String[] output_goods_unit = map.get("atgunit");
 		String[] output_goods_desc = map.get("atgdesc");
-		String[] waste_goods_id = map.get("waste_g");
+		//String[] waste_goods_id = map.get("waste_g");
 		String[] styles = map.get("style");
 		String[] minals = map.get("minal");
 		
