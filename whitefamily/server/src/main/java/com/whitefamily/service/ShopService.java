@@ -861,7 +861,7 @@ public class ShopService extends BaseService implements IShopService {
 			}
 		}
 		
-		hqlBuf.append(" order by datetime desc ");
+		hqlBuf.append(" order by requestDate desc ");
 		
 		Session sess = getSession();
 		Query query = sess.createQuery(hqlBuf.toString());
@@ -892,7 +892,7 @@ public class ShopService extends BaseService implements IShopService {
 		for (InventoryRequestRecord irq : list) {
 			WFInventoryRequest wf = new WFInventoryRequest();
 			wf.setId(irq.getId());
-			wf.setDatetime(irq.getDatetime());
+			wf.setDatetime(irq.getRequestDate());
 			wf.setOperator(irq.getOperator());
 			wf.setIs(irq.getStatus());
 			wf.setShop(new WFShop(irq.getShop()));

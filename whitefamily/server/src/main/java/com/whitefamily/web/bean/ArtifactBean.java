@@ -288,14 +288,16 @@ public class ArtifactBean {
 		}
 		
 		WFDelivery wfd = new WFDelivery();
+		WFGoods wfg = null;
 		for (WFArtifact wf : arsList) {
 			for(StaffGoods sg : wf.getStaffGoods()) {
-				wfd.addItem(goodsService.getGoods(sg.wfg.getId()), sg.getUnit(), false);
+				wfg = goodsService.getGoods(sg.wfg.getId());
+				wfd.addItem(wfg, sg.getUnit(), sg.getUnit(), wfg.getPrice(), false);
 			}
 		}
 		Result ret = shopService.handleInternalDelivery(wfd, null);
 		if (ret != Result.SUCCESS) {
-			errMsg ="处理提货失败";
+			errMsg ="处理提货失败,库存不足";
 			return "saveinventoryfailed";
 		}
 		inventoryService.createInventory(inventory);
