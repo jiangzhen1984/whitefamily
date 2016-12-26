@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -22,6 +24,7 @@ import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
@@ -31,6 +34,8 @@ import com.whitefamily.service.vo.WFSupplierMapping;
 import com.whitefamily.service.vo.WFVendor;
 
 public class InventoryService extends BaseService implements IInventoryService {
+	
+	private static Log logger = LogFactory.getLog(InventoryService.class);
 
 	private IGoodsService goodsService;
 
@@ -580,6 +585,39 @@ public class InventoryService extends BaseService implements IInventoryService {
 		return list;
 	}
 	
+	
+	public List<WFDelivery> queryDeliveryHistory(Date date) {
+		if (date == null) {
+			return null;
+		}
+		Session sess = getSession();
+		Query query = sess.createQuery(" from InventoryUpdateRecord where date(datetime) = ? and requestInventoryId > 0");
+		query.setDate(0, date);
+		List<InventoryUpdateRecord> iurlist = query.list();
+		List<WFDelivery> delist = new ArrayList<WFDelivery>(iurlist.size());
+		WFDelivery de = null;
+		InventoryRequestRecord irr = null;
+		for (InventoryUpdateRecord iur : iurlist) {
+			de = new WFDelivery();
+			irr = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, iur.getRequestInventoryId());
+			if (irr == null) {
+				logger.warn(" InventoryUpdateRecord no related inventory requestion id " + iur.getRequestInventoryId() +"   "+ iur.getId());
+				continue;
+			}
+			de.setShop(this.shopService.getShop(irr.getShopId()));
+			de.setDatetime(iur.getDatetime());
+			Query goodsQuery = sess.createQuery(" from InventoryGoods where record.id = ? ");
+			goodsQuery.setLong(0, iur.getId());
+			List<InventoryGoods> irgList = goodsQuery.list();
+			for (InventoryGoods irg : irgList) {
+				de.addItem(goodsService.getGoods(irg.getGoods().getId()), irg.getCount(), irg.getCount(), irg.getPrice(), true);
+			}
+			
+			delist.add(de);
+		}
+		
+		return delist;
+	}
 	
 	public double queryCurrentInventoryCost() {
 		Session sess = getSession();

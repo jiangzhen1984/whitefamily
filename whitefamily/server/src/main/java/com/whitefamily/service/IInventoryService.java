@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
@@ -60,5 +61,8 @@ public interface IInventoryService {
 	
 	
 	public Map<WFGoods, Float> queryCurrentStockMap();
+	
+	
+	public List<WFDelivery> queryDeliveryHistory(Date date);
 
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<link href="css/page_style.css" rel="stylesheet" type="text/css" />
+<title>补货清单</title>
+<body>
+	<div id="container">
+		<div id="content">
+			<h:form id="pform">
+				<div class="page-header">
+					<div class="container-fluid">
+						<h1>店铺管理-送货清单</h1>
+						<ul class="breadcrumb">
+							<li><a href="#"></a></li>
+						</ul>
+						 <div class="pull-right">
+				         <a href="veg_inventory_report_detail.xhtml" data-toggle="tooltip"  class="btn btn-default"><i class="fa fa-reply">返回</i></a>
+				      </div>
+					</div>
+				</div>
+				
+				<div class="container-fluid">
+				<ui:repeat id="item" var="item" value="#{supplierBean.delist}" >
+					<div class="panel panel-default">
+					    <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-list"></i>#{item.shop.name}</h3></div>
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tbody>
+								<tr id="it_row#{status.index}">
+										  <td class="text-center" style="color:#000000;">菜品</td>
+                                          <td class="text-center" style="color:#000000;">数量</td>
+										</tr>
+									 <ui:repeat id="g" var="g" value="#{item.itemList}" >
+										<tr>
+										  <td class="text-center" style="color:#000000;">#{g.goods.name}</td>
+                                          <td class="text-center" style="color:#000000;">#{g.count}</td>
+										</tr>
+									</ui:repeat>
+								</tbody>
+
+							</table>
+						</div>
+					</div>
+				</ui:repeat>
+				</div>
+
+			</h:form>
+		</div>
+	    <div class="bottom">
+		<div class="clear"></div>
+	    </div>
+	</div>
+
+</body>
+</html>

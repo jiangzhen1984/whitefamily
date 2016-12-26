@@ -270,6 +270,11 @@
 			<from-outcome>prepareDeliveryFailed</from-outcome>
 			<to-view-id>/mobile/veg_inventory_report_goods_list_delivery.xhtml</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-action>#{supplierBean.queryHistory}</from-action>
+			<from-outcome>query</from-outcome>
+			<to-view-id>/mobile/veg_inventory_query.xhtml</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	
 	

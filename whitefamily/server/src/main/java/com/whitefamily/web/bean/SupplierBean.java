@@ -11,9 +11,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import com.whitefamily.service.IGoodsService;
+import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ISupplierService;
 import com.whitefamily.service.ServiceFactory;
+import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFSupplier;
@@ -24,15 +26,20 @@ public class SupplierBean {
 	
 	private List<WFInventoryRequest> inventoryAllList;
 	private WFInventoryRequest inventoryRequestdetail;
+	private List<WFDelivery> delist;
 	
 	private ISupplierService supplierService;
 	private IShopService shopService;
 	private IGoodsService goodsService;
+	private IInventoryService inventoryService;
+	
 	
 	
 	private long prepareDerReqId;
 	
 	private String errMsg;
+	
+	private Date queryDeliveryDate;
 	
 	
 	@ManagedProperty(value = "#{userBean}")
@@ -43,6 +50,7 @@ public class SupplierBean {
 		supplierService = ServiceFactory.getSupplierService();
 		shopService = ServiceFactory.getShopService();
 		goodsService = ServiceFactory.getGoodsService();
+		inventoryService = ServiceFactory.getInventoryService();
 		filer();
 	}
 
@@ -167,8 +175,23 @@ public class SupplierBean {
 	public void setUserBean(UserBean userBean) {
 		this.userBean = userBean;
 	}
+
+	public Date getQueryDeliveryDate() {
+		return queryDeliveryDate;
+	}
+
+	public void setQueryDeliveryDate(Date queryDeliveryDate) {
+		this.queryDeliveryDate = queryDeliveryDate;
+	}
 	
 	
-	
+	public List<WFDelivery> getDelist() {
+		return delist;
+	}
+
+	public String queryHistory() {
+		this.delist = inventoryService.queryDeliveryHistory(queryDeliveryDate);
+		return "query";
+	}
 	
 }

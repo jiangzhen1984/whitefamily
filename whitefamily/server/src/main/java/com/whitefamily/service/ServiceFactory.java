@@ -85,6 +85,7 @@ public class ServiceFactory {
 			((InventoryService)getRealInventoryService()).setGoodsService(getRealGoodsService());
 			((InventoryService)getRealInventoryService()).setSupplierService(getRealSupplierService());
 			((InventoryService)getRealInventoryService()).setUserService(getRealUserService());
+			((InventoryService)getRealInventoryService()).setShopService(getRealShopService());
 			iis = (IInventoryService)getProxy(IInventoryService.class.getClassLoader(), IInventoryService.class, getRealInventoryService());
 		}
 		return iis;
