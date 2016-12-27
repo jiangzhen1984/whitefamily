@@ -153,8 +153,11 @@ public class MallBean {
 
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
-		//FIXME should use comfortable value according logged user
-		goodsList = goodsService.queryGoods(0, IGoodsService.CATCH_SIZE, WFGoodsVisible.FRANCHISEE.ordinal());
+		int type = WFGoodsVisible.FRANCHISEE.ordinal();
+		if (this.userBean.getUser() != null && this.userBean.getUser().getRole() == Role.MANAGER) {
+			type = WFGoodsVisible.SHOP.ordinal();
+		}
+		goodsList = goodsService.queryGoods(0, IGoodsService.CATCH_SIZE, type);
 	
 		List<WFGoods> list = new ArrayList<WFGoods>(100);
 		if (this.searchText != null || !this.searchText.isEmpty()) {
