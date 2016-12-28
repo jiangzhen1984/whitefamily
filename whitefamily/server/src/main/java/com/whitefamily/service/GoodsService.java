@@ -100,9 +100,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		cate.setId(goods.getCate().getId());
 		good.setCate(cate);
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(good);
-		tr.commit();
+		commitTrans();
 		goods.setId(good.getId());
 		goodsCache.put(Long.valueOf(goods.getId()), goods);
 		cacheList.add(goods);
@@ -128,9 +128,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		cate.setId(wfg.getCate().getId());
 		good.setCate(cate);
 	
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(good);
-		tr.commit();
+		commitTrans();
 	}
 	
 	
@@ -142,9 +142,9 @@ public class GoodsService extends BaseService implements IGoodsService {
 		Session sess = getSession();
 		Goods good = (Goods)sess.get(Goods.class, wfg.getId());
 		good.setStockBar(stockbar);
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.update(good);
-		tr.commit();
+		commitTrans();
 		return Result.SUCCESS;
 	}
 
@@ -173,10 +173,10 @@ public class GoodsService extends BaseService implements IGoodsService {
 			return Result.ERR_EXIST_INVENTORY_REQUEST_RECORD;
 		}
 		
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Goods g = (Goods)sess.get(Goods.class, wfg.getId());
 		sess.delete(g);
-		tr.commit();
+		commitTrans();
 		
 		goodsCache.remove(wfg.getId());
 		cacheList.remove(wfg);
@@ -216,11 +216,11 @@ public class GoodsService extends BaseService implements IGoodsService {
 			return Result.ERR_VENDOR_EXISTS;
 		}
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Vendor v = new Vendor();
 		v.setName(wfv.getName());
 		sess.save(v);
-		tr.commit();
+		commitTrans();
 		wfv.setId(v.getId());
 		
 		vendorNameCache.put(wfv.getName(), wfv);
@@ -235,11 +235,11 @@ public class GoodsService extends BaseService implements IGoodsService {
 			return Result.ERR_BRAND_EXISTS;
 		}
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Brand v = new Brand();
 		v.setName(wfb.getName());
 		sess.save(v);
-		tr.commit();
+		commitTrans();
 		wfb.setId(v.getId());
 		
 		brandNameCache.put(wfb.getName(), wfb);
@@ -548,7 +548,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		ArtifactProduct ap = new ArtifactProduct();
 		ap.setDesc(wff.getDesc());
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(ap);
 		List<StaffGoods> input = wff.getStaffGoods(ArtifactStaffType.INPUT);
 		if (input != null) {
@@ -567,7 +567,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 				sess.save(as);
 			}
 		} else {
-			tr.rollback();
+			this.rollbackTrans();
 			return Result.ERR_ARTIFACT_CREATE_FAILED;
 		}
 		
@@ -589,7 +589,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 				sess.save(as);
 			}
 		} else {
-			tr.rollback();
+			this.rollbackTrans();
 			return Result.ERR_ARTIFACT_CREATE_FAILED;
 		}
 		
@@ -611,7 +611,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 			}
 		}
 		
-		tr.commit();
+		commitTrans();
 		wff.setId(ap.getId());
 		if (cacheArtifactList != null && cacheArtifactList.size() > 0) {
 			synchronized(cacheArtifactList) {

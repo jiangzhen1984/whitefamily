@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.whitefamily.po.Goods;
 import com.whitefamily.po.InventoryGoods;
@@ -90,7 +89,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		record.setIt(InventoryType.IN);
 
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(record);
 		sess.flush();
 		int count = inventory.getItemCount();
@@ -144,7 +143,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			g.setPrice3(wfg.getPrice3());
 			sess.update(g);
 		}
-		tr.commit();
+		commitTrans();
 
 	}
 
@@ -164,7 +163,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		
 		
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(record);
 		sess.flush();
 		
@@ -192,7 +191,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			saveSubRecord(lmsr);
 		}
 
-		tr.commit();
+		commitTrans();
 		sess.close();
 		return Result.SUCCESS;
 	}
@@ -272,43 +271,40 @@ public class InventoryService extends BaseService implements IInventoryService {
 
 	public Result prepareInventoryRequest(WFInventoryRequest req) {
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Result res = internalUpdateInventoryRequestRecord(sess, req.getId(),
 				InventoryStatus.PREPARING_INVENTORY);
 		if (res == Result.SUCCESS) {
-			tr.commit();
+			commitTrans();
 		} else {
-			tr.rollback();
+			this.rollbackTrans();
 		}
-		sess.close();
 		return res;
 	}
 
 	public Result deliveryInventoryRequest(WFInventoryRequest req) {
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Result res = internalUpdateInventoryRequestRecord(sess, req.getId(),
 				InventoryStatus.DELIVERING);
 		if (res == Result.SUCCESS) {
-			tr.commit();
+			commitTrans();
 		} else {
-			tr.rollback();
+			this.rollbackTrans();
 		}
-		sess.close();
 		return res;
 	}
 
 	public Result finishInventoryRequest(WFInventoryRequest req) {
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		Result res = internalUpdateInventoryRequestRecord(sess, req.getId(),
 				InventoryStatus.DELIVERYED);
 		if (res == Result.SUCCESS) {
-			tr.commit();
+			commitTrans();
 		} else {
-			tr.rollback();
+			this.rollbackTrans();
 		}
-		sess.close();
 		return res;
 	}
 
@@ -451,7 +447,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		query.setLong(0, id);
 		List<InventoryRequestRecord> subRecords = query.list();
 		
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		for (InventoryRequestRecord irr : subRecords) {
 			Query goodsQuery = sess.createQuery(" delete from InventoryRequestGoods where record.id = ?");
 			goodsQuery.setParameter(0, irr.getId());
@@ -461,7 +457,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		
 		InventoryRequestRecord irc = (InventoryRequestRecord)sess.get(InventoryRequestRecord.class, id);
 		if (irc == null) {
-			tr.commit();
+			commitTrans();
 			return Result.ERR_NO_SUCH_INVENTORY_REQUEST;
 		}
 		
@@ -470,7 +466,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		goodsQuery.executeUpdate();
 		
 		sess.delete(irc);
-		tr.commit();
+		commitTrans();
 		return Result.SUCCESS;
 	}
 	

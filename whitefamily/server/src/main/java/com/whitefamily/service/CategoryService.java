@@ -48,9 +48,9 @@ public class CategoryService extends BaseService implements ICategoryService {
 		cate.setOrder(0);
 		ca.setAbbr(PinyinHelper.getShortPinyin(ca.getName()));
 		Session sess = openSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(cate);
-		tr.commit();
+		commitTrans();
 		sess.close();
 		ca.setId(cate.getId());
 		WFCategory wfParent = cateCache.get(ca.getParentId());
@@ -90,9 +90,9 @@ public class CategoryService extends BaseService implements ICategoryService {
 		}
 		
 		Category cate = (Category)sess.get(Category.class, ca.getId());
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.delete(cate);
-		tr.commit();
+		commitTrans();
 		
 		WFCategory wfCache = cateCache.remove(ca.getId());
 		if (wfCache != null) {
@@ -118,9 +118,9 @@ public class CategoryService extends BaseService implements ICategoryService {
 		cate.setParentId(ca.getParentId());
 		cate.setOrder(ca.getOrder());
 		
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.update(cate);
-		tr.commit();
+		commitTrans();
 	}
 
 	@Override
@@ -136,9 +136,9 @@ public class CategoryService extends BaseService implements ICategoryService {
 		Category cate = (Category)sess.get(Category.class, ca.getId());
 		cate.setParentId(ca.getParentId());
 		
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.update(cate);
-		tr.commit();
+		commitTrans();
 		sess.close();
 		
 		WFCategory wfCache = cateCache.remove(ca.getId());
@@ -244,13 +244,13 @@ public class CategoryService extends BaseService implements ICategoryService {
 		Session sess = getSession();
 		Category cate  = null;
 		WFCategory cache = null;
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		for (int idx = 0; idx < ids.length; idx++) {
 			Long lid = ids[idx];
 			int order = orders[idx];
 			cate = (Category)sess.get(Category.class, lid);
 			if (cate == null) {
-				tr.rollback();
+				this.rollbackTrans();
 				return Result.ERR_GENERIC_FAILED;
 			}
 			cate.setOrder(order);
@@ -261,7 +261,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 				cache.setOrder(order);
 			}
 		}
-		tr.commit();
+		commitTrans();
 		
 		
 		

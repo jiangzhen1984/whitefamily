@@ -1,8 +1,6 @@
 package com.whitefamily.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -20,18 +18,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.itextpdf.text.Chapter;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.whitefamily.ServerConstants;
 import com.whitefamily.exporter.WFExporter;
 import com.whitefamily.exporter.WFPdfExporter;
 import com.whitefamily.po.DamageReportGoods;
@@ -154,9 +140,9 @@ public class ShopService extends BaseService implements IShopService {
 		s.setAddress(shop.getAddress());
 		s.setType(shop.getType());
 		Session sess = openSession();
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(s);
-		tr.commit();
+		commitTrans();
 		sess.close();
 		shop.setId(s.getId());
 		shopCache.put(s.getId(), shop);
@@ -177,9 +163,9 @@ public class ShopService extends BaseService implements IShopService {
 		s.setName(shop.getName());
 		s.setAddress(shop.getAddress());
 		s.setType(shop.getType());
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.update(s);
-		tr.commit();
+		commitTrans();
 		sess.close();
 		return shop;
 	}
@@ -188,9 +174,9 @@ public class ShopService extends BaseService implements IShopService {
 	public void removeShop(WFShop shop) {
 		Session sess = getSession();
 		Shop s = (Shop)sess.get(Shop.class, shop.getId());
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.delete(s);
-		tr.commit();
+		commitTrans();
 		shopCache.remove(s.getId());
 	}
 	
@@ -299,7 +285,7 @@ public class ShopService extends BaseService implements IShopService {
 		record.setShop(shop);
 
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(record);
 		sess.flush();
 		int count = report.getItemCount();
@@ -317,7 +303,7 @@ public class ShopService extends BaseService implements IShopService {
 			wi.setPersisted(true);
 		}
 
-		tr.commit();
+		commitTrans();
 		sess.close();
 		return Result.SUCCESS;
 	}
@@ -330,7 +316,7 @@ public class ShopService extends BaseService implements IShopService {
 		record.setShop(shop);
 
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(record);
 		sess.flush();
 		int count = report.getItemCount();
@@ -348,7 +334,7 @@ public class ShopService extends BaseService implements IShopService {
 			wi.setPersisted(true);
 		}
 
-		tr.commit();
+		commitTrans();
 		sess.close();
 		return Result.SUCCESS;
 	}
@@ -369,7 +355,7 @@ public class ShopService extends BaseService implements IShopService {
 		inco.setNuomiaf(incoming.getNuomiaf());
 		inco.setDazhongaf(incoming.getDazhongaf());
 		inco.setShop(shop);
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(inco);
 		
 		List<DeliveryItem> deliList = incoming.getDelis();
@@ -423,7 +409,7 @@ public class ShopService extends BaseService implements IShopService {
 		oc.setQt(cost.getQt());
 		sess.save(oc);
 		
-		tr.commit();
+		commitTrans();
 		sess.flush();
 		
 	}
@@ -438,7 +424,7 @@ public class ShopService extends BaseService implements IShopService {
 		Query query = sess.createQuery(" from InventoryRequestRecord where shopId = ? and requestDate =? ");
 		query.setLong(0, shop.getId());
 		query.setDate(1, inventory.getDatetime());
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		List<InventoryRequestRecord> irrList = query.list();
 		if (irrList == null || irrList.size() <= 0) {
 			record = new InventoryRequestRecord();
@@ -482,7 +468,7 @@ public class ShopService extends BaseService implements IShopService {
 //			saveSubRecord(lmsr);
 //		}
 
-		tr.commit();
+		commitTrans();
 		sess.close();
 		return Result.SUCCESS;
 	}
@@ -988,7 +974,7 @@ public class ShopService extends BaseService implements IShopService {
 		dr.setShopAddress(de.getShop().getAddress());
 		dr.setShopName(de.getShop().getName());
 		dr.setStatus(InventoryStatus.DELIVERYED);
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(dr);
 		sess.flush();
 		
@@ -1064,7 +1050,7 @@ public class ShopService extends BaseService implements IShopService {
 //			logger.info(" Update suppliery InventoryRequestRecord : " + irr.getId());
 //		}
 		
-		tr.commit();
+		commitTrans();
 		
 		//TODO update goods price
 		
@@ -1122,7 +1108,7 @@ public class ShopService extends BaseService implements IShopService {
 		InternalDeliveryRecord dr = new InternalDeliveryRecord();
 		dr.setDatetime(de.getDatetime());
 		dr.setOperator(user);
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(dr);
 		sess.flush();
 		
@@ -1170,7 +1156,7 @@ public class ShopService extends BaseService implements IShopService {
 		}
 		
 		
-		tr.commit();
+		commitTrans();
 		
 		return Result.SUCCESS;
 	}
@@ -1208,7 +1194,7 @@ public class ShopService extends BaseService implements IShopService {
 		inco.setNuomiaf(incoming.getNuomiaf());
 		inco.setDazhongaf(incoming.getDazhongaf());
 		
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.update(inco);
 		
 		OperationCost oc = costList.get(0);
@@ -1227,7 +1213,7 @@ public class ShopService extends BaseService implements IShopService {
 		oc.setQt(cost.getQt());
 		sess.update(oc);
 		
-		tr.commit();
+		commitTrans();
 		sess.flush();
 		
 		
@@ -1367,7 +1353,7 @@ public class ShopService extends BaseService implements IShopService {
 		omc.setDateStr(sdf.format(operation.getDate()));
 		//TODO check exist yl item if so get yl item
 		
-		Transaction tr = sess.beginTransaction();
+		Transaction tr = beginTransaction(sess);
 		sess.save(omc);
 		
 		List<WFEmployee> list = operation.getEmployeesCost();
@@ -1387,7 +1373,7 @@ public class ShopService extends BaseService implements IShopService {
 		else {
 			logger.error(" no employee information ");
 		}
-		tr.commit();
+		commitTrans();
 	}
 	
 	

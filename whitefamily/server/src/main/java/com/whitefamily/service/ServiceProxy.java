@@ -16,6 +16,8 @@ public class ServiceProxy implements InvocationHandler {
 	
 	private Method openSessionMtd;
 	private Method closeSessionMtd;
+	private Method transCheckMtd;
+	private Method transRollbackMtd;
 	
 	static {
 		try {
@@ -42,6 +44,8 @@ public class ServiceProxy implements InvocationHandler {
 			m.invoke(real, new Object[]{sessionFactory});
 			openSessionMtd = real.getClass().getMethod("openSession", new Class[]{});
 			closeSessionMtd = real.getClass().getMethod("closeSession", new Class[]{});
+			transCheckMtd = real.getClass().getMethod("existTrans", new Class[]{});
+			transRollbackMtd = real.getClass().getMethod("rollbackTrans", new Class[]{});
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +62,12 @@ public class ServiceProxy implements InvocationHandler {
 		try {
 			Object obj = method.invoke(real, args);
 			return obj;
+		} catch(Throwable e) {
+			Object ret = transCheckMtd.invoke(real, new Object[]{});
+			if (((Boolean)ret).booleanValue() == true) {
+				transRollbackMtd.invoke(real, new Object[]{});
+			}
+			throw e;
 		} finally {
 			closeSessionMtd.invoke(real, new Object[]{});
 		}

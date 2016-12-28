@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.whitefamily.po.customer.AccountType;
 import com.whitefamily.po.customer.Role;
@@ -145,9 +144,10 @@ public class UserService extends BaseService implements IUserService {
 		}
 		
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		WFUser wfu = getUser(user.getUsername(), sess);
 		if (wfu != null) {
+			this.rollbackTrans();
 			return Result.ERR_USER_ALREADY_EXIST;
 		}
 		User u = new User();
@@ -161,7 +161,7 @@ public class UserService extends BaseService implements IUserService {
 		u.setShopAddress(user.getShopAddress());
 		sess.save(u);
 		sess.flush();
-		tr.commit();
+		commitTrans();
 		
 		user.setId(u.getId());
 		return Result.SUCCESS;
@@ -178,7 +178,7 @@ public class UserService extends BaseService implements IUserService {
 		}
 		
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		WFUser wfu = getUser(user.getUsername(), sess);
 		if (wfu != null) {
 			return Result.ERR_USER_ALREADY_EXIST;
@@ -195,7 +195,7 @@ public class UserService extends BaseService implements IUserService {
 		q.executeUpdate();
 		
 		sess.update(u);
-		tr.commit();
+		commitTrans();
 		
 		return Result.SUCCESS;
 	}
@@ -205,9 +205,9 @@ public class UserService extends BaseService implements IUserService {
 	public Result deleteUser(long id) {
 		Session sess = getSession();
 		User u = (User)sess.get(User.class, id);
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.delete(u);
-		tr.commit();
+		commitTrans();
 		 
 		return Result.SUCCESS;
 	}

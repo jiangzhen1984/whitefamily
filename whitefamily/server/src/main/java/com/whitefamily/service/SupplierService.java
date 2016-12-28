@@ -37,9 +37,9 @@ public class SupplierService extends BaseService implements ISupplierService {
 		dsc.setMappingId(wfm.getMappingId());
 		dsc.setMc(wfm.getMc());
 		Session sess = getSession();
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.save(dsc);
-		tr.commit();
+		commitTrans();
 		cacheList.add(wfm);
 		return Result.SUCCESS;
 	}
@@ -48,9 +48,9 @@ public class SupplierService extends BaseService implements ISupplierService {
 	public Result removeProductMapping(WFSupplierMapping wfm) {
 		Session sess = getSession();
 		DeliverySupplierConfiguration obj = (DeliverySupplierConfiguration)sess.get(DeliverySupplierConfiguration.class, wfm.getId());
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		sess.delete(obj);
-		tr.commit();
+		commitTrans();
 		cacheList.remove(wfm);
 		return Result.SUCCESS;
 	}
@@ -106,7 +106,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 		drquery.setLong(0, req.getId());
 		List<InventoryUpdateRecord> iruList =  drquery.list();
 		boolean update  = iruList.size() > 0? true : false;
-		Transaction tr = sess.beginTransaction();
+		beginTransaction(sess);
 		if (!update) {
 			InventoryUpdateRecord record = new InventoryUpdateRecord();
 			record.setIt(InventoryType.IN);
@@ -143,7 +143,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 			}
 		}
 		
-		tr.commit();
+		commitTrans();
 		
 		return Result.SUCCESS;
 	}
