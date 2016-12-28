@@ -157,16 +157,16 @@ public class MallBean {
 		if (this.userBean.getUser() != null && this.userBean.getUser().getRole() == Role.MANAGER) {
 			type = WFGoodsVisible.SHOP.ordinal();
 		}
-		goodsList = goodsService.queryGoods(0, IGoodsService.CATCH_SIZE, type);
+		List<WFGoods> gList = goodsService.queryGoods(0, IGoodsService.CATCH_SIZE, IGoodsService.VISIBLE_ALL);
 	
-		List<WFGoods> list = new ArrayList<WFGoods>(100);
+		List<WFGoods> list = new ArrayList<WFGoods>();
 		if (this.searchText != null || !this.searchText.isEmpty()) {
-			int len = goodsList.size();
+			int len = gList.size();
 			Pattern p = Pattern.compile("(" + searchText+ ")");
 			WFGoods wfg = null;
 			for (int i = 0; i < len; i++) {
-				wfg = goodsList.get(i);
-				if (p.matcher(wfg.getName()).find()) {
+				wfg = gList.get(i);
+				if (p.matcher(wfg.getName()).find() && wfg.getType() >= type) {
 					list.add(wfg);
 				}
 			}
