@@ -64,8 +64,8 @@
                       <td class="text-right"><input type="text" id="vendorname#{status.index}"  value="#{o.vendor.name}"  name="vendorname"  placeholder="请输入供应商" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="prs"  value="#{o.price}" placeholder="请输入产品单价" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="count" value="#{o.count}" placeholder="请输入库存数量" class="form-control" /></td>
-                      <td class="text-right"><input type="text" name="rate" value="#{o.count}" placeholder="0-100" class="form-control"  maxlength="3" /></td>
-                      <td class="text-right"><input type="text" name="rate1" value="#{o.count}" placeholder="0-100" class="form-control" maxlength="3"/></td>
+                      <td class="text-right"><input type="text" name="rate" value="#{o.rate}" placeholder="0-100" class="form-control"  maxlength="3" /></td>
+                      <td class="text-right"><input type="text" name="rate1" value="#{o.rate1}" placeholder="0-100" class="form-control" maxlength="3"/></td>
                       <td class="text-left"><button type="button" onclick="$('#image-row#{status.index}').remove();" data-toggle="tooltip" title="echo $button_remove" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                     </tr>
                     </ui:repeat>
