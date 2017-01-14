@@ -176,7 +176,7 @@ public class AJAXHandler extends HttpServlet {
 		JSONArray ret = new JSONArray();
 		String name = req.getParameter("name");
 		IGoodsService service = ServiceFactory.getGoodsService();
-		List<WFBrand> list = service.searchBrand(name, 10);
+		List<WFBrand> list = service.searchBrand(name.toLowerCase(), 10);
 		for (WFBrand wf : list) {
 			JSONObject o = new JSONObject();
 			o.put("name", wf.getName());
