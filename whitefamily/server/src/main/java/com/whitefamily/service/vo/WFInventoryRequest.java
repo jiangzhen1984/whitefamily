@@ -29,6 +29,8 @@ public class WFInventoryRequest {
 	protected boolean isLoadItem;
 	
 	private List<WFSupplierMapping> mappingList;
+	
+	private float sum;
 
 
 	public WFInventoryRequest() {
@@ -103,6 +105,7 @@ public class WFInventoryRequest {
 		Item item = new Item(count, pr, realCount, goods, persiste);
 		itemList.add(item);
 		addToSupplierList(item);
+		sum += realCount * pr;
 	}
 	
 	
@@ -158,16 +161,35 @@ public class WFInventoryRequest {
 	}
 
 	public List<Item> getItemList() {
-		 Collections.sort(itemList);
-		 return itemList;
+		if (itemList != null) {
+			Collections.sort(itemList);
+		}
+		return itemList;
 	}
 	
 	
 
 	public List<Item> getSupplierItemList() {
+		if (supplierItemList != null) {
 		 Collections.sort(supplierItemList);
+		}
 		return supplierItemList;
 	}
+
+	
+	
+
+
+	public float getSum() {
+		return sum;
+	}
+
+
+	public void setSum(float sum) {
+		this.sum = sum;
+	}
+
+
 
 
 

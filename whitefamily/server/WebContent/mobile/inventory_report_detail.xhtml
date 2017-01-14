@@ -66,10 +66,24 @@
 			        	
 			        <c:if test="#{not empty shopBean.shopFilterInventory}">
 			        <div class="panel panel-default">
-						<div class="panel-heading">历史订单-#{shopBean.shopFilterInventory.datetime}</div>
+						<div class="panel-heading">历史订单-
+						<h:outputText value="#{shopBean.shopFilterInventory.datetime}" >
+							    <f:convertDateTime pattern="yyyy-MM-dd" />
+							</h:outputText>
+						</div>
 						<div class="panel-body">
 							<table id="item_box" class="table table-striped  table-hover">
 								<tbody>
+								    <tr>
+											<td class="text-left"><label class="control-label"
+												for="input-name" style="color:#000000" >品名</label></td>
+											<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >数量</label></td>
+											<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >单价</label></td>
+												<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >合计</label></td>
+										</tr>
 									<ui:repeat var="o" value="#{shopBean.shopFilterInventory.itemList}"
 										varStatus="status">
 										<tr id="it_row#{status.index}">
@@ -77,8 +91,25 @@
 												for="input-name" style="color:#000000" >#{o.goods.name}</label></td>
 											<td class="text-left"><label class="control-label"
 												for="input-model" style="color:#000000" >#{o.count}</label></td>
+											<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >#{o.price}</label></td>
+												<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >
+												<h:outputText value="#{o.price * o.count}">
+												    <f:convertNumber  type="currency" locale="ZH_CN"/>
+												</h:outputText>
+												</label></td>
+											
 										</tr>
 									</ui:repeat>
+									<tr>
+									     <td class="text-left"></td>
+									     <td class="text-left"></td>
+										<td class="text-left">总计：</td>
+										<td class="text-left"><label class="control-label"
+												for="input-model" style="color:#000000" >#{shopBean.shopFilterInventory.sum}</label></td>
+									</tr>
+									
 								</tbody>
 
 							</table>

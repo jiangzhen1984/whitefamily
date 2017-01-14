@@ -20,6 +20,8 @@ import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
+import com.whitefamily.po.delivery.DeliveryRecord;
+import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
@@ -382,12 +384,21 @@ public class InventoryService extends BaseService implements IInventoryService {
 	public void queryInventoryRequestDetail(WFInventoryRequest wf) {
 		Session sess = getSession();
 		Query query = sess
-				.createQuery(" from InventoryRequestGoods  where record.id = ? ");
+				.createQuery(" from DeliveryRecord  where inventoryRequestId = ? ");
 		query.setLong(0, wf.getId());
-		List<InventoryRequestGoods> list = query.list();
-		for (InventoryRequestGoods iur : list) {
-			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()),
-					iur.getCount(), true);
+		List<DeliveryRecord> list = query.list();
+		if (list == null || list.size() <= 0) {
+			return;
+		}
+		DeliveryRecord dr = list.iterator().next();
+		
+		 query = sess
+					.createQuery(" from DeliveryRecordGoods  where record.id = ? ");
+		query.setLong(0, dr.getId());
+		List<DeliveryRecordGoods> qrgList = query.list();
+		for (DeliveryRecordGoods iur : qrgList) {
+			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()), iur.getRequestCount(), 
+					iur.getDeliverCount(), iur.getPrice(), true);
 		}
 	}
 

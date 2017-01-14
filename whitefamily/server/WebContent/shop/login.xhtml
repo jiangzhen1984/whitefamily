@@ -10,7 +10,7 @@
 <body>
 <div id="container">
 <div id="content">
-<h:form id="uform">
+<h:form id="uform" onkeypress="if(event.keyCode == 13) {mojarra.jsfcljs(document.getElementById('uform'),{'uform:j_idt10':'uform:j_idt10'},'');return false}">
   <div class="container-fluid"><br />
     <br />
     <div class="row">
@@ -53,5 +53,6 @@
   </div>
   </h:form>
 </div>
+
 <footer id="footer"><br /></footer></div>
 </body></html>
