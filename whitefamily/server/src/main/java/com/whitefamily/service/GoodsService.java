@@ -517,7 +517,7 @@ public class GoodsService extends BaseService implements IGoodsService {
 		WFVendor wfb = null;
 		for (int i = 0; i < vendorsList.size(); i++) {
 			wfb = vendorsList.get(i);
-			if (wfb.getName().contains(name)) {
+			if (wfb.getName().contains(name) || wfb.getAbbr().contains(name)) {
 				list.add(wfb);
 				if (list.size() >= count) {
 					break;

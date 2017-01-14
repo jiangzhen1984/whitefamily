@@ -149,7 +149,7 @@ public class AJAXHandler extends HttpServlet {
 		if (list != null) {
 			boolean needFilter = filter == null || filter.isEmpty() ? false: true;
 			int len = 1;
-			Pattern  p = Pattern.compile("^(" + filter +")");
+			Pattern  p = Pattern.compile("^(" + filter.toLowerCase() +")");
 			for (WFGoods wf : list) {
 				if (!needFilter || p.matcher(wf.getAbbr()).find() || p.matcher(wf.getName()).find()) {
 					JSONObject o = new JSONObject();
