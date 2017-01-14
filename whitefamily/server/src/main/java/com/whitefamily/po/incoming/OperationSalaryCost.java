@@ -43,6 +43,12 @@ public class OperationSalaryCost {
 	
 	@Column(name = "WF_SALARY", columnDefinition = "NUMERIC(10,3) default 0")
 	private float salary;
+	
+	@Column(name = "WF_BONUS", columnDefinition = "NUMERIC(10,3) default 0")
+	private float bonus;
+	
+	@Column(name = "WF_FEE", columnDefinition = "NUMERIC(10,3) default 0")
+	private float fee;
 
 	public long getId() {
 		return id;
@@ -98,6 +104,22 @@ public class OperationSalaryCost {
 
 	public void setSalary(float salary) {
 		this.salary = salary;
+	}
+
+	public float getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(float bonus) {
+		this.bonus = bonus;
+	}
+
+	public float getFee() {
+		return fee;
+	}
+
+	public void setFee(float fee) {
+		this.fee = fee;
 	}
 	
 	

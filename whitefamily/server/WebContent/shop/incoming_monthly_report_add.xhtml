@@ -63,8 +63,11 @@
             <table id="ec" class="table table-bordered table-hover">
               <thead>
                    <tr>
-                     <td class="text-left  col-md-4">员工</td>
-                     <td class="text-right col-md-4">工资</td>
+                     <td class="text-left  col-md-２">员工</td>
+                     <td class="text-right col-md-２">工资</td>
+                     <td class="text-right col-md-２">奖金</td>
+                     <td class="text-right col-md-２">备注条目</td>
+                     <td class="text-right col-md-２">备注金额</td>
                      <td></td>
                    </tr>
                  </thead>
@@ -73,6 +76,9 @@
                    <tr id="wfa-row#{status.index}">
                      <td class="text-left"><input type="text"  name="names" value="#{o.name}"  placeholder="姓名" class="form-control" /></td>
                      <td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="0.0"  id="sa#{status.index}" value="#{o.salary}" /></td>
+                     <td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"  id="sa#{status.index}"  /></td>
+	                 <td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"  id="sa#{status.index}"  /></td>
+	                 <td class="text-right"><input type="text"  class="form-control" name="desc1"   placeholder="0.0"  id="sa#{status.index}"  /></td>
                     <td class="text-left"><button type="button" onclick="$('#wfa-row#{status.index}').remove();" data-toggle="tooltip" title="移除" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                    </tr>
                    </ui:repeat>
@@ -123,6 +129,9 @@ function addEc() {
 	    html +='<tr id="wfa-row'+ec_row+'">';
 	    html +='<td class="text-left"><input type="text"  name="names"  placeholder="姓名" class="form-control" /></td>';
 	    html +='<td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="0.0"  id="sa'+ec_row+'"  /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"  id="sa'+ec_row+'"  /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"  id="sa'+ec_row+'"  /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="desc1"   placeholder="0.0"  id="sa'+ec_row+'"  /></td>';
 	    html +='<td class="text-left"><button type="button" onclick="$(\'#wfa-row'+ec_row+'\').remove();" data-toggle="tooltip" title="移除" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	    html +=' </tr>';
 

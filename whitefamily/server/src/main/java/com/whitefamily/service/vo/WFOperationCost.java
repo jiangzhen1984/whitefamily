@@ -25,8 +25,12 @@ public class WFOperationCost extends OperationCost {
 	private List<WFEmployee> employeesCost;
 	
 	
-	public void addEmployeeCost(String name, float salary) {
-		addEmployeeCost(new WFEmployee(name, salary));
+	public void addEmployeeCost(String name, float salary, float bonus, String desc, float fee) {
+		WFEmployee wfe = new WFEmployee(name, salary);
+		wfe.setBonus(bonus);
+		wfe.setDesc(desc);
+		wfe.setDesc1(fee);
+		addEmployeeCost(wfe);
 	}
 	
 	
@@ -88,7 +92,8 @@ public class WFOperationCost extends OperationCost {
 	public float getSalary() {
 		float sum = 0;
 		for (int i = 0; employeesCost != null && i < employeesCost.size(); i++) {
-			sum += employeesCost.get(i).getSalary();
+			WFEmployee wfe = employeesCost.get(i);
+			sum += wfe.getSalary()+ wfe.getBonus()+wfe.getDesc1() ;
 		}
 		return sum;
 	}

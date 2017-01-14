@@ -9,6 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFIncoming;
@@ -19,6 +22,8 @@ import com.whitefamily.service.vo.WFShopInventoryCost;
 @ManagedBean(name = "incomingBean", eager = false)
 @SessionScoped
 public class IncomingBean {
+	
+	private Log logger = LogFactory.getLog(IncomingBean.class);
 	
 	private IShopService shopService;
 	
@@ -168,6 +173,10 @@ public class IncomingBean {
 	
 	
 	public void queryMonthly() {
+		if (startDate == null) {
+			logger.warn(" time is null ");
+			return;
+		}
 		List<WFOperationCost> lc = shopService.queryShopMonthlyOperationCost(shopService.getShop(shopId), startDate);
 		if (lc != null && lc.size()  > 0) {
 			monthlyCost = lc.get(0);
@@ -215,6 +224,10 @@ public class IncomingBean {
 				.getExternalContext().getRequestParameterValuesMap();
 		String[] names = map.get("names");
 		String[] salarys = map.get("salars");
+		String[] bonus = map.get("bonus");
+		String[] desc = map.get("desc");
+		String[] desc1 = map.get("desc1");
+		
 		
 		if (salarys != null) {
 			boolean ma;
@@ -226,7 +239,22 @@ public class IncomingBean {
 					return "monthlyReportFailed";
 				}
 				
-				monthlyCost.addEmployeeCost(names.length > i ? names[i]: "", Float.parseFloat(str));
+				String bstr = bonus[i];
+				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  bstr);
+				if (!ma) {
+					errMsg = "奖金应为数字";
+					return "monthlyReportFailed";
+				}
+				
+				String bdesc1 = desc1[i];
+				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  bdesc1);
+				if (!ma) {
+					errMsg = "备注条目应为数字";
+					return "monthlyReportFailed";
+				}
+				
+				
+				monthlyCost.addEmployeeCost(names.length > i ? names[i]: "", Float.parseFloat(str), Float.parseFloat(bstr), desc[i], Float.parseFloat(bdesc1));
 			}
 		}
 		

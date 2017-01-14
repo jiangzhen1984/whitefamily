@@ -1362,11 +1362,13 @@ public class ShopService extends BaseService implements IShopService {
 			for (WFEmployee e : list) {
 				osc = new OperationSalaryCost();
 				osc.setDate(operation.getDate());
-				osc.setDesc(operation.getDesc());
+				osc.setDesc(e.getDesc());
 				osc.setEmployee(e.getName());
 				osc.setSalary(e.getSalary());
 				osc.setShop(operation.getShop());
 				osc.setDateStr(sdf.format(operation.getDate()));
+				osc.setBonus(e.getBonus());;
+				osc.setFee(e.getDesc1());;
 				sess.save(osc);
 			}
 		}
@@ -1430,7 +1432,7 @@ public class ShopService extends BaseService implements IShopService {
 				list.add(woc);				
 			} else {
 				if (osc != null && osc.getShop().getId() == omc.getShop().getId() && j < qslist.size()) {
-					woc.addEmployeeCost(osc.getEmployee(), osc.getSalary());
+					woc.addEmployeeCost(osc.getEmployee(), osc.getSalary(), osc.getBonus(), osc.getDesc(), osc.getFee());
 					j++;
 				} else {
 					i++;
