@@ -49,7 +49,8 @@
                       <td class="text-left  col-md-2">产品</td>
                       <td class="text-right col-md-2">品牌</td>
                       <td class="text-right col-md-2">供应商</td>
-                      <td class="text-right col-md-2">分装单价</td>
+                       <td class="text-right col-md-1">规格</td>
+                      <td class="text-right col-md-1">分装单价</td>
                       <td class="text-right col-md-1">数量</td>
                       <td class="text-right col-md-1">出货价格比例%</td>
                       <td class="text-right col-md-1">出货价格比例(加盟商)%</td>
@@ -62,7 +63,8 @@
                       <td class="text-left"><input type="text" id="goodsname#{status.index}" name="goodsname" value="#{o.goods.name}"  placeholder="请输入产品名称" class="form-control" /><input type="hidden" name="goodsname_id"  id="goodsname_id#{status.index}" value="#{o.goods.id}"  class="form-control" /></td>
                       <td class="text-right"><input type="text" id="brandname#{status.index}"  value="#{o.brand.name}"  name="brandname"  placeholder="请输入产品品牌" class="form-control" /></td>
                       <td class="text-right"><input type="text" id="vendorname#{status.index}"  value="#{o.vendor.name}"  name="vendorname"  placeholder="请输入供应商" class="form-control" /></td>
-                      <td class="text-right"><input type="text" name="prs"  value="#{o.price}" placeholder="请输入产品单价" class="form-control" /></td>
+                      <td class="text-right"><input type="text" name="style" id="style#{status.index}" value="#{o.goods.unit}" class="form-control"  readonly="readonly" /></td>
+                      <td class="text-right"><input type="text" id="prs#{status.index}" name="prs"  value="#{o.price}" placeholder="请输入产品单价" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="count" value="#{o.count}" placeholder="请输入库存数量" class="form-control" /></td>
                       <td class="text-right"><input type="text" name="rate" value="#{o.rate}" placeholder="0-100" class="form-control"  maxlength="3" /></td>
                       <td class="text-right"><input type="text" name="rate1" value="#{o.rate1}" placeholder="0-100" class="form-control" maxlength="3"/></td>
@@ -102,7 +104,9 @@
 				response($.map(json, function(item) {
 					return {
 						label: item['name'],
-						value: item['id']
+						value: item['id'],
+						unit: item['unit'],
+					    prs: item['prs']
 					}
 				}));
 			}
@@ -182,10 +186,11 @@ function addImage() {
 	html += '  <td class="text-left"><input type="text" id="goodsname'+image_row+'" name="goodsname" value="" placeholder="请输入产品名称" class="form-control" /><input type="hidden" name="goodsname_id" id="goodsname_id'+image_row+'"   class="form-control" /></td>';
 	html += '  <td class="text-right"><input type="text" id="brandname'+image_row+'" name="brandname" value="" placeholder="请输入产品品牌" class="form-control" /></td>';
 	html += '  <td class="text-right"><input type="text" id="vendorname'+image_row+'" name="vendorname" value="" placeholder="请输入产品供应商" class="form-control" /></td>';
+	html += '  <td class="text-right"><input type="text" id="style'+image_row+'"  name="style" readonly="readonly" class="form-control" /></td>'; 
     html += '  <td class="text-right"><input type="text" id="prs'+image_row+'" name="prs" value="" placeholder="请输入产品价格" class="form-control" /></td>';
     html += '  <td class="text-right"><input type="text" id="count_'+image_row+'"  name="count" value="" placeholder="请输入库存数量" class="form-control" /></td>';
-    html += '  <td class="text-right"><input type="text" id="rate_'+image_row+'"  name="rate" value="" placeholder="0-100" class="form-control" /></td>';
-    html += '  <td class="text-right"><input type="text" id="rate1_'+image_row+'"  name="rate1" value="" placeholder="0-100" class="form-control" /></td>';
+    html += '  <td class="text-right"><input type="text" id="rate_'+image_row+'"  name="rate" value="0" placeholder="0-100" class="form-control" /></td>';
+    html += '  <td class="text-right"><input type="text" id="rate1_'+image_row+'"  name="rate1" value="0" placeholder="0-100" class="form-control" /></td>';
 	html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row  + '\').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	html += '</tr>';
 
@@ -194,11 +199,15 @@ function addImage() {
 	
 	var el = $("input[name=\'goodsname\']:last");
 	var id_el = $("input[name=\'goodsname_id\']:last");
+	var unit_el = $("input[name=\'style\']:last");
+	var prs_el = $("input[name=\'prs\']:last");
 	el.autocomplete({
 	'source': f_auto_complete_source_goods,
 	'select': function(item) {
 		el.val(item['label']);
 		id_el.val(item['value']);
+		unit_el.val(item['unit']);
+		prs_el.val(item['prs']);
 	    }
     });
     

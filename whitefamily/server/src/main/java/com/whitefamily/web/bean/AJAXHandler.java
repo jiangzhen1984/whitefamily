@@ -155,6 +155,8 @@ public class AJAXHandler extends HttpServlet {
 					JSONObject o = new JSONObject();
 					o.put("name", wf.getName());
 					o.put("id", wf.getId());
+					o.put("prs", String.format("%.2f", wf.getPrice()));
+					o.put("unit", wf.getUnit());
 					ret.put(o);
 					len ++;
 					if (len > 9) {
