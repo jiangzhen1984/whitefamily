@@ -82,9 +82,7 @@ public class WFPdfExporter implements WFExporter {
         Paragraph title = new Paragraph("出货单 \n", chapterFont);
         title.setAlignment(Paragraph.ALIGN_CENTER);
         chapter.add(title);
-        chapter.add(new Paragraph("店铺： "+wf.getShop().getName()+" \n", chapterFont));
-        chapter.add(new Paragraph("日期： "+sdf1.format(wf.getDatetime())+"\n", chapterFont));
-        chapter.add(new Paragraph("地址： "+wf.getShop().getAddress()+ " \n\n", chapterFont));
+        chapter.add(new Paragraph("店铺： "+wf.getShop().getName()+" 日期： "+sdf1.format(wf.getDatetime())+" 地址： "+wf.getShop().getAddress()+ " \n", chapterFont));
         
         Font chapterFont1 = new Font(bf, 11);
         Paragraph detail = new Paragraph("产品明细 \n\n", chapterFont1);
