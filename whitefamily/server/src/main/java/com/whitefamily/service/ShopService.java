@@ -1351,6 +1351,7 @@ public class ShopService extends BaseService implements IShopService {
 		omc.setSf(operation.getMonthlySf());
 		omc.setShop(operation.getShop());
 		omc.setDateStr(sdf.format(operation.getDate()));
+		omc.setQt(operation.getOthers());;
 		//TODO check exist yl item if so get yl item
 		
 		Transaction tr = beginTransaction(sess);
@@ -1395,49 +1396,28 @@ public class ShopService extends BaseService implements IShopService {
 		List<OperationMonthlyCost> qlist = query.list();
 		List<WFOperationCost> list = new ArrayList<WFOperationCost>(qlist.size());
 		
-		sql = "from OperationSalaryCost where dateStr = ? ";
-		if (shop != null) {
+		for (OperationMonthlyCost omc : qlist) {
+			WFOperationCost woc = new WFOperationCost();
+			woc.setDate(omc.getDate());
+			woc.setMonthlyDf(omc.getDf());
+			woc.setMonthlySf(omc.getSf());
+			woc.setMonthlyFf(omc.getFf());
+			woc.setMonthlyRqf(omc.getRqf());
+			woc.setOthers(omc.getQt());;
+			list.add(woc);			
+			
+			sql = "from OperationSalaryCost where dateStr = ? ";
 			sql += " and shop.id = ? order by shop.id";
-		}
-		query = sess.createQuery(sql);
-		query.setString(0, da);
-		if (shop != null) {
-			query.setLong(1, shop.getId());
-		}
-		List<OperationSalaryCost> qslist = query.list();
-		
-		OperationMonthlyCost omc = null;
-		OperationSalaryCost osc = null;
-		WFOperationCost woc = null;
-		for (int i = 0, j = 0; i < qlist.size() || j < qslist.size();) {
-			if (i < qlist.size()) {
-				omc = qlist.get(i);
-			}
-			if (j < qslist.size()) {
-				osc = qslist.get(j);
+			Query salaryQuery = sess.createQuery(sql);
+			salaryQuery.setString(0, da);
+			salaryQuery.setLong(1, omc.getShop().getId());
+			
+			List<OperationSalaryCost> qslist = salaryQuery.list();
+			for (OperationSalaryCost osc : qslist) {
+				woc.addEmployeeCost(osc.getEmployee(), osc.getSalary(), osc.getBonus(), osc.getDesc(), osc.getFee());
 			}
 			
-			if (list.size() > i) {
-				woc = list.get(i);
-			} else {
-				woc = null;
-			}
-			if (woc == null && omc != null) {
-				woc = new WFOperationCost();
-				woc.setDate(omc.getDate());
-				woc.setMonthlyDf(omc.getDf());
-				woc.setMonthlySf(omc.getSf());
-				woc.setMonthlyFf(omc.getFf());
-				woc.setMonthlyRqf(omc.getRqf());
-				list.add(woc);				
-			} else {
-				if (osc != null && osc.getShop().getId() == omc.getShop().getId() && j < qslist.size()) {
-					woc.addEmployeeCost(osc.getEmployee(), osc.getSalary(), osc.getBonus(), osc.getDesc(), osc.getFee());
-					j++;
-				} else {
-					i++;
-				}
-			}
+			
 		}
 		
 		return list;

@@ -262,6 +262,7 @@ public class IncomingBean {
 		shopService.addMonthlyOperationCost(monthlyCost);
 		rshopId = 0;
 		rshopName = null;
+		errMsg = null;
 		return "monthlyShow";
 	}
 

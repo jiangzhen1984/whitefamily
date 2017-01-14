@@ -60,6 +60,10 @@ public class OperationMonthlyCost {
 	private float gz;
 	
 	
+	//其他
+	@Column(name = "WF_QT", columnDefinition = "NUMERIC(10,3)")
+	private float qt;
+	
 	@Column(name = "WF_DESC", columnDefinition = "VARCHAR(400)")
 	private String desc;
 
@@ -171,6 +175,16 @@ public class OperationMonthlyCost {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+
+	public float getQt() {
+		return qt;
+	}
+
+
+	public void setQt(float qt) {
+		this.qt = qt;
 	}
 
 	

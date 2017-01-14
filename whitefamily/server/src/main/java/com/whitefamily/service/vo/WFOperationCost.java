@@ -22,6 +22,8 @@ public class WFOperationCost extends OperationCost {
 	//燃气费
 	private float monthlyRqf;
 	
+	private float others;
+	
 	private List<WFEmployee> employeesCost;
 	
 	
@@ -96,6 +98,16 @@ public class WFOperationCost extends OperationCost {
 			sum += wfe.getSalary()+ wfe.getBonus()+wfe.getDesc1() ;
 		}
 		return sum;
+	}
+
+
+	public float getOthers() {
+		return others;
+	}
+
+
+	public void setOthers(float others) {
+		this.others = others;
 	}
 	
 	
