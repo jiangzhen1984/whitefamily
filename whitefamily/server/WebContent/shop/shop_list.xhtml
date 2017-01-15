@@ -84,6 +84,7 @@
                           <f:setPropertyActionListener target="#{shopBean.viewShopIncomingId}" value="#{g.id}" />
                            <i class="fa fa-book"> 营收明细</i>
                       </h:commandLink><h:outputText value="&#160;" />
+                       <c:if  test="${userBean.user.role == 'ADMIN'  }">
                        <h:commandLink  action="#{shopBean.gotoUpdateShop}" type="submit"  form="form-product" data-toggle="tooltip" title="编辑" class="btn btn-primary">
                           <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
                           <i class="fa fa-pencil"> 编辑</i>
@@ -92,6 +93,7 @@
                           <f:setPropertyActionListener target="#{shopBean.shopId}" value="#{g.id}" />
                           <i class="fa fa-trash"> 删除</i>
                       </h:commandLink>
+                      </c:if>
                   </td>
                 </tr>
                 </ui:repeat>

@@ -592,18 +592,8 @@ public class ShopService extends BaseService implements IShopService {
 					g.getGme(), g.getCe(), g.getSje(), g.getOther());
 		}
 
-		query = sess
-				.createQuery(" from Delivery where shop.id = ? and date = ? ");
-		query.setLong(0, shop.getId());
-		query.setDate(1, date);
-		List<Delivery> dList = (List<Delivery>) query.list();
-		if (dList.size() > 0  && wf == null) {
-			 wf = new WFIncoming();
-		}
-		for (Delivery d : dList) {
-			wf.addDeliveryData(d.getDeliveryType(), d.getIncoming(),
-					d.getOnlinePayment(), d.getRefund(), d.getRefund1(),
-					d.getServiceFee(), d.getDeliveryFee(), d.getValid());
+		if (wf != null) {
+			populateDelivery(getShop(wf.getShop().getId()), wf.getDate(), wf, sess);
 		}
 		return wf;
 	}
@@ -665,6 +655,7 @@ public class ShopService extends BaseService implements IShopService {
 		List<WFIncoming> incomingList = new ArrayList<WFIncoming>(inList.size());
 		WFIncoming wf = null;
 		for (Incoming in : inList) {
+			
 			wf = new WFIncoming();
 			wf.setZls(in.getZls());
 			wf.setCash( in.getCash());
@@ -677,8 +668,22 @@ public class ShopService extends BaseService implements IShopService {
 			wf.setNuomiaf(in.getNuomiaf());
 			wf.setDaZhongaf(in.getDazhongaf());
 			incomingList.add(wf);
+			populateDelivery(getShop(in.getShop().getId()), in.getDate(), wf, sess);
 		}
 		return incomingList;
+	}
+	
+	
+	private void populateDelivery(WFShop shop, Date date, WFIncoming in, Session sess) {
+		Query delivery = sess.createQuery(" from Delivery where shop.id = ? and date = ?");
+		delivery.setLong(0, shop.getId());
+		delivery.setDate(1, in.getDate());
+		List<Delivery> dlist = delivery.list();
+		for (Delivery d : dlist) {
+			in.addDeliveryData(d.getDeliveryType(), d.getIncoming(),
+					d.getOnlinePayment(), d.getRefund(), d.getRefund1(),
+					d.getServiceFee(), d.getDeliveryFee(), d.getValid());
+		}
 	}
 	
 	public  List<WFOperationCost> queryShopOperationCost(WFShop shop, Date start, Date end) {
@@ -751,6 +756,7 @@ public class ShopService extends BaseService implements IShopService {
 			wf.setNuomiaf(in.getNuomiaf());
 			wf.setDaZhongaf(in.getDazhongaf());
 			incomingList.add(wf);
+			populateDelivery(getShop(in.getShop().getId()), in.getDate(), wf, sess);
 		}
 		return incomingList;
 	}

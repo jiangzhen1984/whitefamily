@@ -15,7 +15,9 @@
   <div class="page-header">
     <div class="container-fluid">
       <div class="pull-right">
+      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER' or userBean.user.role == 'INVENTORY_STAFF'}">
          <h:commandLink action="#{shopBean.prepareDelivery}" type="submit" form="form-product" data-toggle="tooltip" title="处理配送" class="btn btn-primary">处理配送</h:commandLink>
+         </c:if>
          <a href="shop_inventory_request_all_list.xhtml" data-toggle="tooltip" title="返回" class="btn btn-default"><i class="fa fa-reply"></i></a>
       </div>
       <h1> 店铺管理</h1>

@@ -17,20 +17,20 @@
     </ul>
   </li>
    </c:if>
-   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER' or userBean.user.role == 'INVENTORY_STAFF'}">
+   <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF'  or userBean.user.role == 'VEGETABLE_SUPPLIER' or userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'MARKETING' }">
   <li id="extension"><a class="parent"><i class="fa fa-puzzle-piece fa-fw"></i> <span>店铺管理</span></a>
     <ul>
-       <c:if  test="${userBean.user.role == 'ADMIN'}">
+       <c:if  test="${userBean.user.role == 'ADMIN' or userBean.user.role == 'MARKETING' }">
       <li><a href="shop_list.xhtml">店铺列表</a></li>
        <li><a href="incoming_list.xhtml">店铺营收统计</a></li>
       </c:if>
-      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF' or userBean.user.role == 'INVENTORY_STAFF'}">
+      <c:if  test="${userBean.user.role == 'ADMIN'  or userBean.user.role == 'DELIVER_STAFF' or userBean.user.role == 'INVENTORY_STAFF' or userBean.user.role == 'MARKETING'}">
       <li><a href="shop_inventory_request_all_list.xhtml">店铺备货申请</a></li>
       </c:if>
       <c:if test="${userBean.user.role == 'VEGETABLE_SUPPLIER'}">
        <li><a href="shop_inventory_request_veg_list.xhtml">店铺备货申请</a></li>
       </c:if>
-      <c:if  test="${userBean.user.role == 'ADMIN'}">
+      <c:if  test="${userBean.user.role == 'ADMIN' or userBean.user.role == 'MARKETING' }">
       <li><a href="damage_report_list.xhtml">店铺报损列表</a></li>
        <li><a href="incoming_monthly_report.xhtml">店铺月报表</a></li>
       </c:if>

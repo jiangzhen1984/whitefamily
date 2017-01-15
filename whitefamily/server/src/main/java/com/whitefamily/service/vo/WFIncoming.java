@@ -23,6 +23,10 @@ public class WFIncoming  {
 	
 	private WFShop shop;
 	
+	private float baidu;
+	private float meituan;
+	private float elm;
+	
 	
 	
 	
@@ -148,8 +152,41 @@ public class WFIncoming  {
 		d.setServiceFee(serviceFee);
 		d.setValid(valid);
 		this.delis.add(d);
+		if (deliveryType == DeliveryType.BAIDU) {
+			this.baidu = incoming;
+		} else if (deliveryType == DeliveryType.MEIGUAN) {
+			this.meituan = incoming;
+		} else if (deliveryType == DeliveryType.ELM) {
+			this.elm = incoming;
+		}
 	}
 	
+	
+	
+	public void sumDeliveryData(DeliveryType deliveryType, float incoming,
+			float onlinePayment, float refund, float refund1, float serviceFee,
+			float deliveryFee, int valid) {
+		DeliveryItem di = getDeliveryItem(deliveryType);
+		if (di == null) {
+			addDeliveryData(deliveryType, incoming, onlinePayment, refund, refund1, serviceFee,
+					deliveryFee, valid);
+			return;
+		}
+		di.setIncoming(di.getIncoming() + incoming);
+		di.setOnlinePayment(di.getOnlinePayment() + onlinePayment);
+		di.setRefund(di.getRefund()+ refund);
+		di.setRefund1(di.getRefund1() + refund1);
+		di.setServiceFee(di.getServiceFee() + serviceFee);
+		di.setValid(di.getValid() + valid);
+		
+		if (deliveryType == DeliveryType.BAIDU) {
+			this.baidu = di.getIncoming();
+		} else if (deliveryType == DeliveryType.MEIGUAN) {
+			this.meituan =  di.getIncoming();
+		} else if (deliveryType == DeliveryType.ELM) {
+			this.elm =  di.getIncoming();
+		}
+	}
 	
 	public void addShopOnItem(GroupOnType groupype, int count, float djq, float gme,
 			float ce, float sje, float other) {
@@ -205,6 +242,24 @@ public class WFIncoming  {
 	
 	
 	
+	
+	
+	
+	public float getBaidu() {
+		return baidu;
+	}
+
+
+	public float getMeituan() {
+		return meituan;
+	}
+
+
+	public float getElm() {
+		return elm;
+	}
+
+
 	public List<DeliveryItem> getDelis() {
 		return delis;
 	}

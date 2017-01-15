@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFIncoming;
+import com.whitefamily.service.vo.WFIncoming.DeliveryItem;
 import com.whitefamily.service.vo.WFOperationCost;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFShopInventoryCost;
@@ -148,6 +149,11 @@ public class IncomingBean {
 				incoming.setNuomi(wfi.getNuomi()+ incoming.getNuomi());
 				incoming.setWeixin(wfi.getWeixin()+ incoming.getWeixin());
 				incoming.setNuomiaf(wfi.getNuomiaf()+ incoming.getNuomiaf());
+				
+				for (DeliveryItem di : wfi.getDelis()) {
+					incoming.sumDeliveryData(di.getDeliveryType(), di.getIncoming(), di.getOnlinePayment(),
+							di.getRefund(), di.getRefund1(), di.getServiceFee(), di.getDeliveryFee(), di.getValid());
+				}
 			}
 		}
 		if (costList != null && costList.size() > 0) {
