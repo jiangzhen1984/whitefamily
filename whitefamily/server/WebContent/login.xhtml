@@ -1,0 +1,72 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<head>
+	<base href="" />
+	<meta name="keywords" content="" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+	<script type="text/javascript"
+		src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript"
+		src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+	<link href="view/stylesheet/bootstrap.css" type="text/css"
+		rel="stylesheet" />
+		<link href="view/javascript/font-awesome/css/font-awesome.min.css"
+		type="text/css" rel="stylesheet" />
+	<title>大白の家</title>
+	</head>
+<body>
+<div id="container">
+<div id="content">
+<h:form id="uform" onkeypress="if(event.keyCode == 13) {mojarra.jsfcljs(document.getElementById('uform'),{'uform:j_idt8':'uform:j_idt8'},'');return false}">
+  <div class="container-fluid"><br />
+    <br />
+    <div class="row">
+      <div class="col-sm-offset-4 col-sm-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h1 class="panel-title"><i class="fa fa-lock"></i></h1>
+          </div>
+          <div class="panel-body">
+            <c:if test="${not empty userBean.errMsg}">
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <h:outputText value="#{userBean.errMsg}"   />
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+            </c:if>
+           
+              <div class="form-group">
+                <label for="input-username"></label>
+                <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span>
+                  <h:inputText value="#{userBean.userName}"   class="form-control"  a:placeholder="请输入登陆用户名" /> 
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input-password"></label>
+                <div class="input-group"><span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                  <h:inputSecret  value="#{userBean.password}"   a:placeholder="请输入登陆密码" class="form-control"  /> 
+                </div>
+ 
+                <span class="help-block"><a href=" $forgotten"></a></span>
+
+              </div>
+              <div class="text-right">
+                 <h:commandLink type="submit" class="btn btn-primary" action="#{userBean.login}"><i class="fa fa-key">登陆</i></h:commandLink>
+              </div>
+    
+             
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </h:form>
+</div>
+
+<footer id="footer"><br /></footer></div>
+</body></html>

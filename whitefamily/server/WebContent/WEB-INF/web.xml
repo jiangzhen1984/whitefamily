@@ -18,6 +18,17 @@
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
 		<location>/shop/login.xhtml</location>
 	</error-page>
+	
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.whitefamily.init.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>*.ajax</url-pattern>
+		<url-pattern>/shop/*</url-pattern>
+		<url-pattern>/mobile/*</url-pattern>
+	</filter-mapping>
 
 	<servlet>
 		<servlet-name>Init Servlet</servlet-name>
@@ -56,7 +67,7 @@
 
 
 	<welcome-file-list>
-		<welcome-file>shop/login.xhtml</welcome-file>
+		<welcome-file>login.xhtml</welcome-file>
 	</welcome-file-list>
 
 </web-app>

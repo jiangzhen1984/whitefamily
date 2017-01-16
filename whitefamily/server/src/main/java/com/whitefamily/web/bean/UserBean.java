@@ -5,6 +5,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import com.whitefamily.init.LoginChecker;
 import com.whitefamily.po.customer.Role;
 import com.whitefamily.service.IUserService;
 import com.whitefamily.service.ServiceFactory;
@@ -13,7 +14,7 @@ import com.whitefamily.service.vo.WFUser;
 
 @ManagedBean(name = "userBean", eager = false)
 @SessionScoped
-public class UserBean {
+public class UserBean implements LoginChecker {
 	
 	IUserService userService;
 	
