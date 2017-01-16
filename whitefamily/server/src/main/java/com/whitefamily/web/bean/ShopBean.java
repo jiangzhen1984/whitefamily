@@ -82,6 +82,8 @@ public class ShopBean {
 	private UserBean userBean;
 	
 	
+	private boolean[] saveFlag = new boolean[5];
+	
 	private SelectItem[] shopTypes;
 
 	public ShopBean() {
@@ -756,6 +758,22 @@ public class ShopBean {
 	}
 	
 	
+	
+	public void updateFlag() {
+		if (this.iType.equals("1")) {
+			this.saveFlag[0] = true;
+		} else if  (this.iType.equals("2")) {
+			this.saveFlag[1] = true;
+		} else if  (this.iType.equals("4")) {
+			if (this.subType.equals("1")) {
+				this.saveFlag[2] = true;
+			} else if (this.subType.equals("2")) {
+				this.saveFlag[3] = true;
+			} else if (this.subType.equals("3")) {
+				this.saveFlag[4] = true;
+			}
+		}
+	}
 	
 	
 	public void removeInventoryRequest(long id) {
