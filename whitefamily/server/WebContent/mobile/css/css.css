@@ -39,5 +39,18 @@ ul{list-style:none;}
     margin-bottom: 15px;
 }
 
-
+.meiTuan input[type=submit]{
+    background: #21b387;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+    font-family: '微软雅黑';
+    letter-spacing: 1em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
 

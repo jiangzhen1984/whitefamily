@@ -22,7 +22,7 @@
 <body>
 
 	<div class="content_left_bg"></div>
-	<div class="top">营收明细  <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" onclick="return ck();">提交</h:commandLink></h:form></div></div>
+	<div class="top">营收明细 <div style="float:right;margin-right:10px;"><h:form><h:commandLink action="#{shopBean.reportIncoming}" type="button" onclick="return ck();">提交</h:commandLink></h:form></div></div>
 	<div class="content">
 	<div  class="content_right">
 	    <c:if test="${not empty shopBean.errMsg}">
@@ -263,8 +263,7 @@
 		</h:form>
 		<div class="content_right" style="margin-bottom:60px;">
 			<h:form class="meiTuan">
-			<h:commandButton actionListener="updateFlag" >保存</h:commandButton>
-			    <button type="submit">保存</button>
+			   <h:commandButton actionListener="#{shopBean.updateFlag}" value="保存" ></h:commandButton>
 				<h:panelGroup rendered="${shopBean.iType == '1'}">
 					<tbody>
 					    <tr>

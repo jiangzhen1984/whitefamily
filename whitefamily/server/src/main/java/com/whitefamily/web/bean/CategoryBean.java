@@ -142,6 +142,9 @@ public class CategoryBean {
 		categoryId = 0;
 		parentCategoryId = 0;
 		name = null;
+		//re-fetch category
+		categoryList = service.getTopCategory();
+		
 		return "list";
 	}
 

@@ -83,6 +83,7 @@ public class ShopBean {
 	
 	
 	private boolean[] saveFlag = new boolean[5];
+	private String[] errorSaveMsg = new String[]{"营收没有保存", "支出没有保存", "外卖饿了吗没有保存", "外卖百度没有保存", "外卖没团没有保存"};
 	
 	private SelectItem[] shopTypes;
 
@@ -457,13 +458,21 @@ public class ShopBean {
 	}
 
 	public String reportIncoming() {
-		errMsg = null;
+		errMsg = "";
 		if (userBean.getUser() == null) {
 			errMsg = "请重新登陆后，再登记营收!";
 			return "reportincomingfailed";
 		}
+		WFShop wfs = ((WFManager) userBean.getUser()).getShop();
+		if (wfs == null) {
+			errMsg = "该用户，没有关联店铺， 请重新登陆";
+			return "failed";
+		}
+		if (checkSaveFlag() == false) {
+			return "failed";
+		}
 		
-		WFIncoming wf = shopService.queryShopIncoming(((WFManager) userBean.getUser()).getShop(), new Date());
+		WFIncoming wf = shopService.queryShopIncoming(wfs, new Date());
 		if (wf != null) {
 			errMsg = "今天已经提交过营收报表， 无法重复提交";
 			return "failed";
@@ -757,7 +766,16 @@ public class ShopBean {
 		return delivery;
 	}
 	
-	
+	private boolean checkSaveFlag() {
+		boolean ret = true;
+		for (int i = 0; i < saveFlag.length; i++) {
+			if (saveFlag[i] == false) {
+				this.errMsg += errorSaveMsg[i]+"\n";
+				ret = false;
+			}
+		}
+		return ret;
+	}
 	
 	public void updateFlag() {
 		if (this.iType.equals("1")) {
@@ -769,7 +787,7 @@ public class ShopBean {
 				this.saveFlag[2] = true;
 			} else if (this.subType.equals("2")) {
 				this.saveFlag[3] = true;
-			} else if (this.subType.equals("3")) {
+			} else if (this.subType.equals("4")) {
 				this.saveFlag[4] = true;
 			}
 		}

@@ -577,6 +577,7 @@ public class ShopService extends BaseService implements IShopService {
 			wf.setDesc(in.getDesc());
 			wf.setNuomiaf(in.getNuomiaf());
 			wf.setDaZhongaf(in.getDazhongaf());
+			wf.setShop(shop);
 		}
 		
 		query = sess
@@ -593,7 +594,7 @@ public class ShopService extends BaseService implements IShopService {
 		}
 
 		if (wf != null) {
-			populateDelivery(getShop(wf.getShop().getId()), wf.getDate(), wf, sess);
+			populateDelivery(shop, wf.getDate(), wf, sess);
 		}
 		return wf;
 	}

@@ -62,6 +62,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 				orderCategoryList.add(ca);
 			}
 		}
+		cateCache.put(Long.valueOf(ca.getId()), ca);
 		allCategoryList.add(ca);
 		return ca;
 	}
@@ -101,6 +102,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 			}
 		}
 		allCategoryList.remove(wfCache);
+		cateCache.remove(Long.valueOf(wfCache.getId()));
 		
 		return Result.SUCCESS;
 
@@ -121,6 +123,7 @@ public class CategoryService extends BaseService implements ICategoryService {
 		beginTransaction(sess);
 		sess.update(cate);
 		commitTrans();
+		//FIXME update cache
 	}
 
 	@Override
