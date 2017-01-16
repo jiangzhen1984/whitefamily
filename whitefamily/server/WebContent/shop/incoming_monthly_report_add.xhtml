@@ -23,7 +23,7 @@
       </div>
       <h1> 营收管理</h1>
       <ul class="breadcrumb">
-        <li><a href="product_list.xhtml">支出月报表</a></li>
+        <li>支出月报表</li>
       </ul>
     </div>
   </div>
@@ -63,22 +63,36 @@
             <table id="ec" class="table table-bordered table-hover">
               <thead>
                    <tr>
-                     <td class="text-left  col-md-２">员工</td>
-                     <td class="text-right col-md-２">工资</td>
-                     <td class="text-right col-md-２">奖金</td>
-                     <td class="text-right col-md-２">备注条目</td>
-                     <td class="text-right col-md-２">备注金额</td>
+                     <td class="text-center  col-md-２">员工</td>
+                     <td class="text-center col-md-２">工资</td>
+                     <td class="text-center col-md-２">奖金</td>
+                     <td class="text-center col-md-２">工龄工资</td>
+                     <td class="text-center col-md-２">全勤</td>
+                     <td class="text-center col-md-２">补助</td>
+                     <td class="text-center col-md-２">缺勤</td>
+                     <td class="text-center col-md-２">病事假</td>
+                     <td class="text-center col-md-２">入职押金</td>
+                     <td class="text-center col-md-２">罚款</td>
+                     <td class="text-center col-md-２">实发工资</td>
+                     
                      <td></td>
                    </tr>
                  </thead>
                  <tbody>
                    <ui:repeat var="o" value="#{incomingBean.monthlyCost.employeesCost}" varStatus="status">
                    <tr id="wfa-row#{status.index}">
-                     <td class="text-left"><input type="text"  name="names" value="#{o.name}"  placeholder="姓名" class="form-control" /></td>
-                     <td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="0.0"  id="sa#{status.index}" value="#{o.salary}" /></td>
-                     <td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"  id="sa#{status.index}"  /></td>
-	                 <td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"  id="sa#{status.index}"  /></td>
-	                 <td class="text-right"><input type="text"  class="form-control" name="desc1"   placeholder="0.0"  id="sa#{status.index}"  /></td>
+                      <td class="text-left"><input type="text"  name="names"  placeholder="姓名" class="form-control"  value="#{o.name}"/></td>
+	                  <td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="工资"  value="#{o.salary}"  /></td>
+	                  <td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"    value="#{o.bonus}"   /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="senority"   placeholder="工龄工资"     value="#{o.seniorityAllowance}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="attendence"   placeholder="全勤"     value="#{o.perfectAttendence}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="compensation"   placeholder="补助"   value="#{o.compensation}"    /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="absence"   placeholder="缺席"     value="#{o.absence}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="illness"   placeholder="病事假"     value="#{o.illness}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="deposit"   placeholder="押金"    value="#{o.deposit}"   /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="fine"   placeholder="罚款"     value="#{o.fine}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="real"   placeholder="实发工资"     value="#{o.real}"  /></td>
+	                   <td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"    value="#{o.desc}"   /></td>
                     <td class="text-left"><button type="button" onclick="$('#wfa-row#{status.index}').remove();" data-toggle="tooltip" title="移除" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                    </tr>
                    </ui:repeat>
@@ -142,10 +156,17 @@ function addEc() {
 	    var html ='';
 	    html +='<tr id="wfa-row'+ec_row+'">';
 	    html +='<td class="text-left"><input type="text"  name="names"  placeholder="姓名" class="form-control" /></td>';
-	    html +='<td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="0.0"  id="sa'+ec_row+'"  /></td>';
-	    html +='<td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"  id="sa'+ec_row+'"  /></td>';
-	    html +='<td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"  id="sa'+ec_row+'"  /></td>';
-	    html +='<td class="text-right"><input type="text"  class="form-control" name="desc1"   placeholder="0.0"  id="sa'+ec_row+'"  /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="salars"   placeholder="工资"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="bonus"    placeholder="奖金"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="senority"   placeholder="工龄工资"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="attendence"   placeholder="全勤"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="compensation"   placeholder="补助"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="absence"   placeholder="缺席"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="illness"   placeholder="病事假"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="deposit"   placeholder="押金"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="fine"   placeholder="罚款"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="real"   placeholder="实发工资"    /></td>';
+	    html +='<td class="text-right"><input type="text"  class="form-control" name="desc"   placeholder="备注"    /></td>';
 	    html +='<td class="text-left"><button type="button" onclick="$(\'#wfa-row'+ec_row+'\').remove();" data-toggle="tooltip" title="移除" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
 	    html +=' </tr>';
 

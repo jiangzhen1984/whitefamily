@@ -1372,11 +1372,18 @@ public class ShopService extends BaseService implements IShopService {
 				osc.setDate(operation.getDate());
 				osc.setDesc(e.getDesc());
 				osc.setEmployee(e.getName());
-				osc.setSalary(e.getSalary());
 				osc.setShop(operation.getShop());
 				osc.setDateStr(sdf.format(operation.getDate()));
-				osc.setBonus(e.getBonus());;
-				osc.setFee(e.getDesc1());;
+				osc.setSalary(e.getSalary());
+				osc.setBonus(e.getBonus());
+				osc.setSeniorityAllowance(e.getSeniorityAllowance());
+				osc.setPerfectAttendence(e.getPerfectAttendence());
+				osc.setCompensation(e.getCompensation());
+				osc.setAbsence(e.getAbsence());
+				osc.setIllness(e.getIllness());
+				osc.setDeposit(e.getDeposit());
+				osc.setFine(e.getFine());
+				osc.setReal(e.getReal());
 				sess.save(osc);
 			}
 		}
@@ -1421,7 +1428,9 @@ public class ShopService extends BaseService implements IShopService {
 			
 			List<OperationSalaryCost> qslist = salaryQuery.list();
 			for (OperationSalaryCost osc : qslist) {
-				woc.addEmployeeCost(osc.getEmployee(), osc.getSalary(), osc.getBonus(), osc.getDesc(), osc.getFee());
+				woc.addEmployeeCost(osc.getEmployee(), osc.getSalary(), osc.getBonus(), osc.getSeniorityAllowance(),
+						osc.getPerfectAttendence(), osc.getCompensation(), osc.getAbsence(), osc.getIllness(),
+						osc.getDeposit(), osc.getFine(), osc.getReal(), osc.getDesc());
 			}
 			
 			

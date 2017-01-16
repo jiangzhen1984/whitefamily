@@ -231,36 +231,49 @@ public class IncomingBean {
 		String[] names = map.get("names");
 		String[] salarys = map.get("salars");
 		String[] bonus = map.get("bonus");
+		String[] senority = map.get("senority");
+		String[] attendence = map.get("attendence");
+		String[] compensation = map.get("compensation");
+		String[] absence = map.get("absence");
+		String[] illness = map.get("illness");
+		String[] deposit = map.get("deposit");
+		String[] fine = map.get("fine");
+		String[] real = map.get("real");
+		
 		String[] desc = map.get("desc");
-		String[] desc1 = map.get("desc1");
 		
 		
 		if (salarys != null) {
-			boolean ma;
+			Float sa = null;
+			Float bon = null;
+			Float sen = null;
+			Float att = null;
+			Float com = null;
+			Float abs = null;
+			Float ill = null;
+			Float dep = null;
+			Float fin = null;
+			Float rea = null;
+			
+			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < salarys.length; i++) {
-				String str = salarys[i];
-				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  str);
-				if (!ma) {
-					errMsg = "工资应为数字";
+				if (((sa = checkNumber(salarys[i], sb, "工资应为数字")) == null) ||
+						((bon = checkNumber(bonus[i], sb, "奖金应为数字")) == null) ||
+						((sen = checkNumber(senority[i], sb, "工龄工资应为数字")) == null) ||
+						((att = checkNumber(attendence[i], sb, "全勤应为数字")) == null) ||
+						((com = checkNumber(compensation[i], sb, "补助应为数字")) == null) ||
+						((abs = checkNumber(absence[i], sb, "缺席应为数字")) == null) ||
+						((ill = checkNumber(illness[i], sb, "病事假应为数字")) == null) ||
+						((dep = checkNumber(deposit[i], sb, "押金应为数字")) == null) ||
+						((fin = checkNumber(fine[i], sb, "罚款应为数字")) == null) ||
+						((rea = checkNumber(real[i], sb, "实发工资应为数字")) == null)
+						) {
+					errMsg =  names[i] + sb.toString();
 					return "monthlyReportFailed";
 				}
 				
-				String bstr = bonus[i];
-				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  bstr);
-				if (!ma) {
-					errMsg = "奖金应为数字";
-					return "monthlyReportFailed";
-				}
-				
-				String bdesc1 = desc1[i];
-				ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  bdesc1);
-				if (!ma) {
-					errMsg = "备注条目应为数字";
-					return "monthlyReportFailed";
-				}
-				
-				
-				monthlyCost.addEmployeeCost(names.length > i ? names[i]: "", Float.parseFloat(str), Float.parseFloat(bstr), desc[i], Float.parseFloat(bdesc1));
+				monthlyCost.addEmployeeCost(names.length > i ? names[i] : "", sa, bon, sen, att, com, abs, ill, dep,
+						fin, rea, desc[i]);
 			}
 		}
 		
@@ -272,6 +285,18 @@ public class IncomingBean {
 		return "monthlyShow";
 	}
 
+	
+	private Float checkNumber(String str, StringBuffer sb, String em) {
+		if (str == null || str.isEmpty()) {
+			return Float.valueOf(0);
+		}
+		boolean ma = Pattern.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+",  str);
+		if (!ma) {
+			sb.append(em);
+			return null;
+		}
+		return Float.parseFloat(str);
+	}
 
 
 

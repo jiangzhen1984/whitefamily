@@ -11,6 +11,25 @@ public class WFEmployee extends WFUser {
 	private float desc1;
 	
 	
+	private float fee;
+	
+	private float seniorityAllowance;
+	
+	private float perfectAttendence;
+	
+	private float compensation;
+	
+	private float absence;
+	
+	private float illness;
+	
+	private float deposit;
+	
+	private float fine;
+	
+	private float real;
+	
+	
 	public WFEmployee() {
 		
 	}
@@ -50,6 +69,78 @@ public class WFEmployee extends WFUser {
 
 	public void setDesc1(float desc1) {
 		this.desc1 = desc1;
+	}
+
+	public float getFee() {
+		return fee;
+	}
+
+	public void setFee(float fee) {
+		this.fee = fee;
+	}
+
+	public float getSeniorityAllowance() {
+		return seniorityAllowance;
+	}
+
+	public void setSeniorityAllowance(float seniorityAllowance) {
+		this.seniorityAllowance = seniorityAllowance;
+	}
+
+	public float getPerfectAttendence() {
+		return perfectAttendence;
+	}
+
+	public void setPerfectAttendence(float perfectAttendence) {
+		this.perfectAttendence = perfectAttendence;
+	}
+
+	public float getCompensation() {
+		return compensation;
+	}
+
+	public void setCompensation(float compensation) {
+		this.compensation = compensation;
+	}
+
+	public float getAbsence() {
+		return absence;
+	}
+
+	public void setAbsence(float absence) {
+		this.absence = absence;
+	}
+
+	public float getIllness() {
+		return illness;
+	}
+
+	public void setIllness(float illness) {
+		this.illness = illness;
+	}
+
+	public float getDeposit() {
+		return deposit;
+	}
+
+	public void setDeposit(float deposit) {
+		this.deposit = deposit;
+	}
+
+	public float getFine() {
+		return fine;
+	}
+
+	public void setFine(float fine) {
+		this.fine = fine;
+	}
+
+	public float getReal() {
+		return real;
+	}
+
+	public void setReal(float real) {
+		this.real = real;
 	}
 	
 	

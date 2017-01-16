@@ -26,12 +26,21 @@ public class WFOperationCost extends OperationCost {
 	
 	private List<WFEmployee> employeesCost;
 	
-	
-	public void addEmployeeCost(String name, float salary, float bonus, String desc, float fee) {
+	public void addEmployeeCost(String name, float salary, float bonus, float seniority, float perfectAttendence,
+			float compensation, float absence, float illness, float deposit, float fine, float real, String desc) {
 		WFEmployee wfe = new WFEmployee(name, salary);
 		wfe.setBonus(bonus);
 		wfe.setDesc(desc);
-		wfe.setDesc1(fee);
+		wfe.setSalary(salary);
+		wfe.setBonus(bonus);
+		wfe.setSeniorityAllowance(seniority);
+		wfe.setPerfectAttendence(perfectAttendence);
+		wfe.setCompensation(compensation);
+		wfe.setAbsence(absence);
+		wfe.setIllness(illness);
+		wfe.setDeposit(deposit);
+		wfe.setFine(fine);
+		wfe.setReal(real);
 		addEmployeeCost(wfe);
 	}
 	
