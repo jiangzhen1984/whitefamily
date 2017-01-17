@@ -16,7 +16,7 @@
 
 	<error-page>
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-		<location>/shop/login.xhtml</location>
+		<location>/login.xhtml</location>
 	</error-page>
 	
 	<filter>
