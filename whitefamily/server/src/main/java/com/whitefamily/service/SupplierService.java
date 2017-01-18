@@ -41,6 +41,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 		sess.save(dsc);
 		commitTrans();
 		cacheList.add(wfm);
+		wfm.setId(dsc.getId());
 		return Result.SUCCESS;
 	}
 

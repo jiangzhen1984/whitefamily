@@ -55,7 +55,10 @@
                     <tr id="atg-row#{status.index}">
                       <td class="text-center">#{o.mc.strValue}</td>
                       <td class="text-center">#{o.strName}</td>
-                      <td class="text-left"><button type="button" onclick="$('#atg-row#{status.index}').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                      <td class="text-left">
+                      		<h:commandButton data-toggle="tooltip" title="" class="btn btn-danger fa fa-minus-circle" actionListener="#{supplierBean.removeMapping(status.index)}" value="删除">
+                      		</h:commandButton>
+                      </td>
                     </tr>
                     </ui:repeat>
                   </tbody>

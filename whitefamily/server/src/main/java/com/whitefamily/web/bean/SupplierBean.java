@@ -284,7 +284,11 @@ public class SupplierBean {
 	}
 	
 	
-	public void removeMapping() {
-		
+	public void removeMapping(int index) {
+		if (index < 0 || index >= commonMappings.size()) {
+			return;
+		}
+		WFSupplierMapping wfm = commonMappings.get(index);
+		supplierService.removeProductMapping(wfm);
 	}
 }
