@@ -194,7 +194,6 @@ public class InventoryService extends BaseService implements IInventoryService {
 		}
 
 		commitTrans();
-		sess.close();
 		return Result.SUCCESS;
 	}
 	
@@ -279,7 +278,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		if (res == Result.SUCCESS) {
 			commitTrans();
 		} else {
-			this.rollbackTrans();
+			rollbackTrans();
 		}
 		return res;
 	}
@@ -292,7 +291,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		if (res == Result.SUCCESS) {
 			commitTrans();
 		} else {
-			this.rollbackTrans();
+			rollbackTrans();
 		}
 		return res;
 	}
@@ -305,7 +304,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 		if (res == Result.SUCCESS) {
 			commitTrans();
 		} else {
-			this.rollbackTrans();
+			rollbackTrans();
 		}
 		return res;
 	}

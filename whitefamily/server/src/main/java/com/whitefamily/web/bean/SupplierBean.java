@@ -1,5 +1,6 @@
 package com.whitefamily.web.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -10,15 +11,19 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import com.whitefamily.po.delivery.DeliverySupplierConfiguration.MC;
+import com.whitefamily.service.ICategoryService;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
 import com.whitefamily.service.ISupplierService;
 import com.whitefamily.service.ServiceFactory;
+import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFSupplier;
+import com.whitefamily.service.vo.WFSupplierMapping;
 
 @ManagedBean(name = "supplierBean", eager = false)
 @SessionScoped
@@ -31,6 +36,7 @@ public class SupplierBean {
 	private ISupplierService supplierService;
 	private IShopService shopService;
 	private IGoodsService goodsService;
+	private ICategoryService categoryService;
 	private IInventoryService inventoryService;
 	
 	
@@ -42,6 +48,10 @@ public class SupplierBean {
 	private Date queryDeliveryDate;
 	
 	
+	private List<WFSupplierMapping> commonMappings;
+	private List<WFSupplierMapping> newMappings;
+	
+	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 	
@@ -51,6 +61,7 @@ public class SupplierBean {
 		shopService = ServiceFactory.getShopService();
 		goodsService = ServiceFactory.getGoodsService();
 		inventoryService = ServiceFactory.getInventoryService();
+		categoryService = ServiceFactory.getCategoryService();
 		filer();
 	}
 
@@ -59,7 +70,19 @@ public class SupplierBean {
 		return inventoryAllList;
 	}
 	
-	
+	public List<WFSupplierMapping> getCommonMappings() {
+		if (commonMappings == null) {
+			commonMappings = supplierService.getMappingList();
+			for (WFSupplierMapping map : commonMappings) {
+				if (map.getMc() == MC.CATE) {
+					map.setCate(categoryService.getCategory(map.getMappingId()));
+				} else if (map.getMc() == MC.GOODS) {
+					map.setWfg(goodsService.getGoods(map.getMappingId()));
+				}
+			}
+		}
+		return commonMappings;
+	}
 	
 	
 	public void filer() {
@@ -194,4 +217,74 @@ public class SupplierBean {
 		return "query";
 	}
 	
+	
+	
+	
+	
+	public List<WFSupplierMapping> getNewMappings() {
+		return newMappings;
+	}
+
+	public void addSupplierMapping() {
+		newMappings = new ArrayList<WFSupplierMapping>();
+		errMsg = null;
+		Map<String, String[]> map = FacesContext.getCurrentInstance()
+				.getExternalContext().getRequestParameterValuesMap();
+		String[] mappingIds = map.get("mappingId");
+		String[] mappingTypes = map.get("mappingType");
+		String[] mappingNames = map.get("mappingNames");
+		if (mappingIds == null || mappingTypes == null || mappingNames == null ||  mappingIds.length != mappingTypes.length
+				|| mappingIds.length != mappingNames.length) {
+			errMsg ="数据类型不匹配";
+			return;
+		}
+		
+		boolean checker = true;
+		boolean flag;
+		MC mc = null;
+		for (int i = 0; i < mappingIds.length; i++) {
+			flag = Pattern.matches("([0-9]+)", mappingIds[i]);
+			if (!flag) {
+				errMsg += mappingNames[i]+" 数据不正确， 请选择相应品类或产品";
+				checker = false;
+				continue;
+			}
+			
+			if ((MC.GOODS.ordinal() +"").equals(mappingTypes[i])) {
+				mc = MC.GOODS;
+			} else if ((MC.CATE.ordinal() +"").equals(mappingTypes[i])) {
+				mc = MC.CATE;
+			} else {
+				errMsg += mappingNames[i]+" 类型不正确， 请选择相应品类或产品";
+				mc = null;
+				checker = false;
+				continue;
+			}
+			
+			WFSupplierMapping mapping = new WFSupplierMapping();
+			mapping.setMappingId(Long.parseLong(mappingIds[i]));
+			mapping.setMc(mc);
+			if (mc == MC.GOODS) {
+				WFGoods wfg = this.goodsService.getGoods(mapping.getMappingId());
+				mapping.setWfg(wfg);
+			} else if (mc == MC.CATE) {
+				WFCategory wfc = this.categoryService.getCategory(mapping.getMappingId());
+				mapping.setCate(wfc);
+			}
+			mapping.setBounds(false);
+			newMappings.add(mapping);
+		}
+		
+		if (checker) {
+			for (WFSupplierMapping mapping : newMappings) {
+				this.supplierService.addProductMapping(mapping);
+			}
+			newMappings = null;
+		}
+	}
+	
+	
+	public void removeMapping() {
+		
+	}
 }

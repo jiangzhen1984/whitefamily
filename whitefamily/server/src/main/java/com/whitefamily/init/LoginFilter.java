@@ -30,7 +30,7 @@ public class LoginFilter implements Filter {
 			return;
 		} else {
 			LoginChecker checker = (LoginChecker)sess.getAttribute("userBean");
-			if (!checker.isLogined()) {
+			if (checker == null || !checker.isLogined()) {
 				hres.sendRedirect(hsr.getContextPath()+"/login.xhtml");
 				return;
 			}

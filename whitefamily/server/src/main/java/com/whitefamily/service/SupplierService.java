@@ -6,17 +6,13 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.whitefamily.po.InventoryGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
 import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
-import com.whitefamily.po.delivery.DeliveryRecord;
-import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
-import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFShop;
@@ -36,6 +32,10 @@ public class SupplierService extends BaseService implements ISupplierService {
 		DeliverySupplierConfiguration dsc = new DeliverySupplierConfiguration();
 		dsc.setMappingId(wfm.getMappingId());
 		dsc.setMc(wfm.getMc());
+		dsc.setBounds(wfm.getBounds());
+		dsc.setSupplierType(wfm.getSupplierType());
+		dsc.setSupplierId(wfm.getSupplierId());
+		
 		Session sess = getSession();
 		beginTransaction(sess);
 		sess.save(dsc);
@@ -60,7 +60,7 @@ public class SupplierService extends BaseService implements ISupplierService {
 	public List<WFSupplierMapping> getMappingList() {
 		if (cacheList.size() <= 0) {
 			Session sess = getSession();
-			Query query = sess.createQuery(" from DeliverySupplierConfiguration ");
+			Query query = sess.createQuery(" from DeliverySupplierConfiguration where WF_SUPPLIER_BOUND = 0");
 			List<DeliverySupplierConfiguration> list = query.list();
 			for (DeliverySupplierConfiguration dsc : list) {
 				cacheList.add(new WFSupplierMapping(dsc));

@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import com.sun.faces.context.FacesContextFactoryImpl;
 import com.sun.faces.lifecycle.LifecycleImpl;
+import com.whitefamily.po.delivery.DeliverySupplierConfiguration.MC;
 import com.whitefamily.service.IGoodsService;
 import com.whitefamily.service.IInventoryService;
 import com.whitefamily.service.IShopService;
@@ -90,6 +91,8 @@ public class AJAXHandler extends HttpServlet {
 			handleStatistAction(req, resp);
 		} else if ("goodsstockbarupdate".equalsIgnoreCase(action)) {
 			ret = handleGoodsStockBarUpdate(req, resp);
+		} else if ("filtercateandgoods".equalsIgnoreCase(action)) {
+			ret = filterCateAndGoods(req, resp);
 		}
 
 		if (ret != null) {
@@ -591,6 +594,54 @@ public class AJAXHandler extends HttpServlet {
 				}
 			}
 		}
+		return ret;
+	}
+	
+	
+	
+	private JSONObject filterCateAndGoods(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		String filter = req.getParameter("filter");
+		JSONObject ret = new JSONObject();
+		JSONArray items = new JSONArray();
+		
+		boolean flag = false;
+		List<WFGoods> list = ServiceFactory.getGoodsService().queryGoods(0, IGoodsService.CATCH_SIZE, IGoodsService.VISIBLE_ALL);
+		if (list != null) {
+			boolean needFilter = filter == null || filter.isEmpty() ? false: true;
+			int len = 1;
+			Pattern  p = Pattern.compile("^(" + filter.toLowerCase() +")");
+			for (WFGoods wf : list) {
+				if (!needFilter || p.matcher(wf.getAbbr()).find() || p.matcher(wf.getName()).find()) {
+					JSONObject o = new JSONObject();
+					o.put("name", wf.getName());
+					o.put("id", wf.getId());
+					o.put("type", MC.GOODS.ordinal());
+					items.put(o);
+					len ++;
+					if (len > 9) {
+						flag = true;
+						break;
+					}
+				}
+			}
+		}
+		
+		
+		if (!flag) {
+			List<WFCategory> clist = ServiceFactory.getCategoryService().getAllCategory();
+			Pattern  p = Pattern.compile("^(" + filter.toLowerCase() +")");
+			for (WFCategory wf : clist) {
+				if (p.matcher(wf.getAbbr()).find() || p.matcher(wf.getName()).find()) {
+					JSONObject o = new JSONObject();
+					o.put("name", wf.getName());
+					o.put("id", wf.getId());
+					o.put("type", MC.CATE.ordinal());
+					items.put(o);
+				}
+			}
+		}
+		ret.put("items", items);
 		return ret;
 	}
 

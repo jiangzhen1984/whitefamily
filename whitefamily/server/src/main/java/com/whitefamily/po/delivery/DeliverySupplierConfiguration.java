@@ -16,8 +16,32 @@ public class DeliverySupplierConfiguration {
 
 	public enum MC {
 		CATE,
-		GOODS,
+		GOODS;
+		
+		public String getStrValue() {
+			switch (this) {
+			case CATE:
+				return "品类";
+			case GOODS:
+				return "产品";
+			default:
+				return "未知";
+			
+			}
+		}
+		
+		public int getOrdinal() {
+			return this.ordinal();
+		}
 	}
+	
+	
+	public enum SupplierType {
+		UNKNOW,
+		VEGETABLE,
+	}
+	
+	
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -29,6 +53,16 @@ public class DeliverySupplierConfiguration {
 	
 	@Column(name = "WF_MC_ID")
 	private long mappingId;
+	
+	@Column(name = "WF_SUPPLIER_ID", columnDefinition = "NUMERIC(12) DEFAULT 0")
+	private long supplierId;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "WF_SUPPLIER_TYPE", columnDefinition = "int(2) DEFAULT 0")
+	private SupplierType supplierType;
+
+	@Column(name = "WF_SUPPLIER_BOUND", columnDefinition = "CHAR(1) DEFAULT '0'")
+	private Boolean bounds;
 
 
 	public long getId() {
@@ -59,7 +93,38 @@ public class DeliverySupplierConfiguration {
 	public void setMappingId(long mappingId) {
 		this.mappingId = mappingId;
 	}
-	
+
+
+	public long getSupplierId() {
+		return supplierId;
+	}
+
+
+	public void setSupplierId(long supplierId) {
+		this.supplierId = supplierId;
+	}
+
+
+	public SupplierType getSupplierType() {
+		return supplierType;
+	}
+
+
+	public void setSupplierType(SupplierType supplierType) {
+		this.supplierType = supplierType;
+	}
+
+
+	public Boolean getBounds() {
+		return bounds;
+	}
+
+
+	public void setBounds(Boolean bounds) {
+		this.bounds = bounds;
+	}
+
+
 	
 	
 	

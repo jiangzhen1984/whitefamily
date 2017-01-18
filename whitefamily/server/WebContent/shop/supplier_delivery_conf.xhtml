@@ -1,0 +1,203 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+        
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+<div id="content">
+<h:form id="gform">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+         <h:commandLink action="#{supplierBean.addSupplierMapping}" type="submit" form="form-product" data-toggle="tooltip" title="保存" class="btn btn-primary"><i class="fa fa-save">保存</i></h:commandLink>
+        </div>
+      <h1>供应商-订单产品配置</h1>
+      <ul class="breadcrumb">
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <c:if test="${not empty supplierBean.errMsg}">
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i><h:outputText value="#{supplierBean.errMsg}" ></h:outputText>
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    </c:if>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i></h3>
+      </div>
+      <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">配送产品</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+                <div class="table-responsive">
+                <table id="atg" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-center  col-md-2">类型</td>
+                      <td class="text-center col-md-2">名称</td>
+                      <td class="text-center col-md-1"></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ui:repeat var="o" value="#{supplierBean.commonMappings}" varStatus="status">
+                    <tr id="atg-row#{status.index}">
+                      <td class="text-center">#{o.mc.strValue}</td>
+                      <td class="text-center">#{o.strName}</td>
+                      <td class="text-left"><button type="button" onclick="$('#atg-row#{status.index}').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    </ui:repeat>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      
+      
+      
+      <div class="panel-body">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">添加供应商产品</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+                <div class="table-responsive">
+                <table id="asg" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-center">品类</td>
+                       <td  class="text-right col-md-1"></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ui:repeat var="o" value="#{supplierBean.newMappings}" varStatus="status">
+                    <tr id="asg-row#{status.index}">
+                      <td class="text-left">
+                      	<input type="text" id="asg#{status.index}" name="mappingNames" value="#{o.strName}"  placeholder="请选择产品名称" class="form-control" />
+                      	<input type="hidden" name="mappingId"   value="#{o.mappingId}"  class="form-control" />
+                      	<input type="hidden" name="mappingType"   value="#{o.mc.ordinal}"  class="form-control" /></td>
+                      <td class="text-left"><button type="button" onclick="$('#asg-row#{status.index}').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    </ui:repeat>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td class="text-right"><button type="button" onclick="addArtifactStaffProduct();" data-toggle="tooltip" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  </h:form>
+</div>
+    <script type="text/javascript">
+    
+     function f_auto_complete_source_type(type, request, response, param) {
+    		$.ajax({
+			url: type+'.ajax?action='+type+'&amp;'+'filter=' +  encodeURIComponent(request)+ '&amp;name=' +  encodeURIComponent(request),
+			data : param,
+			dataType: 'json',
+			success: function(json) {
+				console.log(json);
+				response($.map(json['items'], function(item) {
+					return {
+						label: item['name'],
+						value: item['id'],
+						type : item['type']
+					}
+				}));
+			}
+		});
+    
+    }
+    
+    
+    
+    function f_auto_complete_source_goods(request, response) {
+         f_auto_complete_source_type('filtercateandgoods', request, response, '');
+    }
+
+
+   
+   
+  var g_el_ar = $('input[name=\'mappingNames\']');
+  var g_id_el_ar = $('input[name=\'mappingId\']');
+  var m_type_el_ar = $('input[name=\'mappingType\']');
+  registerAutoCompleteEvent(g_el_ar, g_id_el_ar, m_type_el_ar);
+   var asg_row = g_el_ar.length;
+  
+   
+function registerAutoCompleteEvent(el, idels, typs) {
+ //<![CDATA[
+    var len = el.length;
+   for (var i= 0; i < len; i++) {
+     var g_el = $('#'+el[i].id);
+     var g_id_el = $('#'+idels[i].id);
+     var type_el = $('#'+typs[i].id);
+     g_el.autocomplete({
+	    'source': f_auto_complete_source_goods,
+	    'select': function(item) {
+		  g_el.val(item['label']);
+		  g_id_el.val(item['value']);
+		  type_el.val(item['type']);
+	   }
+     });
+   }
+    //]]>
+ } 
+
+
+
+
+
+function addArtifactStaffProduct() {
+	var html = '<tr id="asg-row' + asg_row + '">';
+	html += '  <td class="text-left"><input type="text" id="asg' + asg_row + '" name="mappingNames" value=""  placeholder="请选择产品名称" class="form-control" />';
+	html +='   <input type="hidden" name="mappingId"   value="#{o.mappingId}"  class="form-control" /> ';
+    html += '  <input type="hidden" name="mappingType"   value="#{o.mc}"  class="form-control" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#asg-row' + asg_row + '\').remove();" data-toggle="tooltip" title="" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	$('#asg tbody').append(html);
+
+	
+	var el = $("input[name=\'mappingNames\']:last");
+	var id_el = $("input[name=\'mappingId\']:last");
+	var type_el = $("input[name=\'mappingType\']:last");
+	el.autocomplete({
+	'source': f_auto_complete_source_goods,
+	'select': function(item) {
+		el.val(item['label']);
+		id_el.val(item['value']);
+		type_el.val(item['type']);
+	    }
+    });
+    
+	asg_row++;
+	
+}
+
+
+</script>
+
+  
+<footer id="footer"><br /></footer></div>
+</body></html>
