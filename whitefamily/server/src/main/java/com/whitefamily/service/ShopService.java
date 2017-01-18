@@ -981,7 +981,7 @@ public class ShopService extends BaseService implements IShopService {
 		dr.setShopAddress(de.getShop().getAddress());
 		dr.setShopName(de.getShop().getName());
 		dr.setStatus(InventoryStatus.DELIVERYED);
-		Transaction tr = beginTransaction(sess);
+		beginTransaction(sess);
 		sess.save(dr);
 		sess.flush();
 		
@@ -1028,7 +1028,7 @@ public class ShopService extends BaseService implements IShopService {
 			}
 			
 			if (requestCount != 0) {
-				tr.rollback();
+				rollbackTrans();
 				return Result.ERR_OUT_OF_STOCK;
 			}
 		}
@@ -1115,7 +1115,7 @@ public class ShopService extends BaseService implements IShopService {
 		InternalDeliveryRecord dr = new InternalDeliveryRecord();
 		dr.setDatetime(de.getDatetime());
 		dr.setOperator(user);
-		Transaction tr = beginTransaction(sess);
+		beginTransaction(sess);
 		sess.save(dr);
 		sess.flush();
 		
@@ -1157,7 +1157,7 @@ public class ShopService extends BaseService implements IShopService {
 			}
 			
 			if (requestCount != 0) {
-				tr.rollback();
+				rollbackTrans();
 				return Result.ERR_OUT_OF_STOCK;
 			}
 		}
