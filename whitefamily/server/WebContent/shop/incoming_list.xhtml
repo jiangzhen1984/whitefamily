@@ -61,38 +61,114 @@
               <thead>
                 <tr> <td class="text-center" colspan="2">营收</td><td class="text-center" colspan="2">成本</td></tr>
                 <tr>
-                     <td class="text-center">总流水</td> <td class="text-center">#{incomingBean.incoming.zls}</td>
-                     <td class="text-center">日用调料</td><td class="text-center">#{incomingBean.cost.rytl}</td>
+                     <td class="text-center">总流水</td> 
+                     <td class="text-center">
+                    	<h:outputText value="#{incomingBean.incoming.zls}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                     <td class="text-center">日用调料</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.cost.rytl}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
                 </tr>
                 <tr>
-                     <td class="text-center">现金</td><td class="text-center">#{incomingBean.incoming.cash}</td>
-                     <td class="text-center">伙食费</td><td class="text-center">#{incomingBean.cost.hsf}</td>
+                     <td class="text-center">现金</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.cash}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                     <td class="text-center">伙食费</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.cost.hsf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
                 </tr>
                  <tr>
-                     <td class="text-center">闪惠(前)</td><td class="text-center">#{incomingBean.incoming.dazhong}</td>
-                     <td class="text-center">房费</td><td class="text-center">#{incomingBean.cost.ff}</td>
+                     <td class="text-center">闪惠(前)</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.dazhong}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                     <td class="text-center">房费</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.cost.monthlyFf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
                 </tr>
                  <tr>
-                     <td class="text-center">闪惠(后)</td><td class="text-center">#{incomingBean.incoming.dazhongaf}</td>
-                     <td class="text-center">补菜</td><td class="text-center">#{incomingBean.cost.bc}</td>
+                     <td class="text-center">闪惠(后)</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.dazhongaf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                     <td class="text-center">补菜</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.cost.bc}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
                 </tr>
                  <tr>
-                     <td class="text-center">外卖美团</td><td class="text-center">#{incomingBean.incoming.meituan}</td>
-                     <td class="text-center">饮料</td><td class="text-center">#{incomingBean.cost.yl}</td>
+                     <td class="text-center">外卖美团</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.meituan}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
+                     <td class="text-center">饮料</td><td class="text-center">
+                     	<h:outputText value=" #{incomingBean.cost.yl}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
                 </tr>
                  <tr>
-                     <td class="text-center">外卖百度</td><td class="text-center">#{incomingBean.incoming.baidu}</td>
-                      <td class="text-center">水费</td><td class="text-center">#{incomingBean.cost.sf}</td>
+                     <td class="text-center">外卖百度</td><td class="text-center">
+                     	<h:outputText value=" #{incomingBean.incoming.baidu}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
+                      <td class="text-center">水费</td><td class="text-center">
+                      	<h:outputText value=" #{incomingBean.cost.monthlySf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
                 </tr>
                 <tr>
-                     <td class="text-center">饿了么</td> <td class="text-center">#{incomingBean.incoming.elm}</td>
-                     <td class="text-center">工资</td><td class="text-center">#{incomingBean.cost.gz}</td>
+                     <td class="text-center">饿了么</td> <td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.elm}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                     <td class="text-center">燃气费</td><td class="text-center">
+                     	<h:outputText value=" #{incomingBean.cost.monthlyRqf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
                 </tr>
                 <tr>
-                     <td class="text-center">微信</td><td class="text-center">#{incomingBean.incoming.weixin}</td>
+                     <td class="text-center">微信</td><td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.weixin}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                        <td class="text-center">电费</td><td class="text-center">
+                     	<h:outputText value=" #{incomingBean.cost.monthlyDf}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
+                  
                 </tr>
                 <tr>
-                     <td class="text-center">支付宝</td> <td class="text-center">#{incomingBean.incoming.ali}</td>
+                     <td class="text-center">支付宝</td> <td class="text-center">
+                     	<h:outputText value="#{incomingBean.incoming.ali}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                     </td>
+                        <td class="text-center">工资</td><td class="text-center">
+                     	<h:outputText value=" #{incomingBean.cost.monthlySalary}">
+                      <f:convertNumber type="number" groupingUsed="true" minFractionDigits="2" pattern="#0.00"/>
+                      </h:outputText>
+                    </td>
                 </tr>
               </thead>
             </table>

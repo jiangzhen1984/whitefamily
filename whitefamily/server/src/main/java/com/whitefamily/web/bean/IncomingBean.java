@@ -138,6 +138,8 @@ public class IncomingBean {
 			costList = shopService.queryShopOperationCost(shopService.getShop(shopId), startDate, endDate);
 		}
 		
+		List<WFOperationCost> monthLyList = shopService.queryShopMonthlyOperationCost(shopService.getShop(shopId), startDate);
+		
 		if (incomingList != null && incomingList.size() > 0) {
 			for (WFIncoming wfi : incomingList) {
 				incoming.setAli(wfi.getAli() + incoming.getAli());
@@ -172,6 +174,18 @@ public class IncomingBean {
 				cost.setYl(woc.getYl()+ cost.getYl());
 			}
 		}
+		
+		if (monthLyList != null && monthLyList.size() > 0) {
+			for (WFOperationCost woc : monthLyList) {
+				cost.setMonthlyFf(woc.getMonthlyFf() + cost.getMonthlyFf());
+				cost.setMonthlyRqf(woc.getMonthlyRqf() + cost.getMonthlyRqf());
+				cost.setMonthlySf(woc.getMonthlySf() + cost.getMonthlySf());
+				cost.setMonthlyDf(woc.getMonthlyDf() + cost.getMonthlyDf());
+				cost.setMonthlySalary(woc.getSalary() + cost.getMonthlySalary());
+			}
+		}
+		 
+		//TODO query monthly cost
 		
 		inventoryCost = shopService.queryShopInventoryCost(shopService.getShop(shopId), startDate, endDate);
 	}
