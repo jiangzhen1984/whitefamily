@@ -1027,7 +1027,7 @@ public class ShopService extends BaseService implements IShopService {
 				goodsId.add(Long.valueOf(di.getGoods().getId()));
 			}
 			
-			if (requestCount != 0) {
+			if (new BigDecimal(requestCount).setScale(2, BigDecimal.ROUND_HALF_DOWN).floatValue() != 0) {
 				rollbackTrans();
 				return Result.ERR_OUT_OF_STOCK;
 			}
