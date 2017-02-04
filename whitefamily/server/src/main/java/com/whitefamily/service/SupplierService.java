@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -21,6 +23,7 @@ import com.whitefamily.service.vo.WFSupplierMapping;
 
 public class SupplierService extends BaseService implements ISupplierService {
 	
+	private Log logger = LogFactory.getLog(SupplierService.class);
 
 	private List<WFSupplierMapping> cacheList = new ArrayList<WFSupplierMapping>(20);
 	
@@ -130,17 +133,22 @@ public class SupplierService extends BaseService implements ISupplierService {
 			long updateRecordId = iruList.get(0).getId();
 			//Update
 			Query  updateQuery = null;
+			List<InventoryGoods> updateList = null;
 			List<WFInventoryRequest.Item> supplierItemList = req.getSupplierItemList();
 			for (WFInventoryRequest.Item wfi : supplierItemList) {
 				updateQuery = sess.createQuery(" from InventoryGoods where record.id = ? and goods.id = ? ");
 				updateQuery.setLong(0, updateRecordId);
 				updateQuery.setLong(1, wfi.getGoods().getId());
-				
-				InventoryGoods g = (InventoryGoods)updateQuery.list().iterator().next();
-				g.setPrice(wfi.getPrice());
-				g.setRemCount(wfi.getRealCount());
-				g.setCount(wfi.getRealCount());
-				sess.update(g);
+				updateList = updateQuery.list();
+				if (updateList != null && updateList.size() > 0) {
+					InventoryGoods g = (InventoryGoods)updateList.iterator().next();
+					g.setPrice(wfi.getPrice());
+					g.setRemCount(wfi.getRealCount());
+					g.setCount(wfi.getRealCount());
+					sess.update(g);
+				} else {
+					logger.error("Can not update inventory due to no such goods:" + wfi.getGoods().getId()+"  record:"+updateRecordId);
+				}
 			}
 		}
 		
