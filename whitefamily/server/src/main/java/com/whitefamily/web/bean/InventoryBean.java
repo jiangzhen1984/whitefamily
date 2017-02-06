@@ -17,6 +17,7 @@ import com.whitefamily.service.ServiceFactory;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsStatistic;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -35,6 +36,7 @@ public class InventoryBean {
 	
 	private List<WFInventoryGoods> wfiList;
 	private List<WFInventoryGoods> cacheiList;
+	private List<WFGoodsStatistic> stiList;
 	private WFInventoryRequest inventoryRequest;
 	
 	
@@ -288,6 +290,13 @@ public class InventoryBean {
 
 	public void setWfiList(List<WFInventoryGoods> wfiList) {
 		this.wfiList = wfiList;
+	}
+	
+	public List<WFGoodsStatistic> getStatisticList() {
+		if (stiList == null) {
+			stiList = new ArrayList<WFGoodsStatistic>(this.inventoryService.queryStockStatistics(null).values());
+		}
+		return stiList;
 	}
 
 

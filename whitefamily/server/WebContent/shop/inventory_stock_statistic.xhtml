@@ -1,0 +1,138 @@
+<!DOCTYPE HTML  [
+    <!ENTITY times "&#215;"> 
+]>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<ui:include src="../include/header.xhtml" />
+<body>
+	<div id="container">
+	
+		<ui:include src="../include/menu_top.xhtml" />
+		<ui:include src="../include/nav.xhtml" />
+		<div id="content">
+			<div class="page-header">
+				<div class="container-fluid">
+					<div class="pull-right">
+					</div>
+					<h1>库存管理</h1>
+					<ul class="breadcrumb">
+						<li></li>
+					</ul>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<i class="fa fa-list"></i> 今日库存统计
+						</h3>
+					</div>
+					<div class="panel-body">
+					      <h:form id="pform">
+					      <div class="well">
+				          <div class="row">
+				            <div class="col-sm-4">
+				              <div class="form-group">
+				                <label class="control-label" for="input-name">产品名称</label>
+				                <h:inputText  a:placeholder="筛选名称" name="filterGoodsName"  id="filterGoodsName" value="#{inventoryBean.filterGoodsName}" class="form-control" ></h:inputText>
+				              </div>
+				              <div class="form-group">
+				              </div>
+				            </div>
+				            <div class="col-sm-4">
+				              <div class="form-group">
+				               <label class="control-label" for="input-model">分类</label>
+				               <h:inputText  a:placeholder="筛选分类" name="filterCateName"   id="filterCateName"  value="#{inventoryBean.filterCateName}" class="form-control" ></h:inputText>
+				                <h:inputHidden value="#{inventoryBean.filterCateId}" id="filterCateId" name="filterCateId" ></h:inputHidden>
+				              </div>
+				              <div class="form-group">
+				              <h:commandLink  action="#{inventoryBean.filterGoods}"  class="btn btn-primary pull-right" onclick="if($('input[name=\'pform:filterCateName\']').val() == '') {$('input[name=\'pform:filterCateId\']').val('0');}" ><i class="fa fa-search"></i>过滤
+				                 </h:commandLink>
+				              </div>
+				            </div>
+				          </div>
+				        </div>
+						</h:form>
+							<div class="table-responsive">
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<td class="text-right">产品</td>
+											<td class="text-right">当前库存</td>
+											<td class="text-right">今日入库</td>
+											<td class="text-right">今日出库</td>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat id="invo" var="invo"
+											value="#{inventoryBean.statisticList}" varStatus="itemStatus">
+											<tr>
+												<td class="text-right">#{invo.goods.name}</td>
+												<td class="text-right">#{invo.stock}</td>
+												<td class="text-right">#{invo.in}</td>
+												<td class="text-right">#{invo.out}</td>
+											</tr>
+										</ui:repeat>
+									</tbody>
+								</table>
+							</div>
+						<div class="row">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer id="footer">
+			<br />
+		</footer>
+	</div>
+	
+<script type="text/javascript">
+$('input[name=\'pform:filterGoodsName\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'filterGoods.ajax?action=filterGoods&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'pform:filterGoodsName\']').val(item['label']);
+	}
+});
+
+$('input[name=\'pform:filterCateName\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+		    url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'pform:filterCateId\']').val(item['value']);
+		$('input[name=\'pform:filterCateName\']').val(item['label']);
+	}
+});
+</script>
+	
+</body>
+</html>

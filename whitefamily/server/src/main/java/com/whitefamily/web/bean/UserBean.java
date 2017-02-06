@@ -124,6 +124,13 @@ public class UserBean implements LoginChecker {
 	public String logout() {
 		user = null;
 		isLogined = false;
+		HttpSession sess = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		if (sess != null) {
+			sess.removeAttribute("cartBean");
+			sess.removeAttribute("mallBean");
+			sess.removeAttribute("inventoryBean");
+			sess.invalidate();
+		}
 		return "logout";
 	}
 	

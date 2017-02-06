@@ -102,7 +102,7 @@
 					mn: item['mn'],
 					value: item['id'],
 					source : item['source'],
-					pdesc : item['pdesc']
+					pdesc : (item['pdesc'] == undefined? '' :item['pdesc'])
 				}
 			}));
 		}
@@ -177,6 +177,7 @@ function addWfa() {
     v_el.autocomplete({
 	  source: f_auto_complete_source_goods,
 	  'select': function(item) {
+		   v_elar_source_id.html('');
 	       v_el.val(item['label']);
 	       v_elmpu.val(item['mn']);
 	       v_elstyle.val(item['style']);
@@ -184,7 +185,6 @@ function addWfa() {
 	       v_elar_id.val(item['value']);
 	       var sts = item['source'];
 	       for (var j = 0; j < sts.length; j++) {
-	           console.log(v_elar_source_id.innerHTML);
 	           v_elar_source_id.html(v_elar_source_id.html() + sts[j]['name'] +" : " + sts[j]['sv']+'  '+sts[j]['ss']+" <br />");
 	       }
 	      

@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.whitefamily.po.InventoryStatus;
+import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsStatistic;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -44,6 +46,10 @@ public interface IInventoryService {
 	
 	public List<WFInventory> queryInventory(Date startDate, Date endDate, int start, int count);
 	
+	public List<WFDelivery> queryDelivery(Date startDate, Date endDate, int start, int count);
+	
+	public List<WFDelivery> queryInternalDelivery(Date startDate, Date endDate, int start, int count);
+	
 	public void queryInventoryDetail(WFInventory wf);
 	
 	
@@ -64,5 +70,8 @@ public interface IInventoryService {
 	
 	
 	public List<WFDelivery> queryDeliveryHistory(Date date);
+	
+	
+	public Map<WFGoods, WFGoodsStatistic>  queryStockStatistics(Date end);
 
 }

@@ -2,11 +2,14 @@ package com.whitefamily.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,10 +26,13 @@ import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
+import com.whitefamily.po.delivery.InternalDeliveryRecord;
+import com.whitefamily.po.delivery.InternalDeliveryRecordGoods;
 import com.whitefamily.service.vo.WFBrand;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFGoods;
+import com.whitefamily.service.vo.WFGoodsStatistic;
 import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryGoods;
 import com.whitefamily.service.vo.WFInventoryRequest;
@@ -403,11 +409,65 @@ public class InventoryService extends BaseService implements IInventoryService {
 
 	@Override
 	public List<WFInventory> queryInventory(int start, int count) {
+		return queryInventory(null, null, start,count);
+	}
+
+	@Override
+	public List<WFInventory> queryInventory(Date startDate, Date endDate,
+			int start, int count) {
+		StringBuffer sql = new StringBuffer();
+		SimpleDateFormat sf=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+		Calendar c = Calendar.getInstance();
+		if (startDate == null && endDate == null) {
+			sql.append(" from InventoryUpdateRecord order by datetime desc ");
+		} else if (startDate == null) {
+			sql.append(" from InventoryUpdateRecord where datetime <= ? order by datetime desc ");
+		} else if(endDate == null) {
+			sql.append(" from InventoryUpdateRecord where datetime  >= ? order by datetime desc ");
+		} else {
+			sql.append(" from InventoryUpdateRecord where datetime  >= ? and datetime <= ? order by datetime desc ");
+		}
 		Session sess = getSession();
 		Query query = sess
-				.createQuery(" from InventoryUpdateRecord order by datetime desc ");
+				.createQuery(sql.toString());
 		query.setFirstResult(start);
-		query.setMaxResults(count);
+		if (count > 0) {
+			query.setMaxResults(count);
+		}
+		
+		if (startDate == null && endDate == null) {
+		} else if (startDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			query.setString(0, sf.format(queryEndDate));
+		} else if(endDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setString(0, sf.format(queryStartDate));
+		} else {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			
+			c.setTime(startDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setString(0, sf.format(queryStartDate));
+			query.setString(1, sf.format(queryEndDate));
+			
+		}
+		
+		
 		List<InventoryUpdateRecord> list = query.list();
 		List<WFInventory> inventoryList = new ArrayList<WFInventory>(
 				list.size());
@@ -420,17 +480,184 @@ public class InventoryService extends BaseService implements IInventoryService {
 			}
 			wf.setIt(iur.getIt());
 			inventoryList.add(wf);
+			queryInventoryDetail(wf);
 		}
-		sess.close();
+		return inventoryList;
+	}
+	
+	
+	
+	
+	public List<WFDelivery> queryDelivery(Date startDate, Date endDate, int start, int count) {
+		StringBuffer sql = new StringBuffer();
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat sf=new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+		if (startDate == null && endDate == null) {
+			sql.append(" from DeliveryRecord order by datetime desc ");
+		} else if (startDate == null) {
+			sql.append(" from DeliveryRecord where datetime <= ? order by datetime desc ");
+		} else if(endDate == null) {
+			sql.append(" from DeliveryRecord where datetime  >= ? order by datetime desc ");
+		} else {
+			sql.append(" from DeliveryRecord where datetime  >= ? and datetime <= ? order by datetime desc ");
+		}
+		Session sess = getSession();
+		Query query = sess
+				.createQuery(sql.toString());
+		query.setFirstResult(start);
+		if (count > 0) {
+			query.setMaxResults(count);
+		}
+		
+		if (startDate == null && endDate == null) {
+		} else if (startDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			query.setString(0, sf.format(queryEndDate));
+		} else if(endDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setString(0, sf.format(queryStartDate));
+		} else {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			
+			c.setTime(startDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setString(0, sf.format(queryStartDate));
+			query.setString(1, sf.format(queryEndDate));
+			
+		}
+		
+		
+		List<DeliveryRecord> list = query.list();
+		List<WFDelivery> inventoryList = new ArrayList<WFDelivery>(
+				list.size());
+		for (DeliveryRecord iur : list) {
+			WFDelivery wf = new WFDelivery();
+			wf.setId(iur.getId());
+			wf.setDatetime(iur.getDatetime());
+			if (iur.getOperator() != null) {
+				wf.setOperator(userService.getUser(iur.getOperator().getId()));
+			}
+			inventoryList.add(wf);
+			queryDeliveryDetail(wf);
+		}
 		return inventoryList;
 	}
 
-	@Override
-	public List<WFInventory> queryInventory(Date startDate, Date endDate,
-			int start, int count) {
-		return null;
+	public void queryDeliveryDetail(WFDelivery wf) {
+		Session sess = getSession();
+		Query query = sess
+				.createQuery(" from DeliveryRecordGoods  where record.id = ? ");
+		query.setLong(0, wf.getId());
+		List<DeliveryRecordGoods> list = query.list();
+		
+		for (DeliveryRecordGoods iur : list) {
+			wf.addItem(goodsService.getGoods(iur.getGoods().getId()),
+					 iur.getDeliverCount(), iur.getDeliverCount(), iur.getPrice(), true);
+		}
+	}
+	
+	
+	
+	public List<WFDelivery> queryInternalDelivery(Date startDate, Date endDate, int start, int count) {
+		StringBuffer sql = new StringBuffer();
+		Calendar c = Calendar.getInstance();
+		if (startDate == null && endDate == null) {
+			sql.append(" from InternalDeliveryRecord order by datetime desc ");
+		} else if (startDate == null) {
+			sql.append(" from InternalDeliveryRecord where datetime < ? order by datetime desc ");
+		} else if(endDate == null) {
+			sql.append(" from InternalDeliveryRecord where datetime  > ? order by datetime desc ");
+		} else {
+			sql.append(" from InternalDeliveryRecord where datetime  > ? and datetime < ? order by datetime desc ");
+		}
+		Session sess = getSession();
+		Query query = sess
+				.createQuery(sql.toString());
+		query.setFirstResult(start);
+		if (count > 0) {
+			query.setMaxResults(count);
+		}
+		
+		if (startDate == null && endDate == null) {
+		} else if (startDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			query.setDate(0, queryEndDate);
+		} else if(endDate == null) {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setDate(0, queryStartDate);
+		} else {
+			c.setTime(endDate);
+			c.set(Calendar.HOUR_OF_DAY, 23);
+			c.set(Calendar.MINUTE, 59);
+			c.set(Calendar.SECOND, 59);
+			Date queryEndDate = c.getTime();
+			
+			c.setTime(startDate);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			Date queryStartDate = c.getTime();
+			query.setDate(0, queryStartDate);
+			query.setDate(1, queryEndDate);
+			
+		}
+		
+		
+		List<InternalDeliveryRecord> list = query.list();
+		List<WFDelivery> inventoryList = new ArrayList<WFDelivery>(
+				list.size());
+		for (InternalDeliveryRecord iur : list) {
+			WFDelivery wf = new WFDelivery();
+			wf.setId(iur.getId());
+			wf.setDatetime(iur.getDatetime());
+			if (iur.getOperator() != null) {
+				wf.setOperator(userService.getUser(iur.getOperator().getId()));
+			}
+			inventoryList.add(wf);
+			queryInternalDeliveryDetail(wf);
+		}
+		return inventoryList;
 	}
 
+	
+	public void queryInternalDeliveryDetail(WFDelivery wf) {
+		Session sess = getSession();
+		Query query = sess
+				.createQuery(" from InternalDeliveryRecordGoods  where record.id = ? ");
+		query.setLong(0, wf.getId());
+		List<InternalDeliveryRecordGoods> list = query.list();
+		
+		for (InternalDeliveryRecordGoods iur : list) {
+			wf.addItem(goodsService.getGoods(iur.getGoods().getId()),
+					 iur.getDeliverCount(), iur.getDeliverCount(), iur.getPrice(), true);
+		}
+	}
+	
+	
+	
 	public void queryInventoryDetail(WFInventory wf) {
 		Session sess = getSession();
 		Query query = sess
@@ -446,7 +673,6 @@ public class InventoryService extends BaseService implements IInventoryService {
 			wf.addInventoryItem(goodsService.getGoods(iur.getGoods().getId()),
 					wfb, wfv, iur.getCount(), iur.getPrice(), iur.getRate(), iur.getRate1(), iur.getRemCount(), true);
 		}
-		sess.close();
 	}
 	
 	
@@ -690,5 +916,61 @@ public class InventoryService extends BaseService implements IInventoryService {
 			goodsList.add(wf);
 		}
 		return goodsList;
+	}
+	
+	
+	
+	public Map<WFGoods, WFGoodsStatistic>  queryStockStatistics(Date end) {
+		Date today = new Date();
+		Map<WFGoods, Float> stockMaps = queryCurrentStockMap();
+		
+		
+		Map<WFGoods, WFGoodsStatistic> statisticMap = new HashMap<WFGoods, WFGoodsStatistic>();
+		WFGoodsStatistic tic = null;
+		WFGoods key = null;
+		//Current stock
+		for(Entry<WFGoods, Float> e : stockMaps.entrySet()) {
+			key = e.getKey();
+			tic = statisticMap.get(key);
+			if (tic == null) {
+				tic = new WFGoodsStatistic(key);
+				statisticMap.put(key, tic);
+			}
+			tic.setStock(e.getValue());
+		}
+		
+		//Inventory update
+		List<WFInventory> listInventoryUpdate = queryInventory(today, today, 0, 0);
+		for (WFInventory wfi : listInventoryUpdate) {
+			for (WFInventory.Item it : wfi.getItemList()) {
+				key = it.getGoods();
+				tic = statisticMap.get(key);
+				if (tic == null) {
+					tic = new WFGoodsStatistic(key);
+					statisticMap.put(key, tic);
+				}
+				tic.addIn(it.getCount());
+			}
+		}
+		
+		
+		//Delivery update
+		List<WFDelivery> deliveryList = queryDelivery(today, today, 0, 0);
+		for (WFDelivery wfi : deliveryList) {
+			for (WFDelivery.Item it : wfi.getItemList()) {
+				key = it.getGoods();
+				tic = statisticMap.get(key);
+				if (tic == null) {
+					tic = new WFGoodsStatistic(key);
+					statisticMap.put(key, tic);
+				}
+				tic.addOut(it.getCount());
+			}
+		}
+		
+		//TODO Internal delivery update
+		
+		return statisticMap;
+		
 	}
 }
