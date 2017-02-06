@@ -31,31 +31,6 @@
 						</h3>
 					</div>
 					<div class="panel-body">
-					      <h:form id="pform">
-					      <div class="well">
-				          <div class="row">
-				            <div class="col-sm-4">
-				              <div class="form-group">
-				                <label class="control-label" for="input-name">产品名称</label>
-				                <h:inputText  a:placeholder="筛选名称" name="filterGoodsName"  id="filterGoodsName" value="#{inventoryBean.filterGoodsName}" class="form-control" ></h:inputText>
-				              </div>
-				              <div class="form-group">
-				              </div>
-				            </div>
-				            <div class="col-sm-4">
-				              <div class="form-group">
-				               <label class="control-label" for="input-model">分类</label>
-				               <h:inputText  a:placeholder="筛选分类" name="filterCateName"   id="filterCateName"  value="#{inventoryBean.filterCateName}" class="form-control" ></h:inputText>
-				                <h:inputHidden value="#{inventoryBean.filterCateId}" id="filterCateId" name="filterCateId" ></h:inputHidden>
-				              </div>
-				              <div class="form-group">
-				              <h:commandLink  action="#{inventoryBean.filterGoods}"  class="btn btn-primary pull-right" onclick="if($('input[name=\'pform:filterCateName\']').val() == '') {$('input[name=\'pform:filterCateId\']').val('0');}" ><i class="fa fa-search"></i>过滤
-				                 </h:commandLink>
-				              </div>
-				            </div>
-				          </div>
-				        </div>
-						</h:form>
 							<div class="table-responsive">
 								<table class="table table-bordered table-hover">
 									<thead>
@@ -90,49 +65,5 @@
 			<br />
 		</footer>
 	</div>
-	
-<script type="text/javascript">
-$('input[name=\'pform:filterGoodsName\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-			url: 'filterGoods.ajax?action=filterGoods&amp;filter=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'pform:filterGoodsName\']').val(item['label']);
-	}
-});
-
-$('input[name=\'pform:filterCateName\']').autocomplete({
-	'source': function(request, response) {
-		$.ajax({
-		    url: 'filterCateogry.ajax?action=filterCategory&amp;filter=' +  encodeURIComponent(request),
-			dataType: 'json',
-			success: function(json) {
-				response($.map(json, function(item) {
-					return {
-						label: item['name'],
-						value: item['id']
-					}
-				}));
-			}
-		});
-	},
-	'select': function(item) {
-		$('input[name=\'pform:filterCateId\']').val(item['value']);
-		$('input[name=\'pform:filterCateName\']').val(item['label']);
-	}
-});
-</script>
-	
 </body>
 </html>
