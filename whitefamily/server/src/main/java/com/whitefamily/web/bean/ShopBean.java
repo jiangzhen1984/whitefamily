@@ -652,7 +652,7 @@ public class ShopBean {
 		inventoryRequest.setDatetime(new Date());
 		// inventoryRequest.setShop(((WFManager)userBean.getUser()).getShop());
 		if (userBean.getUser() == null || userBean == null
-				|| userBean.getUser().getRole() != Role.MANAGER) {
+				|| (userBean.getUser().getRole() != Role.MANAGER && userBean.getUser().getRole() != Role.FRANCHISEE)) {
 			errMsg = "非法用户";
 			return "inventoryrequestfailed";
 		}

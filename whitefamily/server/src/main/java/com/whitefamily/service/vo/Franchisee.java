@@ -1,6 +1,6 @@
 package com.whitefamily.service.vo;
 
-public class Franchisee extends WFUser {
+public class Franchisee extends WFManager {
 	
 	private WFShop shop;
 
@@ -12,5 +12,9 @@ public class Franchisee extends WFUser {
 		this.shop = shop;
 	}
 	
+	
+	public boolean getFranchiseeType() {
+		return true;
+	}
 
 }

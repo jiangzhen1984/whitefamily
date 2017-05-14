@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<title>大白订货</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="style/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+
+
+</head>
+
+<body>
+<div class="index clasify">
+    <h:form>
+	<div class="indexTop">
+    	<img class="icon_kefu" src="images/kefu.png" />
+        <div class="indexTop_search">        	
+           <h:inputText  value="#{mallBean.searchText}" a:placeholder="输入菜名搜索" />
+           <h:commandButton  type="submit" value="" ></h:commandButton>
+           <div class="clear"></div> 
+        </div>
+    </div>
+    </h:form>
+    <script type="text/javascript">
+	$(document).ready(function(){
+		if(   $(".index_content_right").height()  > ($(window).height()-67)  ){
+			$(".index_content_left").height($(".index_content_right").height());
+		}
+		else{
+			$(".index_content_left").height($(window).height()-125);		
+		}
+  		
+	})
+	</script>
+ 
+    <div class="index_content">
+        <h:form>
+        <div class="index_content_left suckerdiv">
+        	<ul id="suckertree1">
+        	<c:forEach var="g" items="#{mallBean.categoryList}">
+        	     <h:panelGroup   rendered="${g.id == mallBean.cateId}" >
+        	     <li class="self"><a href="#"><h:outputText  value="#{g.name}" /></a>
+	        	     <ul>
+	        	     <c:forEach var="sub" items="#{g.subs}">
+	        	         <li>
+	        	            <h:commandLink value="#{sub.name}">
+								<f:setPropertyActionListener target="#{mallBean.cateId}" value="#{sub.id}" />
+							</h:commandLink>
+	        	         </li>
+					 </c:forEach>
+					 </ul>
+				 </li>
+				 </h:panelGroup>
+				 <h:panelGroup   rendered="${g.id != mallBean.cateId}" >
+        	     <li><a href="#"><h:outputText  value="#{g.name}" /></a>
+	        	     <ul>
+	        	     <c:forEach var="sub" items="#{g.subs}">
+	        	         <li> <h:commandLink value="#{sub.name}">
+								<f:setPropertyActionListener target="#{mallBean.cateId}" value="#{sub.id}" />
+							</h:commandLink></li>
+					 </c:forEach>
+					 </ul>
+				 </li>
+				 </h:panelGroup>
+        	</c:forEach>
+            </ul>
+        </div>
+        </h:form>
+        <div class="index_content_right">
+           <ui:repeat id="g" var="g" value="#{mallBean.goodsList}"	varStatus="itemStatus">
+        	<dl>
+            	<dt><a href="#"><img src="images/11.jpg" width="30"/></a></dt>
+                <dd>
+                	<div class="tit"><a href="#">#{g.name}</a></div>
+                    <div class="info">
+                        <div class="info_left">
+                        	<span class="small red">￥</span><span class="big red">
+                        	 <c:if test="#{userBean.user.franchiseeType == true}">
+				        	#{g.price1}
+				        	</c:if>
+				        	<c:if test="#{userBean.user.franchiseeType == false}">
+				        	#{g.price}
+				        	</c:if>
+                        	</span> #{g.unit}<br />
+                            <span class="jiang">降</span> <span class="xian">限</span>                            
+                        </div>
+                        <div class="info_right">
+                        	<!-- button type="button" class="choice">选规格</button  -->
+                        	<div class="product_detail_sizeColorNum_num_text">
+                                <i class="icons icon_045" onclick="minusFromCart('#{g.id}', 1)" ></i><span>1</span><i class="icons icon_046" onclick="addToCart('#{g.id}', 1)"></i>
+                            </div>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+            </ui:repeat>
+            <div class="clear"></div>
+            <br /><br /><br /><br /><br /><br />
+        </div>
+        <div class="clear"></div>
+        
+    </div>   
+   <div class="menu">
+         <ul>
+             <li><a class="menu_1  self" href="clasify.xhtml"></a></li>
+             <li><a class="menu_2" href="shop_cart.xhtml"><span class="sum" id="cart_count"><h:outputText value="#{cartBean.cart.totalCount}" /></span></a></li>
+            <li><a class="menu_3" href="#"></a></li>
+            <li><a class="menu_4"  href="user_info.xhtml"></a></li>     
+         </ul>
+     <div class="clear"></div>
+   </div>
+
+</div>
+
+<script type="text/javascript">
+//SuckerTree Vertical Menu (Aug 4th, 06)
+//By Dynamic Drive: http://www.dynamicdrive.com/style/
+ //<![CDATA[
+<!--
+var menuids=["suckertree1"] //Enter id(s) of SuckerTree UL menus, separated by commas
+
+function buildsubmenus(){
+for (var i=0; i<menuids.length; i++){
+  var ultags=document.getElementById(menuids[i]).getElementsByTagName("ul")
+    for (var t=0; t<ultags.length; t++){
+    ultags[t].parentNode.getElementsByTagName("a")[0].className="subfolderstyle"
+    ultags[t].parentNode.onmouseover=function(){
+    this.getElementsByTagName("ul")[0].style.display="block"
+    }
+    ultags[t].parentNode.onmouseout=function(){
+    this.getElementsByTagName("ul")[0].style.display="none"
+    }
+    }
+  }
+}
+
+
+
+function addToList(gid, c) {
+	 var count = document.getElementById(c).value;
+	 if (isNaN(count)) {
+       alert("数量必须数字");
+       return;
+    }
+	 var n = Number(count);
+	 if (n <= 0) {
+	 	alert("数量必须大于0");
+	 	return;
+	 }
+    var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount='+n+'&goodsid='+gid;
+	 $.ajax({
+		url: rq,
+	success :function(data) {
+		var val = number($("#cart_count").innerHTML);
+		console.log(val);
+		$("#cart_count").innerHTML = data;
+	}
+	});
+}
+function add(gid) {
+	var sp = document.getElementById(gid);
+   var num = sp.value;
+   if (isNaN(num)) {
+       return;
+   }
+   var n = Number(num) + 1;
+   sp.value = n;
+}
+
+
+function minus(gid) {
+   var sp = document.getElementById(gid);
+   var num = sp.value;
+    if (isNaN(num)) {
+       return;
+   }
+   var n = Number(num);
+  
+   if (n > 0) {
+       sp.value = n -1 ;
+   }
+}
+
+
+function addToCart(gid, n) {
+    var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount='+n+'&goodsid='+gid;
+	 $.ajax({
+		url: rq,
+	success :function(data) {
+		var val = Number($("#cart_count").html());
+		$("#cart_count").html(data.totalcount+"");
+	}
+	});
+}
+
+function minusFromCart(gid, n) {
+   var rq= 'mall.ajax?action=cartAction&subaction=minus&goodscount='+n+'&goodsid='+gid;
+	 $.ajax({
+		url: rq,
+  	success :function(data) {
+  		var val = Number($("#cart_count").html());
+		$("#cart_count").html(data.totalcount+"");
+  	}
+  	});
+}
+
+
+
+if (window.addEventListener)
+window.addEventListener("load", buildsubmenus, false)
+else if (window.attachEvent)
+window.attachEvent("onload", buildsubmenus);
+
+
+
+
+//-->
+
+
+
+ //]]>
+</script>
+</body>
+
+</html>

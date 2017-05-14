@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<title>大白</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="style/css.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body class="userCenter">
+ <div class="userCenter_top">
+ 	<div class="userCenter_top_img">    
+   		<img class="userCenter_top_img_photo" src="images/user_pho.png" />
+        <div class="userCenter_top_img_right">大白的家<span><img src="images/grade.png" />普通用户</span></div>
+    </div>
+    <div class="userCenter_set">账户管理<img src="images/right_2.png" /></div>
+    <div class="userCenter_upGrade"><a href="#"><img src="images/message.png" /></a></div>
+ </div>
+ <div class="userCenter_myOrder">
+  <h2>我的钱包</h2>
+ <div class="userCenter_myOrder_btns money">
+    <dl>
+    	<dd><a href="#">0</a></dd>
+        <dt><a href="#">钱包余额</a>
+      </dt>        
+    </dl>
+    <dl>
+    	<dd><a href="#">0</a></dd>
+        <dt><a href="#">优惠券</a>
+		</dt>        
+    </dl>      
+ <div class="clear"></div>
+</div>
+</div>
+ <div class="userCenter_myOrder">
+  <h2>我的订单<span>查看全部订单<img src="images/arrow_right.png" class="icon_21" /></span></h2>
+    <div class="userCenter_myOrder_btns order">
+    	<a href="#"><img src="images/u1.png" /></a>
+        <a href="#"><img src="images/u2.png" /></a>
+        <a href="#"><img src="images/u3.png" /></a>
+      <div class="clear"></div>
+    </div>
+ </div>
+ 
+<div class="userCenter_myOrder">
+  <h2>常用工具</h2>
+ <div class="userCenter_myOrder_btns icons">
+    	<a href="#"><img src="images/u4.png" /></a>
+        <a href="#"><img src="images/u5.png" /></a>
+        <a href="#"><img src="images/u6.png" /></a>
+        <a href="#"><img src="images/u7.png" /></a>  
+        <a href="#"><img src="images/u4.png" /></a>
+        <a href="#"><img src="images/u5.png" /></a>
+        <a href="#"><img src="images/u6.png" /></a>
+        <a href="#"><img src="images/u7.png" /></a>        
+    <div class="clear"></div>
+ </div>
+</div>
+   <div class="menu">
+         <ul>
+            <li><a class="menu_1" href="clasify.xhtml"></a></li>
+             <li><a class="menu_2" href="shop_cart.xhtml"><span class="sum"><h:outputText value="#{cartBean.cart.totalCount}" /></span></a></li>
+            <li><a class="menu_3" href="#"></a></li>
+            <li><a class="menu_4  self"  href="user_info.xhtml"></a></li>     
+         </ul>
+     <div class="clear"></div>
+   </div>
+</body>
+</html>

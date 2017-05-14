@@ -244,6 +244,15 @@ public class AJAXHandler extends HttpServlet {
 			cartBean = (CartBean) context.getApplication().evaluateExpressionGet(context, "#{cartBean}", CartBean.class);
 		}
 		
+		
+		UserBean userBean = (UserBean) req.getSession().getAttribute("userBean");
+		if (userBean == null) {
+			FacesContextFactory facesContextFactory = new FacesContextFactoryImpl();
+			FacesContext context =  facesContextFactory.getFacesContext
+					   (req.getServletContext(), req, resp, new LifecycleImpl());
+			userBean = (UserBean) context.getApplication().evaluateExpressionGet(context, "#{userBean}", UserBean.class);
+		}
+		
 		if ("putlist".equals(action)) {
 			handlePutGoodsListtAction(req, resp, cartBean);
 			return;
@@ -266,17 +275,22 @@ public class AJAXHandler extends HttpServlet {
 		}
 		
 		if (ret == 0 && "plus".equalsIgnoreCase(action)) {
-			cartBean.getCart().addItemCount(g, count);
+			itemCount = cartBean.getCart().addItemCount(g, count);
 		} else if (ret == 0 && "minus".equals(action)) {
-			cartBean.getCart().minusItemCount(g, count);
+			itemCount = cartBean.getCart().minusItemCount(g, count);
 		} else {
 			ret = -1;
 		}
 		
-		itemCount = cartBean.getCart().getItems().size();
 		JSONObject data = new JSONObject();
 		data.put("ret", ret);
 		data.put("itemcount", itemCount);
+		data.put("totalcount", cartBean.getCart().getTotalCount());
+		if (userBean.getUser().getFranchiseeType()) {
+			data.put("totalprice", cartBean.getCart().getTotalPrice1());
+		} else {
+			data.put("totalprice", cartBean.getCart().getTotalPrice());
+		}
 		resp.setContentType("application/json");
 		PrintWriter out = resp.getWriter();
 		out.print(data.toString());

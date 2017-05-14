@@ -352,7 +352,7 @@
 		<navigation-case>
 			<from-action>#{userBean.login}</from-action>
 			<from-outcome>mobiledashboard</from-outcome>
-			<to-view-id>/mobile/index.xhtml</to-view-id>
+			<to-view-id>/mobile/clasify.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
@@ -568,6 +568,22 @@
 			<from-action>#{shopBean.requestInventory}</from-action>
 			<from-outcome>inventoryrequestsuccess</from-outcome>
 			<to-view-id>/mobile/inventory_report_detail_result.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	
+		<navigation-rule>
+		<from-view-id>/mobile/order_submit.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{shopBean.requestInventory}</from-action>
+			<from-outcome>inventoryrequestfailed</from-outcome>
+			<to-view-id>/mobile/order_submit.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{shopBean.requestInventory}</from-action>
+			<from-outcome>inventoryrequestsuccess</from-outcome>
+			<to-view-id>/mobile/inventory_request_success.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 	</navigation-rule>

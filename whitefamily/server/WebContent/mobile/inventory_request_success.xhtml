@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<title>大白-订货提交</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="style/css.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body>
+<div class="orderPayFor">
+    <div class="shopCart_top">
+    	<a href="clasify.xhtml"> <img src="images/back.png" class="icon_back" /></a>
+        订单提交成功
+        <img src="images/kefu.png" class="icon_kefu" />
+	</div>    
+    <div class="orderPayFor_content">
+    	<div class="orderPayFor_address">
+            <div class="orderPayFor_address_content">
+                <div class="name"><h:outputText value="#{userBean.user.shop.name}" /><span><h:outputText value="#{userBean.user.username}" /></span></div>
+                <div class="address">               		
+                    <p><img src="images/address.png" class="icon_address" /><h:outputText value="#{userBean.user.shop.address}" /></p>
+                     <img src="images/arrow_right.png" class="icon_21" />
+                     <div class="clear"></div>
+                </div>
+            </div>
+            <i class="icon_line"></i>
+            <div class="clear"></div>
+        </div>
+        <div class="orderPayFor_order">
+          <div class="orderPayFor_order_imgs">
+           <!-- 
+		  <div class="orderPayFor_order_imgs_1">
+                	<img src="images/11.jpg" /><img src="images/14.jpg" /><img src="images/12.jpg" /><img src="images/11.jpg" /><img src="images/14.jpg" />
+   		 </div>
+   		  -->
+         <div class="orderPayFor_order_sum">
+         		<p class="grey small_2">共<h:outputText value="#{cartBean.cart.itemCount}" />类<img src="images/arrow_right.png" class="icon_21" /></p>
+                
+			</div>
+      	</div>
+      </div>
+        <div class="orderPayFor_order">  
+            <div class="orderPayFor_order_send">
+            	预计配送时间
+				  <div class="orderPayFor_send_right arrow_2">
+           	    <p class="small_2 red">2017-04-23 8:30-9:30</p>
+                </div>                
+			</div>
+      </div>
+
+
+    <div class="orderPayFor_order total">  
+            <div class="orderPayFor_order_send grey">
+            	下单商品总额
+				  <div class="orderPayFor_send_right arrow_2">
+           	    <p>￥ <c:if test="#{userBean.user.franchiseeType == true}">
+        	<span class="sum">总价:<span class="red big"><h:outputText value="#{cartBean.cart.totalPrice1}" /></span></span>
+        	</c:if>
+        	 <c:if test="#{userBean.user.franchiseeType == false}">
+        	<span class="sum">总价:<span class="red big">￥<h:outputText value="#{cartBean.cart.totalPrice}" /></span></span>
+        	</c:if></p>
+                </div>
+			</div> 
+    </div>	
+		<div class="submit_block">
+            	<div class="submit_block_left">
+            		<span class="small_2">合计</span><span class="red">￥ <c:if test="#{userBean.user.franchiseeType == true}">
+        	<span class="sum">总价:<span class="red big"><h:outputText value="#{cartBean.cart.totalPrice1}" /></span></span>
+        	</c:if>
+        	 <c:if test="#{userBean.user.franchiseeType == false}">
+        	<span class="sum">总价:<span class="red big">￥<h:outputText value="#{cartBean.cart.totalPrice}" /></span></span>
+        	</c:if></span>
+           		 </div>
+        </div>
+        
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+</body>
+</html>

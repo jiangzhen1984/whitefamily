@@ -1,6 +1,7 @@
 package com.whitefamily.web.bean;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,8 @@ public class Cart {
 
 	private Map<WFGoods, Item> map;
 	
+	private int totalCount;
+	
 	
 	public void addItem(WFGoods goods, float count) {
 		Item item = map.get(goods);
@@ -52,6 +55,7 @@ public class Cart {
 			map.put(goods, item);
 		}
 		item.count =count;
+		totalCount += count;
 	}
 	
 	
@@ -60,7 +64,7 @@ public class Cart {
 	}
 	
 	
-	public void addItemCount(WFGoods goods, float count) {
+	public int addItemCount(WFGoods goods, float count) {
 		Item item = map.get(goods);
 		if (item == null) {
 			item = new Item();
@@ -68,21 +72,67 @@ public class Cart {
 			map.put(goods, item);
 		}
 		item.count += count;
+		totalCount += count;
+		return (int)item.count;
 	}
 	
-	public void minusItemCount(WFGoods goods, float count) {
+	public int minusItemCount(WFGoods goods, float count) {
 		Item item = map.get(goods);
 		if (item == null) {
-			return;
+			return 0;
 		}
 		item.count -= count;
+		totalCount -= count;
 		if (item.count <= 0) {
 			map.remove(goods);
 		}
+		return (int)item.count;
 	}
 	
 	public List<Item> getItems() {
 		return new ArrayList<Item>(map.values());
 	}
 
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+	
+	public int getItemCount() {
+		return map.values().size();
+	}
+
+	
+	public float getTotalPrice() {
+		float total = 0;
+		Collection<Item> col = map.values();
+		for (Item it : col) {
+			total += it.count * it.goods.getPrice();
+		}
+		return total;
+	}
+	
+	public float getTotalPrice1() {
+		float total = 0;
+		Collection<Item> col = map.values();
+		for (Item it : col) {
+			total += it.count * it.goods.getPrice1();
+		}
+		return total;
+	}
+	
+	public float getTotalPrice2() {
+		float total = 0;
+		Collection<Item> col = map.values();
+		for (Item it : col) {
+			total += it.count * it.goods.getPrice2();
+		}
+		return total;
+	}
 }

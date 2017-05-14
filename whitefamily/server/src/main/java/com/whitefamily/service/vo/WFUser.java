@@ -7,4 +7,10 @@ public class WFUser extends User {
 	public WFUser() {
 	}
 
+	
+	
+	public boolean getFranchiseeType() {
+		return false;
+	}
+
 }

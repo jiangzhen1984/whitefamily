@@ -252,7 +252,7 @@ public class UserManagementBean {
 		user.setPassword(password);
 		user.setRole(role);
 		user.setAccountType(AccountType.NORMAL);
-		if (role == Role.MANAGER) {
+		if (role == Role.MANAGER || role == Role.FRANCHISEE) {
 			WFShop shop = shopService.getShop(shopId);
 			user.setShopId(shop.getId());
 			user.setShopName(shop.getName());
