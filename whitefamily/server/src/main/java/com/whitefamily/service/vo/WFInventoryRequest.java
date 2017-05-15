@@ -28,14 +28,17 @@ public class WFInventoryRequest {
 	
 	protected boolean isLoadItem;
 	
-	private List<WFSupplierMapping> mappingList;
+	
 	
 	private float sum;
-
+	
+	static List<WFSupplierMapping> mappingList;
 
 	public WFInventoryRequest() {
 		super();
-		mappingList  =ServiceFactory.getSupplierService().getMappingList();
+		if (mappingList == null) {
+			mappingList = ServiceFactory.getSupplierService().getMappingList();
+		}
 	}
 
 
@@ -111,6 +114,7 @@ public class WFInventoryRequest {
 	
 	
 	private void addToSupplierList(Item item) {
+	
 		for (WFSupplierMapping wfs : mappingList) {
 			if (item.goods.getId() == wfs.getMappingId() && wfs.getMc() == DeliverySupplierConfiguration.MC.GOODS) {
 				supplierItemList.add(item);

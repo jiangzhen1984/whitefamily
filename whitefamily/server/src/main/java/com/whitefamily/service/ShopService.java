@@ -140,10 +140,9 @@ public class ShopService extends BaseService implements IShopService {
 		s.setAddress(shop.getAddress());
 		s.setType(shop.getType());
 		Session sess = openSession();
-		Transaction tr = beginTransaction(sess);
+		beginTransaction(sess);
 		sess.save(s);
 		commitTrans();
-		sess.close();
 		shop.setId(s.getId());
 		shopCache.put(s.getId(), shop);
 		return shop;

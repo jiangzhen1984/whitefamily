@@ -2,7 +2,7 @@ package com.whitefamily.service.vo;
 
 public class WFManager extends WFUser {
 	
-	private WFShop shop;
+	protected WFShop shop;
 
 	public WFShop getShop() {
 		return shop;
@@ -13,5 +13,8 @@ public class WFManager extends WFUser {
 	}
 	
 	
+	public long getShopId() {
+		return shop.getId();
+	}
 
 }

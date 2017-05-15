@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<title>大白送货单</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="style/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+</head>
+
+
+<body>
+ <h:form>
+<div class="shopCart">
+    <div class="shopCart_top">
+    	<a href="inventory_request_list.xhtml"> <img src="images/back.png" class="icon_back" /></a>
+        订单#{shopBean.inventoryRequestdetail.datetime}
+        <span class="top_btn2"></span>
+	</div>    
+    <div class="shopCart_content">
+        <div class="shopCart_bill">
+           	<ui:repeat var="o" value="#{shopBean.inventoryRequestdetail.itemList}" varStatus="status">
+        	<div class="shopCart_bill_1" >
+            	<div class="shopCart_bill_11">
+                    <dl>
+                        <dd>
+                            <a href="#"><img src="images/11.jpg" /></a>
+                        </dd>
+                        <dt>
+                            <div class="tit"><a href="#">#{o.goods.name}</a></div>
+                            <div class="price">小计:<span class="red">￥
+                           <c:if test="#{userBean.user.franchiseeType == true}">
+				        	 <h:outputText value="#{o.goods.price1}"> <f:convertNumber groupingUsed="true" minFractionDigits="2" pattern="#0.00" /></h:outputText>
+				        	</c:if>
+				        	<c:if test="#{userBean.user.franchiseeType == false}">
+				        	 <h:outputText value="#{o.goods.price}"> <f:convertNumber groupingUsed="true" minFractionDigits="2" pattern="#0.00" /></h:outputText>
+				        	</c:if>
+				        	
+                           </span></div>
+                            <div class="info">已选<span class="red"><h:outputText value="  "  /><h:outputText value="#{o.count}"> <f:convertNumber groupingUsed="true" minFractionDigits="0" pattern="#0" /></h:outputText></span></div>
+                        </dt>
+                        <div class="clear"></div>
+                    </dl>
+                </div>
+                <div class="shopCart_bill_12">                 	 
+                     <div class="shopCart_bill_12_content">
+                         <div class="left">
+                            <span class="red big">￥
+                            <c:if test="#{userBean.user.franchiseeType == true}">
+				        	#{o.goods.price1}
+				        	</c:if>
+				        	<c:if test="#{userBean.user.franchiseeType == false}">
+				        	#{o.goods.price}
+				        	</c:if>
+				        	 </span>/ #{o.goods.unit}<br />
+                         </div>
+                         <div class="right">
+                         </div><div class="clear"></div>
+                     </div>
+                </div>
+               
+            </div>
+			</ui:repeat>
+
+        </div>
+    </div>
+    <div class="shopCart_pay">
+        <div class="menu">
+             <ul>
+               <li><a class="menu_1" href="clasify.xhtml"></a></li>
+             <li><a class="menu_2 " href="shop_cart.xhtml"><span class="sum"  id="cart_count"><h:outputText value="#{cartBean.cart.totalCount}" /></span></a></li>
+            <li><a class="menu_3" href="#"></a></li>
+            <li><a class="menu_4   self"  href="user_info.xhtml"></a></li>     
+             </ul>
+         <div class="clear"></div>
+       </div>     
+    </div>
+    
+</div>
+</h:form>
+
+<script type="text/javascript">
+ //<![CDATA[
+<!--
+
+function add(gid) {
+	var sp = document.getElementById(gid);
+   var num = sp.value;
+   if (isNaN(num)) {
+       return;
+   }
+   var n = Number(num) + 1;
+   sp.value = n;
+}
+
+
+function minus(gid) {
+   var sp = document.getElementById(gid);
+   var num = sp.value;
+    if (isNaN(num)) {
+       return;
+   }
+   var n = Number(num);
+  
+   if (n > 0) {
+       sp.value = n -1 ;
+   }
+}
+
+
+function addToCart(gid, n) {
+    var rq= 'mall.ajax?action=cartAction&subaction=plus&goodscount='+n+'&goodsid='+gid;
+	 $.ajax({
+		url: rq,
+	success :function(data) {
+		$("#cart_count").html(data.totalcount+"");
+		$("#cc"+gid).html(data.itemcount+"");
+		$("#gprice").html(data.totalprice+"");
+	}
+	});
+}
+
+function minusFromCart(gid, n) {
+   var rq= 'mall.ajax?action=cartAction&subaction=minus&goodscount='+n+'&goodsid='+gid;
+	 $.ajax({
+		url: rq,
+  	success :function(data) {
+  		$("#cart_count").html(data.totalcount+"");
+		$("#cc"+gid).html(data.itemcount+"");
+		$("#gprice").html(data.totalprice+"");
+		if (data.itemcount == 0) {
+			$('#shop_item_'+gid).remove();
+		}
+  	}
+  	});
+}
+
+
+//-->
+
+
+
+ //]]>
+</script>
+</body>
+</html>

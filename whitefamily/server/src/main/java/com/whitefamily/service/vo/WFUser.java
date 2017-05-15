@@ -13,4 +13,7 @@ public class WFUser extends User {
 		return false;
 	}
 
+	public long getShopId() {
+		return 0;
+	}
 }

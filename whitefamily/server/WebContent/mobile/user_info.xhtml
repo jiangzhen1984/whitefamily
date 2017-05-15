@@ -41,16 +41,24 @@
  <div class="clear"></div>
 </div>
 </div>
+<h:form>
  <div class="userCenter_myOrder">
-  <h2>我的订单<span>查看全部订单<img src="images/arrow_right.png" class="icon_21" /></span></h2>
+    <h:commandLink  action="inventory_request_list.xhtml" type="submit" >
+       <h2>我的订单<span>最近一个月的采购单<img src="images/arrow_right.png" class="icon_21" /></span></h2>
+       <f:setPropertyActionListener target="#{shopBean.viewShopInventoryRequestId}" value="#{userBean.user.shopId}" />
+   </h:commandLink>
+                      
+  <a href="inventory_request_list.xhtml" ></a>
+  <!-- 
     <div class="userCenter_myOrder_btns order">
     	<a href="#"><img src="images/u1.png" /></a>
         <a href="#"><img src="images/u2.png" /></a>
         <a href="#"><img src="images/u3.png" /></a>
       <div class="clear"></div>
     </div>
+     -->
  </div>
- 
+ </h:form>
 <div class="userCenter_myOrder">
   <h2>常用工具</h2>
  <div class="userCenter_myOrder_btns icons">
