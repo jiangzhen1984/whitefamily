@@ -657,7 +657,10 @@ public class ShopBean {
 			return "inventoryrequestfailed";
 		}
 		
-		
+		if (((WFManager) userBean.getUser()).getShop() == null) {
+			errMsg = "没有找到所属店铺";
+			return "inventoryrequestfailed";
+		}
 		shopService.requestInventory(inventoryRequest,
 				((WFManager) userBean.getUser()).getShop(), userBean.getUser());
 
