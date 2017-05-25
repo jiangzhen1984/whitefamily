@@ -1,0 +1,12 @@
+DEBUG/
+RELEASE/
+db/DEBUG/
+db/RELEASE/
+net/DEBUG/
+net/RELEASE/
+ws/DEBUG/
+ws/RELEASE/
+wf/DEBUG/
+wf/RELEASE/
+test/DEBUG/
+test/RELEASE/
