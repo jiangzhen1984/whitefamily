@@ -2,6 +2,7 @@
 #pragma warning (disable : 4996)
 #include "Logger.h"
 #include "db.h"
+#include "ms_database.h"
 #include "MetaDS.h"
 
 
@@ -19,7 +20,7 @@ int main(int argc, char ** argv) {
 	int ret;
 	::std::string strdb;
 	::std::string strname;
-	Connection * connptr = NULL;
+	SP<Connection> connptr = NULL;
 	::std::vector<Incoming *> vec;
 
 	memset(dbfileStr, 0, sizeof(dbfileStr));
@@ -83,10 +84,7 @@ cleanup:
 		fclose(nameFile);
 		nameFile = NULL;
 	}
-	if (connptr != NULL)
-	{
-		connptr->close();
-	}
+	
 
 	for (std::vector<Incoming *>::iterator it = vec.begin(); it != vec.end(); ++it)
 	{

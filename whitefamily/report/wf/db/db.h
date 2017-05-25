@@ -18,9 +18,10 @@ namespace db{
 
 		virtual bool testConnection() = 0;
 
-		virtual Connection * getConnection() = 0;
-		virtual Connection * createConnection() = 0;
+		virtual SP<Connection> getConnection() = 0;
+		virtual SP<Connection> createConnection() = 0;
 		virtual bool close() = 0;
+		virtual ~Database(){};
 	};
 
 
@@ -31,6 +32,7 @@ namespace db{
 		virtual SP<::db::ResultSet> execQuery(const char * sql) = 0;
 		virtual int    execUpdate(const char * sql) = 0;
 		virtual bool   close() = 0;
+		virtual ~Connection() {};
 	};
 
 
@@ -39,6 +41,7 @@ namespace db{
 	public:
 		virtual SP<Row> getRow(int idx) = 0;
 		virtual int getRowCount() = 0;
+		virtual ~ResultSet(){};
 	};
 
 
@@ -46,6 +49,7 @@ namespace db{
 	public:
 		virtual SP<Field> getField(int idx) = 0;
 		virtual int getFieldCount() = 0;
+		virtual ~Row(){};
 	};
 
 
@@ -55,6 +59,7 @@ namespace db{
 	public:
 		virtual void * getValue() = 0;
 		virtual char * getName() = 0;
+		virtual ~Field(){};
 	};
 }
 

@@ -18,7 +18,7 @@ void testDb()
 
 	::std::cout << " test connection : " << ret << endl;
 
-	Connection * pc = pter->createConnection();
+	SP<Connection> pc = pter->createConnection();
 	if (pc == NULL)
 	{
 		::std::cout << "open connection failed" << ::std::endl;
@@ -75,7 +75,7 @@ void testConn()
 
 int main(int argc, char ** argv)
 {
-	testConn();
+	testDb();
 	
 	return 0;
 }

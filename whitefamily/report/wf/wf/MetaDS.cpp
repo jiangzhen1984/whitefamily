@@ -4,28 +4,28 @@
 #include "net.h"
 
 
-Connection * Report::openDatabase(string file)
+SP<Connection>  Report::openDatabase(string file)
 {
+	SP<Connection> pconn = NULL;
 	Logger * l = Logger::getInstance();
 	string dburl("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DSN='';");
 	dburl.append("DBQ=").append(file).append(";PWD=123456");
-	SP<Database>  pter = ::db::ms::MsDatabase::createDatabase(dburl.c_str());
-	Connection * pconn = pter->createConnection();
+	{
+		SP<Database>  pter = ::db::ms::MsDatabase::createDatabase(dburl.c_str());
+		pconn = pter->createConnection();
+	}
 	*l << string("Open database success") << dburl;
 	return pconn;
 }
 
-int Report::readIncoming(Connection * pconn, vector<Incoming *>& vec)
+int Report::readIncoming(SP<Connection> spConn, vector<Incoming *>& vec)
 {
 	int n = 0, i;
 	SP<Row> spr;
 	Incoming * ptrIn = NULL;
-	if (pconn == NULL)
-	{
-		return -1;
-	}
+	
 
-	SP<ResultSet> sp = pconn->execQuery(" SELECT * FROM a; ");
+	SP<ResultSet> sp = spConn->execQuery(" SELECT * FROM a; ");
 	n = sp->getRowCount();
 	for (i = 0; i < n; i++)
 	{

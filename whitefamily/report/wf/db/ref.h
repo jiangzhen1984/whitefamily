@@ -36,6 +36,14 @@ namespace db {
 		inline  T*      operator-> () const { return mRef; }
 		inline  T*      get() const         { return mRef; }
 
+		inline bool operator == (const SP<T>& o) const {
+			return mRef == o.mRef;
+		}
+
+		inline bool operator != (const SP<T>& o) const {
+			return mRef != o.mRef;
+		}
+
 
 	private:
 		T * mRef;

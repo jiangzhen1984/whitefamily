@@ -31,7 +31,7 @@ private:
 class Report
 {
 public:	
-	Connection * openDatabase(string file);
-	int readIncoming(Connection * pconn, vector<Incoming *>&);
+	SP<Connection>  openDatabase(string file);
+	int readIncoming(SP<Connection> spConn, vector<Incoming *>&);
 	void reportIncomings(vector<Incoming *>& vec);
 };

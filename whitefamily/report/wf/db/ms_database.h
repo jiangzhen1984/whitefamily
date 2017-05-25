@@ -22,15 +22,15 @@ namespace db {
 		public:
 			explicit MsDatabase();
 			explicit MsDatabase(const char * uri, char * user, char * pwd, int port = 0);
-			~MsDatabase();
+			virtual ~MsDatabase();
 
 			virtual bool open();
 			virtual bool open(char * uri);
 
 			virtual bool testConnection();
 
-			virtual Connection * getConnection();
-			virtual Connection * createConnection();
+			virtual SP<Connection> getConnection();
+			virtual SP<Connection> createConnection();
 			virtual bool close();
 			static SP<Database > createDatabase(const char * uri);
 		private:
@@ -48,7 +48,7 @@ namespace db {
 		class __declspec(dllexport) MsConnection : public Connection {
 		public:
 			explicit MsConnection();
-			~MsConnection();
+			virtual ~MsConnection();
 			virtual bool open(char * uri, char * user, char * pwd, int port = 0);
 			virtual bool test();
 			virtual SP<ResultSet> execQuery(const char * sql);
@@ -59,6 +59,7 @@ namespace db {
 			SP<MsDatabase>  pdb;
 			HENV    mHEnv;
 			HDBC    mMSConn;
+			friend class MsDatabase;
 		};
 
 

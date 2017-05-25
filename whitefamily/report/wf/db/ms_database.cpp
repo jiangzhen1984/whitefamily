@@ -77,20 +77,21 @@ bool MsDatabase::testConnection()
 	return false;
 }
 
-Connection * MsDatabase::getConnection()
+SP<Connection> MsDatabase::getConnection()
 {
 	return NULL;
 }
-Connection * MsDatabase::createConnection()
+SP<Connection> MsDatabase::createConnection()
 {
-	Connection * pConn = new MsConnection();
+	MsConnection * pConn = new MsConnection();
 	bool ret = pConn->open(mUri, mUserName, mPwd);
 	if (!ret)
 	{
 		delete pConn;
 		return NULL;
 	}
-	return pConn;
+	pConn->pdb = SP<MsDatabase>(this);
+	return SP<Connection>(pConn);
 }
 bool MsDatabase::close()
 {
@@ -100,7 +101,7 @@ bool MsDatabase::close()
 
 SP<Database > MsDatabase::createDatabase(const char * uri)
 {
-	Database * ptr = new MsDatabase(uri, "", "");
+	MsDatabase * ptr = new MsDatabase(uri, "", "");
 	ptr->open();
 	SP<Database > sp(ptr);
 	return sp;
@@ -126,6 +127,10 @@ MsConnection::MsConnection() :mIsOpen(false)
 
 MsConnection::~MsConnection()
 {
+	if (mIsOpen)
+	{
+		close();
+	}
 	SQLFreeHandle(SQL_HANDLE_DBC, mMSConn);
 	SQLFreeHandle(SQL_HANDLE_ENV, mHEnv);	
 }

@@ -51,12 +51,11 @@ void MainWindow::handleDataTestBtnClicked()
 	bool ret = false;
 	{
 		::db::SP<::db::Database>  pter = ::db::ms::MsDatabase::createDatabase((char *)str.toStdString().c_str());
-		::db::Connection * pconn = pter->createConnection();
+		::db::SP<::db::Connection>  pconn = pter->createConnection();
 		if (pconn != NULL)
 		{
 			ret = true;
-			pconn->close();
-			delete pconn;
+			pconn->close();			
 		}
 		else
 		{

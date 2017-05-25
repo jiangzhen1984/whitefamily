@@ -10,3 +10,8 @@ wf/Debug/
 wf/Release/
 test/Debug/
 test/Release/
+wf/log
+wf/*.conf
+wf/*.conf.bak
+ui/*.conf
+ui/*.conf.bak
