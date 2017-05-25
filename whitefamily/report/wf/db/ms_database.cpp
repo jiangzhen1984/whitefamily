@@ -17,7 +17,7 @@ using namespace db::ms;
 MsDatabase::MsDatabase() : mIsOpen(false), mUri(NULL), Ref()
 {
 }
-MsDatabase::MsDatabase(char * uri, char * user, char * pwd, int port) : mIsOpen(false), Ref()
+MsDatabase::MsDatabase(const char * uri, char * user, char * pwd, int port) : mIsOpen(false), Ref()
 {
 	
 	URI_CPY(mUri, uri)
@@ -98,7 +98,7 @@ bool MsDatabase::close()
 }
 
 
-SP<Database > MsDatabase::createDatabase(char * uri)
+SP<Database > MsDatabase::createDatabase(const char * uri)
 {
 	Database * ptr = new MsDatabase(uri, "", "");
 	ptr->open();

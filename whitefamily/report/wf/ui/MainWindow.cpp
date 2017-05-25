@@ -1,3 +1,6 @@
+
+
+#pragma warning (disable : 4996)
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 
@@ -58,8 +61,7 @@ void MainWindow::handleDataTestBtnClicked()
 		else
 		{
 			ret = false;
-		}
-				
+		}				
 	}
 
 	mTestDB = ret;
@@ -67,7 +69,22 @@ void MainWindow::handleDataTestBtnClicked()
 	QMessageBox msgBox;	
 	if (ret)
 	{
-		msgBox.setInformativeText(QStringLiteral("连接成功"));
+		QFile  file("t.conf");
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			msgBox.setInformativeText(QStringLiteral("无法保存配置，请手动保存"));
+		}
+		else
+		{
+			
+			QDataStream out(&file);
+
+			out << this->mDataFileEdit->text().toLatin1();
+			file.flush();
+			file.close();
+			msgBox.setInformativeText(QStringLiteral("连接成功并保存"));
+		}
+		
 	}
 	else
 	{
@@ -92,6 +109,22 @@ void MainWindow::handleConnectionTestBtnClicked()
 	{
 		msgBox.setInformativeText(QStringLiteral("服务器连接成功"));	
 		mTestAPI = true;
+
+		QFile  file("u.conf");
+		if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			msgBox.setInformativeText(QStringLiteral("无法保存配置，请手动保存"));
+		}
+		else
+		{
+
+			QDataStream out(&file);
+
+			out << this->mCellphoneNumberEdit->text().toLatin1();
+			file.flush();
+			file.close();
+			msgBox.setInformativeText(QStringLiteral("测试成功并保存"));
+		}
 	}
 	else
 	{		

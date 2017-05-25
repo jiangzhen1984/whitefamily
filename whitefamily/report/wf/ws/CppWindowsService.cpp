@@ -89,9 +89,7 @@ int wmain(int argc, wchar_t *argv[])
     }
     else
     {
-        wprintf(L"Parameters:\n");
-        wprintf(L" -install  to install the service.\n");
-        wprintf(L" -remove   to remove the service.\n");
+      
 
         CSampleService service(SERVICE_NAME);
         if (!CServiceBase::Run(service))

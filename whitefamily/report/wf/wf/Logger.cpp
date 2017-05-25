@@ -4,6 +4,7 @@
 
 #include <direct.h>
 #include <ctime>
+#include <string>
 
 static Logger * l;
 
@@ -61,6 +62,62 @@ Logger::Logger(Logger * logger)
 }
 
 
+
+Logger & Logger::operator << (string str)
+{
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+
+Logger & Logger::operator << (const char * szStr)
+{
+	string str(szStr);
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+Logger & Logger::operator << (char * szStr)
+{
+	string str(szStr);
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+
+
+Logger & Logger::operator << (bool b)
+{
+	string str(::std::to_string(b));
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+
+Logger & Logger::operator << (int i)
+{
+	string str(::std::to_string(i));
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+Logger & Logger::operator << (float f)
+{
+	string str(::std::to_string(f));
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+Logger & Logger::operator << (double d)
+{
+	string str(::std::to_string(d));
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+Logger & Logger::operator << (char c)
+{
+	string str(::std::to_string(c));
+	internalLog(" [INFO] ", str);
+	return *this;
+}
+
+
+
+
 void Logger::internalLog(string level, string data)
 {
 	if (logFile == NULL)
@@ -79,21 +136,24 @@ void Logger::internalLog(string level, string data)
 		
 	fwrite(buffer, sizeof(char), strlen(buffer), logFile);
 	fwrite(level.c_str(), sizeof(char), level.size(), logFile);
-	fwrite(data.c_str(), sizeof(char),  data.size(), logFile);
-	fwrite("\n", sizeof(char), 1, logFile);
+	fwrite(data.c_str(), sizeof(char),  data.size(), logFile);	
+	fwrite("\n", sizeof(char), 2, logFile);
 }
 
 
 void Logger::i(string data)
 {
+	
 	internalLog(" [INFO] ", data);
 }
 void Logger::d(string data)
 {
+	
 	internalLog(" [DEBUG] ", data);
 }
 void Logger::e(string data)
 {
+	
 	internalLog(" [ERROR] ", data);
 }
 

@@ -21,7 +21,7 @@ namespace db {
 		class __declspec(dllexport) MsDatabase : public Database {
 		public:
 			explicit MsDatabase();
-			explicit MsDatabase(char * uri, char * user, char * pwd, int port = 0);
+			explicit MsDatabase(const char * uri, char * user, char * pwd, int port = 0);
 			~MsDatabase();
 
 			virtual bool open();
@@ -32,7 +32,7 @@ namespace db {
 			virtual Connection * getConnection();
 			virtual Connection * createConnection();
 			virtual bool close();
-			static SP<Database > createDatabase(char * uri);
+			static SP<Database > createDatabase(const char * uri);
 		private:
 			bool mIsOpen;
 			char * mUri;

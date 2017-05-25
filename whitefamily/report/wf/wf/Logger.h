@@ -10,6 +10,17 @@ class Logger
 public:
 	~Logger();
 
+	Logger & operator << (string str);
+	Logger & operator << (const char *);
+	Logger & operator << (char *);
+
+	Logger & operator << (bool );
+	Logger & operator << (int);
+	Logger & operator << (float);
+	Logger & operator << (double);
+	Logger & operator << (char);
+
+
 	static void I(string data);
 	static void D(string data);
 	static void E(string data);
