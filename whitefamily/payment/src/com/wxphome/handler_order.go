@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"io/ioutil"
 	"strings"
-	"github.com/glwapi/com/glwapi"
+	"com/glwapi"
 )
 
 
@@ -19,12 +19,14 @@ type OrderPaymentFormData struct {
 	BU		string	`json:"back_url"`
 	Fee		string	`json:"fee"`
 	BD		string	`json:"back_data"`
+	UID		string	`json:"open_id"`
 }
 
 
 type OrderPaymentResp struct {
 	Error	int	`json:"error"`
-	
+	Msg	string	`json:"emsg"`
+
 }
 
 
@@ -42,7 +44,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var fd = &OrderPaymentFormData{}
-	if err := json.Unmarshal(r.Body, &fd); err == nil {
+	if err := json.NewDecoder(r.Body).Decode(&fd); err == nil {
 		if fd.OID == "" || fd.OD == "" || fd.BU == "" || fd.Fee == "" || fd.BD == "" {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -2})
 			fmt.Fprintf(w, string(data))
@@ -56,8 +58,11 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//TODO get user openid
-		o, e := g.WeChat.CreateOrder1(nil, fd.OID, fd.BD, fd.BD, "", "127.0.0.1", "", fee)
+		if fd.UID == "" {
+			//TODO to get user open id
+		}
+		fd.UID = "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
+		o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : fd.UID}, fd.OID, fd.BD, fd.BD, "", "127.0.0.1", "http://wechat.wxphome.cn/wechat", fee)
 		if e != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -4})
 			fmt.Fprintf(w, string(data))
@@ -72,7 +77,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		LI(xml)
-		
+
 		xmlreader := strings.NewReader(xml)
 		r, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
 		if e2 != nil {
@@ -82,22 +87,28 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		defer r.Body.Close()
-		body , e3 := ioutil.ReadAll(r.Body)
+		body , _ := ioutil.ReadAll(r.Body)
 		if e2 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -7})
 			fmt.Fprintf(w, string(data))
 			return
 		}
-		
+
 		e4 := glwapi.DecodeCreateOrderResp(o, body)
 		if e4 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -8})
 			fmt.Fprintf(w, string(data))
 			return
 		}
-			
+
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -0})
 		fmt.Fprintf(w, string(data))
+	} else {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -9, Msg : err.Error()})
+		fmt.Fprintf(w, string(data))
 	}
-		
+
+}
+
+func  order_query_handler(w http.ResponseWriter, r *http.Request) {
 }
