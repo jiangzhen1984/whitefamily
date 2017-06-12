@@ -25,6 +25,7 @@ func main() {
 	http.HandleFunc("/order/create", order_create_handler)
 	http.HandleFunc("/wechat", wechat_user_auth_handler)
 	http.HandleFunc("/wechat/paymentresult", wechat_paymentresult_handler)
+	http.HandleFunc("/js/auth", js_auth_handler)
 
 	log.Fatal(ser.ListenAndServe())
 }
