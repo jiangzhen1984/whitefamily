@@ -11,8 +11,8 @@ import (
 
 
 type JsResp struct {
-	Err	int 	`json:"err"`
-	Appid	string	`json:"appid"`
+	Err	int	`json:"err"`
+	AppId	string	`json:"appid"`
 	N	string	`json:"nonce"`
 	S	string	`json:"sign"`
 	T	string	`json:"timestamp"`
@@ -21,6 +21,7 @@ type JsResp struct {
 func js_auth_handler(w http.ResponseWriter,  r * http.Request) {
 	g := glwapi.D()
 	if g.IsInit() == false {
+		LE(" Doesn't init yet ")
 		return
 	}
 	if g.WeChat.IsGotJSToken() == false {
@@ -45,7 +46,7 @@ func js_auth_handler(w http.ResponseWriter,  r * http.Request) {
 	}
 
 	u := r.FormValue("url")
-	js, e := g.GetJSAuth(g.WeChat.JSToken, 	u)
+	js, e := g.GetJSAuth(g.WeChat.JSToken,	u)
 	if e != nil {
 		bs, _ := json.Marshal(&JsResp{Err : -3})
 		fmt.Fprintf(w, string(bs))
@@ -54,8 +55,9 @@ func js_auth_handler(w http.ResponseWriter,  r * http.Request) {
 
 	js.N()
 	js.T()
-	js.S(u)
-	bs, _ := json.Marshal(&JsResp{Err : 0, N : js.Nonce, S: js.Sign, T: js.Ts})
+	js.S()
+	LI(js.String())
+	bs, _ := json.Marshal(&JsResp{Err : 0, AppId: g.WeChat.AppId, N : js.Nonce, S: js.Sign, T: js.Ts})
 	fmt.Fprintf(w, string(bs))
-	
+
 }

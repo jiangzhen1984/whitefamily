@@ -26,6 +26,8 @@ type OrderPaymentFormData struct {
 type OrderPaymentResp struct {
 	Error	int	`json:"error"`
 	Msg	string	`json:"emsg"`
+	OID	string	`json:"oid"`
+	WxOId	string	`json:"wxid"`
 
 }
 
@@ -101,7 +103,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -0})
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -0, OID: o.OrderNo, WxOId : o.PrepayId})
 		fmt.Fprintf(w, string(data))
 	} else {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -9, Msg : err.Error()})

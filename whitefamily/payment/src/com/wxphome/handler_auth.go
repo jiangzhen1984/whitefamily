@@ -2,11 +2,10 @@
 package main
 
 import (
+	"com/glwapi"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"com/glwapi"
 )
 
 
@@ -17,7 +16,7 @@ func auth() {
 		return
 	}
 	token_url := g.TokenURL()
-	r, err :=  http.Get(token_url)	
+	r, err :=  http.Get(token_url)
 	if err == nil {
 		defer r.Body.Close()
 		rdata, _ := ioutil.ReadAll(r.Body)
@@ -35,14 +34,13 @@ func auth() {
 func auth_handler(resp http.ResponseWriter, req *http.Request) {
 	g := glwapi.D()
 	token_url := g.TokenURL()
-	r, err :=  http.Get(token_url)	
+	r, err :=  http.Get(token_url)
 	if err == nil {
 		defer r.Body.Close()
 		rdata, _ := ioutil.ReadAll(r.Body)
 		g.HandleTokenAuthResp([]byte(rdata))
 		fmt.Fprintf(resp, g.String())
 	} else {
-		log.Fatal("====")
 		fmt.Fprintf(resp, " Token get error: %s", err)
 	}
 }
