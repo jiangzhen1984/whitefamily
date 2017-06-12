@@ -77,6 +77,9 @@
 		<mapping class="com.whitefamily.po.incoming.OperationCost" />
 		<mapping class="com.whitefamily.po.artifact.ArtifactProduct" />
 		<mapping class="com.whitefamily.po.artifact.ArtifactStaff" />
+		<mapping class="com.whitefamily.po.payment.PaymentInfo" />
+		<mapping class="com.whitefamily.po.payment.PaymentInventoryRecord" />
+		
 		
 	</session-factory>
 
