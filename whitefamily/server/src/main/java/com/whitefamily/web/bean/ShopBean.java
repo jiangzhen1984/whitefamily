@@ -58,6 +58,10 @@ public class ShopBean {
 	private WFShopInventory shopInventoryReport;
 	private String reportResultType;
 	private WFInventoryRequest inventoryRequest;
+	public WFInventoryRequest getInventoryRequest() {
+		return inventoryRequest;
+	}
+
 	private ShopIncoming shopIncoming;
 	private long viewShopIncomingId;
 	private Date viewShopIncomingDate;

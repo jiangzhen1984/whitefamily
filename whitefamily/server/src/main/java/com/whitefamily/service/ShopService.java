@@ -468,7 +468,7 @@ public class ShopService extends BaseService implements IShopService {
 //		}
 
 		commitTrans();
-		sess.close();
+		inventory.setId(record.getId());
 		return Result.SUCCESS;
 	}
 	

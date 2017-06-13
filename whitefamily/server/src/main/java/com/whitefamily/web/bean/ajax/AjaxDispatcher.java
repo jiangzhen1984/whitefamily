@@ -95,6 +95,7 @@ public class AjaxDispatcher extends HttpServlet {
         for (Class c : list) {
         	Annotation an = c.getDeclaredAnnotation(ano);
         	if (an == null) {
+        		logger.warn("Skip class " + c.getName());
         		continue;
         	}
         	
@@ -111,8 +112,6 @@ public class AjaxDispatcher extends HttpServlet {
 			m.action = am.uri();
 			logger.info("===initilaized ajax service mapping===>"+m.toString());
 			mapping.put(m.action, m);
-			break;
-    		
         }
 	}
 

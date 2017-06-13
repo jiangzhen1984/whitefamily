@@ -1,2 +1,3 @@
 delivery_form_path=/tmp/
 dr_form_context=/ir/
+payment_address=http://localhost:8083/

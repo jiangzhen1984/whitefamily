@@ -13,6 +13,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 <meta name="format-detection" content="telephone=no" />
 <link href="style/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 
 
@@ -83,10 +85,93 @@
            		 </div>
         </div>
         
+        			
+			 <div class="submit_block_right">
+                    <h:commandButton   type="button" value="微信支付" onclick="jsauth(); createorder('#{shopBean.inventoryRequest.id}')" ></h:commandButton>  
+           		 </div>
+        
         <div class="clear"></div>
     </div>
 
 </div>
+
+
+
+<script type="text/javascript">
+ //<![CDATA[
+<!--
+var jsok = false;
+
+function createorder(orderno) {
+	if (jsok == false) {
+		console.log("===js is not ok");
+		return;
+	}
+	console.log('===>' + orderno);
+	 var rq= 'wxoc.ajaxj?order='+orderno;
+	 $.ajax({
+		url: rq,		
+	  	success :function(data) {
+	  		
+	  		wx.chooseWXPay({
+	  		    timestamp: 0, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+	  		    nonceStr: '', // 支付签名随机串，不长于 32 位
+	  		    package: '', // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+	  		    signType: '', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+	  		    paySign: '', // 支付签名
+	  		    success: function (res) {
+	  		        // 支付成功后的回调函数
+	  		    }
+	  		});	
+	  	}
+  	});
+}
+
+function jsauth() {
+	var rq= 'jsauth.ajaxj';
+	 $.ajax({
+		url: rq,
+		async: true,
+	  	success :function(data) {
+	  		if (data.ret == 0) {
+	  			wxjsConfig(data.appid, data.timestamp, data.nonce, data.sign)
+	  		} else {
+	  			console.log("js auth failed");
+	  		}
+	  	}
+	  });
+}
+
+
+function wxjsConfig(appId, timestamp, nonceStr, signature) {
+	wx.config({
+		debug: true, 
+	    appId: appId,
+	    timestamp: timestamp, 
+	    nonceStr: nonceStr,
+	    signature: signature,
+	    jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+	})
+} 
+
+wx.ready(function(){
+	console.log("===js ready");
+	jsok = true;
+	
+});
+
+wx.error(function(res){
+	console.log("error" + res);
+});
+
+
+jsauth();
+//-->
+
+
+
+//]]>
+</script>
 
 </body>
 </html>
