@@ -69,12 +69,24 @@
 			</div>    
             <div class="line"></div>  
             -->
+          
+    <c:if test="#{userBean.user.shop.type =='DIRECT_SALE'}">
       <div class="orderPayFor_order_send">货到付款
 			  <div class="orderPayFor_send_right arrow_2">
-           	    <p class="green">已选择<input class="check" type="checkbox" checked="checked" readonly="readonly"/></p>
+           	    <p class="green">已选择<input class="check" type="checkbox" checked="checked" readonly="readonly" value="0"/></p>
                     
                 </div> 
           </div>
+    </c:if>
+   <c:if test="#{userBean.user.shop.type =='FRANCHISE_SALE'}">
+      <div class="orderPayFor_order_send">微信支付
+			  <div class="orderPayFor_send_right arrow_2">
+           	    <p class="green">已选择<input class="check" type="checkbox" checked="checked" readonly="readonly" value="1"/></p>
+                    
+                </div> 
+          </div>
+    </c:if>
+    
     </div>
      <!-- 
     <div class="orderPayFor_order">  

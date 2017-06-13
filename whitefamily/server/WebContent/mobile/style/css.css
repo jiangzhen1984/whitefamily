@@ -789,6 +789,18 @@ position: relative;
     border-radius: 4px;
     font-size: 18px;
 }
+
+.orderPayFor .submit_block_right input[type=button]{
+    background-color: #fe463c;
+    color: #fff;
+    font-family: '微软雅黑';
+    border: none;
+    line-height: 2.8em;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-radius: 4px;
+    font-size: 18px;
+}
 .orderPayFor_order_imgs .icon_21{width: 28px;float: right;margin-top: -2px;cursor: pointer;}
 .orderPayFor_send_right.arrow_2 .icon_21{width: 28px;float: right;margin-top: -2px;cursor: pointer;}
 

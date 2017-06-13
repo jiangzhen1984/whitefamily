@@ -228,7 +228,7 @@ public class UserManagementBean {
 		if (userId > 0) {
 			user = userService.getUser(userId);
 		} else {
-			if (role == Role.MANAGER) {
+			if (role == Role.MANAGER || role == Role.FRANCHISEE) {
 				if (shopId <= 0) {
 					errMsg = "请输入所属店铺";
 					return "failed";

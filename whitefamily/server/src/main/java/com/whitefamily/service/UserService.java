@@ -96,10 +96,8 @@ public class UserService extends BaseService implements IUserService {
 			m.setName(u.getName());
 			m.setRole(Role.MANAGER);
 			if (u.getShopId() > 0) {
-				WFShop shop = new WFShop();
+				WFShop shop =shopService.getShop(u.getShopId());
 				shop.setId(u.getShopId());
-				shop.setAddress(u.getShopAddress());
-				shop.setName(u.getName());
 				m.setShop(shop);
 			}
 			wfu = m;
@@ -113,10 +111,8 @@ public class UserService extends BaseService implements IUserService {
 			m.setName(u.getName());
 			m.setRole(Role.FRANCHISEE);
 			if (u.getShopId() > 0) {
-				WFShop shop = new WFShop();
+				WFShop shop =shopService.getShop(u.getShopId());
 				shop.setId(u.getShopId());
-				shop.setAddress(u.getShopAddress());
-				shop.setName(u.getName());
 				m.setShop(shop);
 			}
 			wfu = m;

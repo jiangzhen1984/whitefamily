@@ -32,6 +32,7 @@ import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.Shop;
 import com.whitefamily.po.ShopInventoryStatisticsGoods;
 import com.whitefamily.po.ShopInventoryStatisticsRecord;
+import com.whitefamily.po.ShopType;
 import com.whitefamily.po.delivery.DeliveryRecord;
 import com.whitefamily.po.delivery.DeliveryRecordGoods;
 import com.whitefamily.po.delivery.DeliverySupplierConfiguration;
@@ -419,13 +420,27 @@ public class ShopService extends BaseService implements IShopService {
 		
 
 		Session sess = getSession();
-		
-		Query query = sess.createQuery(" from InventoryRequestRecord where shopId = ? and requestDate =? ");
-		query.setLong(0, shop.getId());
-		query.setDate(1, inventory.getDatetime());
-		Transaction tr = beginTransaction(sess);
-		List<InventoryRequestRecord> irrList = query.list();
-		if (irrList == null || irrList.size() <= 0) {
+		beginTransaction(sess);
+		if (shop.getType() == ShopType.DIRECT_SALE) {
+			Query query = sess.createQuery(" from InventoryRequestRecord where shopId = ? and requestDate =? ");
+			query.setLong(0, shop.getId());
+			query.setDate(1, inventory.getDatetime());
+			List<InventoryRequestRecord> irrList = query.list();
+			if (irrList == null || irrList.size() <= 0) {
+				record = new InventoryRequestRecord();
+				record.setDatetime(inventory.getDatetime());
+				record.setOperator(manager);
+				record.setStatus(InventoryStatus.REQUEST);
+				record.setShop(shop);
+				record.setRequestDate(inventory.getDatetime());
+				
+				sess.save(record);
+				sess.flush();
+			} else {
+				record = irrList.iterator().next();
+			}
+		} else {
+			logger.info("shop :" + shop.getId()+"  shop:"+ shop.getName()+"  create new order");
 			record = new InventoryRequestRecord();
 			record.setDatetime(inventory.getDatetime());
 			record.setOperator(manager);
@@ -435,8 +450,6 @@ public class ShopService extends BaseService implements IShopService {
 			
 			sess.save(record);
 			sess.flush();
-		} else {
-			record = irrList.iterator().next();
 		}
 		
 		List<WFSupplierMapping> mappingList = supplierService.getMappingList();
