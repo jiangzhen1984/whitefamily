@@ -20,6 +20,7 @@ type OrderPaymentFormData struct {
 	Fee		string	`json:"fee"`
 	BD		string	`json:"back_data"`
 	UID		string	`json:"open_id"`
+	CIP		string	`json:"ip"`
 }
 
 
@@ -28,7 +29,11 @@ type OrderPaymentResp struct {
 	Msg	string	`json:"emsg"`
 	OID	string	`json:"oid"`
 	WxOId	string	`json:"wxid"`
-
+	AppIdP	string	`json:"appid"`
+	JSTS	string	`json:"jsts"`
+	JSST	string	`json:"jsst"`
+	JSN	string	`json:"jsn"`
+	JSS	string	`json:"jss"`
 }
 
 
@@ -47,7 +52,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 	}
 	var fd = &OrderPaymentFormData{}
 	if err := json.NewDecoder(r.Body).Decode(&fd); err == nil {
-		if fd.OID == "" || fd.OD == "" || fd.BU == "" || fd.Fee == "" || fd.BD == "" {
+		if fd.OID == "" || fd.OD == "" || fd.BU == "" || fd.Fee == "" || fd.BD == "" || fd.CIP =="" {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -2})
 			fmt.Fprintf(w, string(data))
 			return
@@ -64,7 +69,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 			//TODO to get user open id
 		}
 		fd.UID = "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
-		o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : fd.UID}, fd.OID, fd.BD, fd.BD, "", "127.0.0.1", "http://wechat.wxphome.cn/wechat", fee)
+		o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : fd.UID}, fd.OID, fd.BD, fd.BD, "", fd.CIP, "http://wechat.wxphome.cn/wechat", fee)
 		if e != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -4})
 			fmt.Fprintf(w, string(data))
@@ -102,8 +107,13 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, string(data))
 			return
 		}
-
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -0, OID: o.OrderNo, WxOId : o.PrepayId})
+		opr := &OrderPaymentResp{Error : 0, OID: o.OrderNo, WxOId : o.PrepayId}
+		jss := o.JsSign()
+		opr.JSN = jss.N
+		opr.JSS = jss.S
+		opr.JSST = jss.ST
+		opr.JSTS = jss.TS
+		data, _ :=json.Marshal(opr)
 		fmt.Fprintf(w, string(data))
 	} else {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -9, Msg : err.Error()})

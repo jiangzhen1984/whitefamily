@@ -37,6 +37,7 @@ public class WeChatOrderCreate extends AjaxDispatcherJson {
 			rjson.put("back_url", "http://payment.wxphome.cn");
 			rjson.put("fee", "123");
 			rjson.put("back_data", "aaaa");
+			rjson.put("ip", request.getRemoteAddr());
 			
 			byte[] rep = PaymentReaderUtil.readPost(ServerConstants.getInstance().getPaymentAddress()+"/order/create?url=" + URLEncoder.encode("http://wf.wxphome.cn/"), rjson.toString().getBytes());
 			if (rep == null) {
@@ -45,11 +46,17 @@ public class WeChatOrderCreate extends AjaxDispatcherJson {
 			}
 			
 			String wxid = null, orderid = null;
+			String jss = null, jsn = null, jsst =null, jsts = null;
 			String str = new String(rep, 0, rep.length);
 			JSONObject object = (JSONObject) new JSONTokener(str).nextValue();
 			if (object.getInt("error") == 0) {
 				wxid = object.getString("wxid");
 				orderid = object.getString("oid");
+				jss = object.getString("jss");
+				jsn = object.getString("jsn");
+				jsst = object.getString("jsst");
+				jsts = object.getString("jsts");
+				
 				
 			} else {
 				ret = -1;
@@ -57,7 +64,10 @@ public class WeChatOrderCreate extends AjaxDispatcherJson {
 			json.put("ret", ret);
 			json.put("wxid", wxid);
 			json.put("orderid", orderid);
-			
+			json.put("jss", jss);
+			json.put("jsn", orderid);
+			json.put("jsst", jsst);
+			json.put("jsts", jsts);
 			return json;
 			
 			

@@ -16,6 +16,7 @@ type JsResp struct {
 	N	string	`json:"nonce"`
 	S	string	`json:"sign"`
 	T	string	`json:"timestamp"`
+	Tic	string	`json:"tick"`
 }
 
 func js_auth_handler(w http.ResponseWriter,  r * http.Request) {
@@ -57,7 +58,7 @@ func js_auth_handler(w http.ResponseWriter,  r * http.Request) {
 	js.T()
 	js.S()
 	LI(js.String())
-	bs, _ := json.Marshal(&JsResp{Err : 0, AppId: g.WeChat.AppId, N : js.Nonce, S: js.Sign, T: js.Ts})
+	bs, _ := json.Marshal(&JsResp{Err : 0, AppId: g.WeChat.AppId, N : js.Nonce, S: js.Sign, T: js.Ts, Tic : js.Ticket})
 	fmt.Fprintf(w, string(bs))
 
 }

@@ -32,7 +32,7 @@ public class WeChatJSAuth extends AjaxDispatcherJson {
 			return json;
 		}
 		
-		String appid = null, ts = null, nonce = null, s = null;
+		String appid = null, ts = null, nonce = null, s = null, t= null;
 		String str = new String(rep, 0, rep.length);
 		JSONObject object = (JSONObject) new JSONTokener(str).nextValue();
 		if (object.getInt("err") == 0) {
@@ -40,6 +40,7 @@ public class WeChatJSAuth extends AjaxDispatcherJson {
 			ts = object.getString("timestamp");
 			nonce = object.getString("nonce");
 			s = object.getString("sign");
+			t = object.getString("tick");
 			
 		} else {
 			ret = -1;
@@ -49,6 +50,7 @@ public class WeChatJSAuth extends AjaxDispatcherJson {
 		json.put("timestamp", ts);
 		json.put("nonce", nonce);
 		json.put("sign", s);
+		json.put("tic", t);
 		
 		return json;
 	}

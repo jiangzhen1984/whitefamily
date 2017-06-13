@@ -30,7 +30,7 @@ public class PaymentReaderUtil {
 			while ((n = in.read(buf)) > 0) {
 				if (n + pos > data.length) {
 					byte[] newData = new byte[data.length * 2];
-					System.arraycopy(newData, 0, newData, 0, pos);
+					System.arraycopy(data, 0, newData, 0, pos);
 					data = newData;
 				}
 				System.arraycopy(buf, 0, data, pos, n);
@@ -83,10 +83,10 @@ public class PaymentReaderUtil {
 			while ((n = in.read(buf)) > 0) {
 				if (n + pos > data.length) {
 					byte[] newData = new byte[data.length * 2];
-					System.arraycopy(newData, 0, newData, 0, pos);
+					System.arraycopy(data, 0, newData, 0, pos);
 					data = newData;
 				}
-				System.arraycopy(buf, 0, data, 0, pos);
+				System.arraycopy(buf, 0, data, pos, n);
 				pos += n;
 			}
 			
