@@ -11,6 +11,7 @@ import (
 	"strings"
 	"com/glwapi"
 	"html/template"
+	"log"
 )
 
 
@@ -40,11 +41,16 @@ type OrderPaymentResp struct {
 
 type PayTpl struct {
 	WEBCONTEXT string
-	Appi	string
+	OrderNo	string
+	AppId	string
 	JSS	string
 	JSN	string
 	JSTS	string
-	JSST	string
+	PayTS	string
+	PayST	string
+	PayN	string
+	PayS	string
+
 }
 
 
@@ -91,6 +97,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		if e1 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -5})
 			fmt.Fprintf(w, string(data))
+			log.Printf("%s\n", e1)
 			return
 		}
 
@@ -101,6 +108,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		if e2 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -6})
 			fmt.Fprintf(w, string(data))
+			log.Printf("%s\n", e2)
 			return
 		}
 
@@ -109,6 +117,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		if e2 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -7})
 			fmt.Fprintf(w, string(data))
+			log.Printf("%s\n", e2)
 			return
 		}
 
@@ -116,6 +125,7 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 		if e4 != nil {
 			data, _ :=json.Marshal(&OrderPaymentResp{Error : -8})
 			fmt.Fprintf(w, string(data))
+			log.Printf("%s\n", e4)
 			return
 		}
 		opr := &OrderPaymentResp{Error : 0, OID: o.OrderNo, WxOId : o.PrepayId}
@@ -137,24 +147,62 @@ func  order_query_handler(w http.ResponseWriter, r *http.Request) {
 }
 
 
+func do_js_auth(tpl * PayTpl, u string) {
+	g := glwapi.D()
+        if g.WeChat.IsGotJSToken() == false {
+                js_ticket_url, _ := g.GetJSTicketURL()
+                resp, e := http.Get(js_ticket_url)
+                if e != nil {
+                        //FIXME should retry
+			LE("%s", e)
+                        return
+                }
+
+                defer resp.Body.Close()
+                js_ticket_resp, _ := ioutil.ReadAll(resp.Body)
+                _, e = g.HandleTicketResp(js_ticket_resp)
+                if e != nil {
+			LE("%s", e)
+                        //FIXME should retry
+                        return
+                }
+        }
+
+        js, e := g.GetJSAuth(g.WeChat.JSToken, u)
+        if e != nil {
+		LE("%s", e)
+                return
+        }
+
+        js.N()
+        js.T()
+        js.S()
+        LI(js.String())
+	tpl.JSS = js.Sign
+	tpl.JSN = js.Nonce
+	tpl.JSTS = js.Ts
+
+}
+
+
 func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	//TODO get user openid
 	//TODO create order and get js auth
-/*
 	g := glwapi.D()
 	if g.WeChat.IsTokened() == false {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -3})
 		fmt.Fprintf(w, string(data))
 		return
 	}
-	oderNo := r.FormValue("order_no")
-	fee := r.FormValue("order_fee")
-	oderDesc := r.FormValue("order_desc")
+	orderNo := r.FormValue("order_no")
+	fee, _ := strconv.Atoi(r.FormValue("order_fee"))
+	orderDesc := r.FormValue("order_desc")
 	backData := r.FormValue("back_data")
-	back_url := r.FormValue("back_url")
-	ip := r.FormValue("ip")
+	//get back url
+	r.FormValue("back_url")
+	ip := strings.Split(r.RemoteAddr, ":")[0]
 
-	testOpenId = "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
+	testOpenId := "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
 	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, backData,  ip, "http://wechat.wxphome.cn/wechat", fee)
 	if e != nil {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -4})
@@ -165,6 +213,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	xml , e1:= glwapi.EncodeCreateOrderXml(o)
 	if e1 != nil {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -5})
+		log.Printf("===>%s\n", e1)
 		fmt.Fprintf(w, string(data))
 		return
 	}
@@ -172,18 +221,20 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	LI(xml)
 
 	xmlreader := strings.NewReader(xml)
-	r, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
+	r1, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
 	if e2 != nil {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -6})
 		fmt.Fprintf(w, string(data))
+		log.Printf("%s\n", e2)
 		return
 	}
 
-	defer r.Body.Close()
-	body , _ := ioutil.ReadAll(r.Body)
+	defer r1.Body.Close()
+	body , _ := ioutil.ReadAll(r1.Body)
 	if e2 != nil {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -7})
 		fmt.Fprintf(w, string(data))
+		log.Printf("%s\n", e2)
 		return
 	}
 
@@ -191,25 +242,23 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	if e4 != nil {
 		data, _ :=json.Marshal(&OrderPaymentResp{Error : -8})
 		fmt.Fprintf(w, string(data))
+		log.Printf("%s\n", e2)
 		return
 	}
-	opr := &OrderPaymentResp{Error : 0, OID: o.OrderNo, WxOId : o.PrepayId}
+
 	jss := o.JsSign()
-	opr.JSN = jss.N
-	opr.JSS = jss.S
-	opr.JSST = jss.ST
-	opr.JSTS = jss.TS
 
 	pt := PayTpl{}
-	pt.Appid = jss.AppId
-	pt.JSS = jss.JSS
-	pt.JSN = jss.JSN
-	pt.JSTS = jss.JSTS
-	pt.JSST = jss.JSST
-*/
-	pt := PayTpl{WEBCONTEXT : "/web"}
-	t, err := template.ParseFiles("web/payment.html")
-	fmt.Printf("%s\n", err)
-	err = t.Execute(w, &pt)
-	fmt.Printf("%s====\n", err)
+
+	do_js_auth(&pt, "http://" + r.Host+r.URL.String())
+	pt.OrderNo = o.PrepayId
+	pt.AppId = jss.AppId
+	pt.PayS = jss.S
+	pt.PayN = jss.N
+	pt.PayTS = jss.TS
+	pt.PayST = jss.ST
+	LI("%s==", jss.ST)
+
+	t, _ := template.ParseFiles("web/payment.html")
+	t.Execute(w, &pt)
 }

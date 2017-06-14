@@ -28,6 +28,7 @@ func main() {
 	http.HandleFunc("/wechat/paymentresult", wechat_paymentresult_handler)
 	http.HandleFunc("/js/auth", js_auth_handler)
 	http.HandleFunc("/res/", res_redirect)
+	http.HandleFunc("*.png", res_redirect1)
 
 
 	log.Fatal(ser.ListenAndServe())

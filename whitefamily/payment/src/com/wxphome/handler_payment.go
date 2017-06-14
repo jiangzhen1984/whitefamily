@@ -10,8 +10,7 @@ import (
 
 func wechat_paymentresult_handler(w http.ResponseWriter, r * http.Request) {
 	var buf []byte= make([]byte, 2048, 4096)
-	n, _ := r.Body.Read(buf)
-	LI("===>%s====len:%d", string(buf),n)
+	r.Body.Read(buf)
 
 	order := glwapi.WeChatOrder{}
 	er := glwapi.DecodePaymentResult(&order, buf)
