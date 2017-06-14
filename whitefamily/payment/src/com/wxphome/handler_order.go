@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"com/glwapi"
+	"html/template"
 )
 
 
@@ -34,6 +35,16 @@ type OrderPaymentResp struct {
 	JSST	string	`json:"jsst"`
 	JSN	string	`json:"jsn"`
 	JSS	string	`json:"jss"`
+}
+
+
+type PayTpl struct {
+	WEBCONTEXT string
+	Appi	string
+	JSS	string
+	JSN	string
+	JSTS	string
+	JSST	string
 }
 
 
@@ -123,4 +134,82 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func  order_query_handler(w http.ResponseWriter, r *http.Request) {
+}
+
+
+func order_pay_handler(w http.ResponseWriter, r *http.Request) {
+	//TODO get user openid
+	//TODO create order and get js auth
+/*
+	g := glwapi.D()
+	if g.WeChat.IsTokened() == false {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -3})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+	oderNo := r.FormValue("order_no")
+	fee := r.FormValue("order_fee")
+	oderDesc := r.FormValue("order_desc")
+	backData := r.FormValue("back_data")
+	back_url := r.FormValue("back_url")
+	ip := r.FormValue("ip")
+
+	testOpenId = "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
+	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, backData,  ip, "http://wechat.wxphome.cn/wechat", fee)
+	if e != nil {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -4})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+
+	xml , e1:= glwapi.EncodeCreateOrderXml(o)
+	if e1 != nil {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -5})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+
+	LI(xml)
+
+	xmlreader := strings.NewReader(xml)
+	r, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
+	if e2 != nil {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -6})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+
+	defer r.Body.Close()
+	body , _ := ioutil.ReadAll(r.Body)
+	if e2 != nil {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -7})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+
+	e4 := glwapi.DecodeCreateOrderResp(o, body)
+	if e4 != nil {
+		data, _ :=json.Marshal(&OrderPaymentResp{Error : -8})
+		fmt.Fprintf(w, string(data))
+		return
+	}
+	opr := &OrderPaymentResp{Error : 0, OID: o.OrderNo, WxOId : o.PrepayId}
+	jss := o.JsSign()
+	opr.JSN = jss.N
+	opr.JSS = jss.S
+	opr.JSST = jss.ST
+	opr.JSTS = jss.TS
+
+	pt := PayTpl{}
+	pt.Appid = jss.AppId
+	pt.JSS = jss.JSS
+	pt.JSN = jss.JSN
+	pt.JSTS = jss.JSTS
+	pt.JSST = jss.JSST
+*/
+	pt := PayTpl{WEBCONTEXT : "/web"}
+	t, err := template.ParseFiles("web/payment.html")
+	fmt.Printf("%s\n", err)
+	err = t.Execute(w, &pt)
+	fmt.Printf("%s====\n", err)
 }
