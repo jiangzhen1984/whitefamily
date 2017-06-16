@@ -19,6 +19,7 @@
 
 
 <body>
+<form action="http://localhost:8083/order/pay">
 <div class="orderPayFor">
     <div class="shopCart_top">
     	<a href="clasify.xhtml"> <img src="images/back.png" class="icon_back" /></a>
@@ -78,16 +79,22 @@
             <div class="submit_block_left">
             		<span class="small_2">合计</span><span class="red">￥ <c:if test="#{userBean.user.franchiseeType == true}">
         	<span class="sum">总价:<span class="red big"><h:outputText value="#{cartBean.cart.totalPrice1}" /></span></span>
+        	<input type="hidden" name="order_fee" value="#{cartBean.cart.totalPrice1}" />
         	</c:if>
         	 <c:if test="#{userBean.user.franchiseeType == false}">
         	<span class="sum">总价:<span class="red big">￥<h:outputText value="#{cartBean.cart.totalPrice}" /></span></span>
+        	<input type="hidden" name="order_fee" value="#{cartBean.cart.totalPrice}" />
         	</c:if></span>
             </div>
           
          <c:if test="#{userBean.user.franchiseeType == true}">
 			 <div class="submit_block_right">
-                    <h:commandButton   type="button" value="微信支付" onclick="createorder('#{shopBean.inventoryRequest.id}')" ></h:commandButton>  
-           		 </div>
+			 		<input type="hidden" name="order_no" value="#{shopBean.inventoryRequest.id}" />
+			 		<input type="hidden" name="order_desc" value="订单" />
+			 		<input type="hidden" name="back_data" value="" />
+			 		<input type="hidden" name="back_url" value="" />
+                    <input type="submit"   type="submit" value="去支付" />
+           	</div>
          </c:if>
         
         </div>
@@ -98,6 +105,7 @@
     </div>
 
 </div>
+</form>
 
 
 
