@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>大白-订货提交</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="/res/style/css.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/res/js/jquery.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+
+
+<body>
+<div class="orderPayFor">
+    <div class="shopCart_top">
+    	<a href="clasify.xhtml"> <img src="/res/images/back.png" class="icon_back" /></a>
+        订单确认失败
+        <img src="/res/images/kefu.png" class="icon_kefu" />
+	</div>    
+    <div class="orderPayFor_content">
+    	<div class="orderPayFor_address">
+            <div class="orderPayFor_address_content">
+                <div class="name"><h:outputText value="#{userBean.user.shop.name}" /><span><h:outputText value="#{userBean.user.username}" /></span></div>
+                <div class="address">               		
+                    <p><img src="/res/images/address.png" class="icon_address" /><h:outputText value="#{userBean.user.shop.address}" /></p>
+                     <img src="/res/images/arrow_right.png" class="icon_21" />
+                     <div class="clear"></div>
+                </div>
+            </div>
+            <i class="icon_line"></i>
+            <div class="clear"></div>
+        </div>
+        <div class="orderPayFor_order">
+          <div class="orderPayFor_order_imgs">
+      	</div>
+      </div>
+        <div class="orderPayFor_order">  
+            <div class="orderPayFor_order_send">
+               微信提交失败
+                <div class="orderPayFor_send_right arrow_2">
+           	    <p class="small_2 red">{{.Error}}</p>
+                </div>                
+            </div>
+      </div>
+
+
+    <div class="orderPayFor_order total">  
+    </div>	
+    <div class="submit_block">
+          
+	 <div class="submit_block_right">
+               <a href="{{.BackU}}">返回<a/>
+         </div>
+        
+     </div>
+        
+        
+       
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+</html>

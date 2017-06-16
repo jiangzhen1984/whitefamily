@@ -40,7 +40,7 @@ type OrderPaymentResp struct {
 
 
 type PayTpl struct {
-	WEBCONTEXT string
+	Error	int
 	OrderNo	string
 	AppId	string
 	JSS	string
@@ -50,8 +50,13 @@ type PayTpl struct {
 	PayST	string
 	PayN	string
 	PayS	string
-
+	BackU	string
+	BackD	string
+	SN	string
 }
+
+
+var transholder map[string]*PayTpl = make(map[string]*PayTpl)
 
 
 func  order_create_handler(w http.ResponseWriter, r *http.Request) {
@@ -143,9 +148,6 @@ func  order_create_handler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func  order_query_handler(w http.ResponseWriter, r *http.Request) {
-}
-
 
 func do_js_auth(tpl * PayTpl, u string) {
 	g := glwapi.D()
@@ -187,34 +189,33 @@ func do_js_auth(tpl * PayTpl, u string) {
 
 func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	//TODO get user openid
+	testOpenId := "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
+
 	//TODO create order and get js auth
 	g := glwapi.D()
 	if g.WeChat.IsTokened() == false {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -3})
-		fmt.Fprintf(w, string(data))
+		render_error(w, -3, "")
 		return
 	}
 	orderNo := r.FormValue("order_no")
 	fee, _ := strconv.Atoi(r.FormValue("order_fee"))
 	orderDesc := r.FormValue("order_desc")
 	backData := r.FormValue("back_data")
-	//get back url
-	r.FormValue("back_url")
+	backUrl := r.FormValue("back_url")
 	ip := strings.Split(r.RemoteAddr, ":")[0]
+	sn := glwapi.R(32)
 
-	testOpenId := "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
-	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, backData,  ip, "http://wechat.wxphome.cn/wechat", fee)
+	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, sn,  ip, "http://wechat.wxphome.cn/wechat", fee)
 	if e != nil {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -4})
-		fmt.Fprintf(w, string(data))
+		LE("%s", e)
+		render_error(w, -4, backUrl)
 		return
 	}
 
 	xml , e1:= glwapi.EncodeCreateOrderXml(o)
 	if e1 != nil {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -5})
-		log.Printf("===>%s\n", e1)
-		fmt.Fprintf(w, string(data))
+		LE("%s", e1)
+		render_error(w, -5, backUrl)
 		return
 	}
 
@@ -223,26 +224,17 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	xmlreader := strings.NewReader(xml)
 	r1, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
 	if e2 != nil {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -6})
-		fmt.Fprintf(w, string(data))
-		log.Printf("%s\n", e2)
+		LE("%s", e2)
+		render_error(w, -6, backUrl)
 		return
 	}
 
 	defer r1.Body.Close()
 	body , _ := ioutil.ReadAll(r1.Body)
-	if e2 != nil {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -7})
-		fmt.Fprintf(w, string(data))
-		log.Printf("%s\n", e2)
-		return
-	}
-
 	e4 := glwapi.DecodeCreateOrderResp(o, body)
 	if e4 != nil {
-		data, _ :=json.Marshal(&OrderPaymentResp{Error : -8})
-		fmt.Fprintf(w, string(data))
-		log.Printf("%s\n", e2)
+		LE("%s", e4)
+		render_error(w, -8, backUrl)
 		return
 	}
 
@@ -257,8 +249,52 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	pt.PayN = jss.N
 	pt.PayTS = jss.TS
 	pt.PayST = jss.ST
-	LI("%s==", jss.ST)
+
+	pt.SN = sn
+	pt.BackD = backData
+	transholder[pt.SN] = &pt
 
 	t, _ := template.ParseFiles("web/payment.html")
 	t.Execute(w, &pt)
+}
+
+
+
+func order_query_handler(w http.ResponseWriter, r * http.Request) {
+	g := glwapi.D()
+	order := &glwapi.WeChatOrder{WeChat : g.WeChat}
+	order.OrderNo = r.FormValue("orderno")
+	data, e:= glwapi.EncodeQueryOrderXml(order)
+	LI("%s\n", string(data))
+	if e != nil {
+		LE("%s\n", e)
+		return
+	}
+
+	xmlreader := strings.NewReader(data)
+	r1, e2 := http.Post(glwapi.PAYMENT_URL_QO, "text/xml", xmlreader)
+	if e2 != nil {
+		LE("%s\n", e2)
+		return
+	}
+
+	defer r1.Body.Close()
+	body , _ := ioutil.ReadAll(r1.Body)
+	LI("%s\n", string(body))
+	e4 := glwapi.DecodeQueryOrderResp(order, body)
+	if e4 != nil {
+		LE("%s", e4)
+		return
+	}
+	LI("%s", order)
+	
+}
+
+
+
+func render_error(w http.ResponseWriter, errcode int, u string) {
+	pt := PayTpl{Error: errcode, BackU: u }
+	LI("===> code : %d   url:%s\n", errcode, u)
+	et, _ := template.ParseFiles("web/payment_error.html")
+	et.Execute(w, &pt)
 }
