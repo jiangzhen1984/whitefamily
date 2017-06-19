@@ -16,6 +16,7 @@ func main() {
 	//init server
 	ser := &http.Server {
 		Addr	:	":8083",
+		//InsecureSkipVerify: true,
 	}
 
 	//set handler
@@ -32,5 +33,6 @@ func main() {
 	http.HandleFunc("*.png", res_redirect1)
 
 
+	//log.Fatal(ser.ListenAndServeTLS("bin/apache.crt", "bin/apache.key"))
 	log.Fatal(ser.ListenAndServe())
 }

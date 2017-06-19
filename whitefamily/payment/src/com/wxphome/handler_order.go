@@ -197,15 +197,15 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 		render_error(w, -3, "")
 		return
 	}
-	orderNo := r.FormValue("order_no")
-	fee, _ := strconv.Atoi(r.FormValue("order_fee"))
-	orderDesc := r.FormValue("order_desc")
-	backData := r.FormValue("back_data")
-	backUrl := r.FormValue("back_url")
+	orderNo := glwapi.R(32) //r.FormValue("order_no")
+	fee := 1 //strconv.Atoi(r.FormValue("order_fee"))
+	orderDesc := "aaa" //r.FormValue("order_desc")
+	backData :="bb" // r.FormValue("back_data")
+	backUrl := "" //r.FormValue("back_url")
 	ip := strings.Split(r.RemoteAddr, ":")[0]
 	sn := glwapi.R(32)
 
-	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, sn,  ip, "http://wechat.wxphome.cn/wechat", fee)
+	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, sn,  ip, "http://payment.wxphome.cn/wechat", fee)
 	if e != nil {
 		LE("%s", e)
 		render_error(w, -4, backUrl)
@@ -242,8 +242,9 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 
 	pt := PayTpl{}
 
+	LI("http://" + r.Host+r.URL.String())
 	do_js_auth(&pt, "http://" + r.Host+r.URL.String())
-	pt.OrderNo = o.PrepayId
+	pt.OrderNo = jss.P
 	pt.AppId = jss.AppId
 	pt.PayS = jss.S
 	pt.PayN = jss.N
@@ -287,7 +288,7 @@ func order_query_handler(w http.ResponseWriter, r * http.Request) {
 		return
 	}
 	LI("%s", order)
-	
+
 }
 
 
