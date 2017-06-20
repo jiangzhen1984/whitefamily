@@ -20,7 +20,7 @@ func main() {
 	}
 
 	//set handler
-	http.HandleFunc("/user/auth", handler_uer_token)
+	http.HandleFunc("/user/auth", wechat_user_auth_handler)
 	http.HandleFunc("/auth", auth_handler)
 	http.HandleFunc("/order", order_create_handler)
 	http.HandleFunc("/order/pay", order_pay_handler)

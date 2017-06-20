@@ -56,6 +56,23 @@ type PayTpl struct {
 }
 
 
+type UserOrder struct {
+	BackU	string
+	BackD	string
+	NotiU	string
+	Fee	string
+	OrderSn	string
+	OrderNo	string
+	OrderD	string
+	Ip	string
+	OpenId	string
+
+}
+
+
+
+
+var transUserholder map[string]*UserOrder = make(map[string]*UserOrder)
 var transholder map[string]*PayTpl = make(map[string]*PayTpl)
 
 
@@ -189,7 +206,7 @@ func do_js_auth(tpl * PayTpl, u string) {
 
 func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	//TODO get user openid
-	testOpenId := "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
+	//testOpenId := "oL2LKvlLxlkRtgSwqImr1IL1vkPc"
 
 	//TODO create order and get js auth
 	g := glwapi.D()
@@ -197,25 +214,43 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 		render_error(w, -3, "")
 		return
 	}
-	orderNo := glwapi.R(32) //r.FormValue("order_no")
-	fee := 1 //strconv.Atoi(r.FormValue("order_fee"))
-	orderDesc := "aaa" //r.FormValue("order_desc")
-	backData :="bb" // r.FormValue("back_data")
-	backUrl := "" //r.FormValue("back_url")
-	ip := strings.Split(r.RemoteAddr, ":")[0]
-	sn := glwapi.R(32)
 
-	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : testOpenId}, orderNo, orderDesc, orderDesc, sn,  ip, "http://payment.wxphome.cn/wechat", fee)
+	var sn string = r.FormValue("state")
+	LI("=====> state_code (%s)\n", sn)
+	var uo * UserOrder
+	var ok bool
+	if sn == "" {
+		uo = new (UserOrder)
+		uo.OrderNo = glwapi.R(32)//r.FormValue("order_no")
+		uo.Fee     = "1"//r.FormValue("order_fee")
+		uo.OrderD  = "aaa"//r.FormValue("order_desc")
+		uo.BackD   = "bbb"//r.FormValue("back_data")
+		uo.BackU   = ""//r.FormValue("back_url")
+		uo.Ip      = strings.Split(r.RemoteAddr, ":")[0]
+		uo.OrderSn = glwapi.R(32)
+		transUserholder[uo.OrderSn] = uo
+		handler_user_order_token(w, r, uo)
+		return;
+	} else {
+		uo, ok = transUserholder[sn]
+		if !ok {
+			LE("State code error")
+			return
+		}
+	}
+
+	fee,_ := strconv.Atoi(uo.Fee)
+	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : uo.OpenId}, uo.OrderNo, uo.OrderD, uo.OrderD, uo.OrderSn,  uo.Ip, "http://payment.wxphome.cn/wechat/paymentresult", fee)
 	if e != nil {
 		LE("%s", e)
-		render_error(w, -4, backUrl)
+		render_error(w, -4, uo.BackU)
 		return
 	}
 
 	xml , e1:= glwapi.EncodeCreateOrderXml(o)
 	if e1 != nil {
 		LE("%s", e1)
-		render_error(w, -5, backUrl)
+		render_error(w, -5, uo.BackU)
 		return
 	}
 
@@ -225,7 +260,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	r1, e2 := http.Post(glwapi.PAYMENT_URL_CO, "text/xml", xmlreader)
 	if e2 != nil {
 		LE("%s", e2)
-		render_error(w, -6, backUrl)
+		render_error(w, -6, uo.BackU)
 		return
 	}
 
@@ -234,7 +269,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	e4 := glwapi.DecodeCreateOrderResp(o, body)
 	if e4 != nil {
 		LE("%s", e4)
-		render_error(w, -8, backUrl)
+		render_error(w, -8, uo.BackU)
 		return
 	}
 
@@ -251,8 +286,9 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	pt.PayTS = jss.TS
 	pt.PayST = jss.ST
 
-	pt.SN = sn
-	pt.BackD = backData
+	pt.SN = uo.OrderSn
+	pt.BackD = uo.BackD
+	pt.BackU = uo.BackU
 	transholder[pt.SN] = &pt
 
 	t, _ := template.ParseFiles("web/payment.html")
