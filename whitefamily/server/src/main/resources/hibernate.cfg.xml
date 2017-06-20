@@ -79,6 +79,7 @@
 		<mapping class="com.whitefamily.po.artifact.ArtifactStaff" />
 		<mapping class="com.whitefamily.po.payment.PaymentInfo" />
 		<mapping class="com.whitefamily.po.payment.PaymentInventoryRecord" />
+		<mapping class="com.whitefamily.po.order.FranchiseeOrder" />
 		
 		
 	</session-factory>

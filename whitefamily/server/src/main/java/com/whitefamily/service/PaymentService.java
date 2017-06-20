@@ -10,12 +10,12 @@ import com.whitefamily.po.payment.PaymentInfo;
 import com.whitefamily.po.payment.PaymentInfo.PaymentState;
 import com.whitefamily.po.payment.PaymentInventoryRecord;
 import com.whitefamily.service.vo.WFInventoryRequest;
+import com.whitefamily.service.vo.WFOrder;
 import com.whitefamily.service.vo.WFPaymentInfo;
 
 public class PaymentService extends BaseService implements IPaymentService {
 	
-	
-	public void createPaymentTransaction(WFPaymentInfo wfi) {
+	public void createPaymentTransaction(WFPaymentInfo wfi, WFOrder order) {
 		Session sess = getSession();
 		Transaction tr = this.beginTransaction(sess);
 		PaymentInfo pi = new PaymentInfo();
@@ -30,7 +30,10 @@ public class PaymentService extends BaseService implements IPaymentService {
 			}
 			pi.setInventoryIds(sb.toString());
 		}
-		pi.setPs(PaymentState.UNPAY);
+		pi.setPs(wfi.getPs());
+		if (pi.getPs() == PaymentState.PAIED) {
+			pi.setPaymentTime(new Date());
+		}
 		sess.save(tr);
 		
 		PaymentInventoryRecord  pir = null;
@@ -42,42 +45,10 @@ public class PaymentService extends BaseService implements IPaymentService {
 				sess.save(pir);
 			}
 		}
+		//TODO update order and payment information
 		
 		this.commitTrans();
 		wfi.setId(pi.getId());
 	}
-	
-	
-	public Result updatePaymentTransaction(WFPaymentInfo wfi) {
-		return updatePaymentTrans(wfi, PaymentState.PAIED);
-	}
-		
-	
-	public Result closePaymentTransaction(WFPaymentInfo wfi) {
-		return updatePaymentTrans(wfi, PaymentState.CLOSED);
-	}
-	
-	
-	
-	private Result updatePaymentTrans(WFPaymentInfo wfi, PaymentState ps) {
-		if (wfi == null || wfi.getId() == null || wfi.getId() <= 0) {
-			return Result.ERR_PAYMENT_TRANS_ID_NOT_EXIST;
-		}
-		Session sess = getSession();
-		PaymentInfo pi = (PaymentInfo)sess.get(PaymentInfo.class, wfi.getId());
-		if (pi == null) {
-			return Result.ERR_PAYMENT_TRANS_ID_NOT_EXIST;
-		}
-		if (PaymentState.PAIED == ps) {
-			pi.setPaymentTime(new Date());
-		}
-		pi.setPs(ps);
-		beginTransaction(sess);
-		sess.update(pi);
-		commitTrans();
-		return Result.SUCCESS;
-	}
-	
-	
 
 }

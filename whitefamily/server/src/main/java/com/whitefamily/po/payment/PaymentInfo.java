@@ -17,8 +17,8 @@ public class PaymentInfo {
 	
 	public enum PaymentState {
 		UNPAY,
+		CANCEL,
 		PAIED,
-		CLOSED,
 		PAY_ERROR
 	}
 	

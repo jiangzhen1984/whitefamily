@@ -28,7 +28,6 @@ import com.whitefamily.po.InventoryGoods;
 import com.whitefamily.po.InventoryRequestGoods;
 import com.whitefamily.po.InventoryRequestRecord;
 import com.whitefamily.po.InventoryStatus;
-import com.whitefamily.po.InventoryType;
 import com.whitefamily.po.InventoryUpdateRecord;
 import com.whitefamily.po.Shop;
 import com.whitefamily.po.ShopInventoryStatisticsGoods;
@@ -45,6 +44,9 @@ import com.whitefamily.po.incoming.Incoming;
 import com.whitefamily.po.incoming.OperationCost;
 import com.whitefamily.po.incoming.OperationMonthlyCost;
 import com.whitefamily.po.incoming.OperationSalaryCost;
+import com.whitefamily.po.order.FranchiseeOrder;
+import com.whitefamily.po.order.OrderState;
+import com.whitefamily.po.payment.PaymentInfo.PaymentState;
 import com.whitefamily.service.vo.WFCategory;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
@@ -58,6 +60,7 @@ import com.whitefamily.service.vo.WFInventory;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
+import com.whitefamily.service.vo.WFOrder;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFShopInventory;
 import com.whitefamily.service.vo.WFShopInventoryCost;
@@ -450,6 +453,18 @@ public class ShopService extends BaseService implements IShopService {
 			record.setRequestDate(inventory.getDatetime());
 			record.setOrderSn(shop.getId()+df.format(new Date()));
 			sess.save(record);
+			
+			
+			FranchiseeOrder order = new FranchiseeOrder();
+			order.setDatetime(new Date());
+			order.setOs(OrderState.NORMAL);
+			order.setOrderSn(record.getOrderSn());
+			order.setPrice(inventory.getTotalPriceInt1());
+			order.setShopId(shop.getId());
+			order.setUserId(manager.getId());
+			order.setCreateTime(new Date());
+			sess.save(order);
+			
 			sess.flush();
 		}
 		
@@ -1080,36 +1095,6 @@ public class ShopService extends BaseService implements IShopService {
 	
 	
 	
-	private void createInventory(Session sess, WFInventory inventory, WFInventoryRequest req) {
-		InventoryUpdateRecord record = new InventoryUpdateRecord();
-		record.setIt(inventory.getIt());
-		record.setDatetime(inventory.getDatetime());
-		record.setOperator(inventory.getOperator());
-		record.setIt(InventoryType.IN);
-		record.setRequestInventoryId(req.getId());
-		sess.save(record);
-		int count = inventory.getItemCount();
-		InventoryGoods ig = null;
-		for (int i = 0; i < count; i++) {
-			WFInventory.Item wi = inventory.getItem(i);
-			if (wi.isPersisted()) {
-				continue;
-			}
-			ig = new InventoryGoods();
-			
-			ig.setGoods(wi.getGoods());
-			ig.setCount(wi.getCount());
-			ig.setPrice(wi.getPrice());
-			ig.setRemCount(wi.getCount());
-			ig.setRecord(record);
-			sess.save(ig);
-			wi.setPersisted(true);
-		}
-
-		sess.flush();
-	}
-	
-	
 	private InventoryGoods queryAvailableInventoryGoods(long gid) {
 		Session sess = getSession();
 		Query query = sess.createQuery(" from InventoryGoods where goods.id = ? and remCount > 0 order by id ");
@@ -1451,6 +1436,55 @@ public class ShopService extends BaseService implements IShopService {
 		}
 		
 		return list;
+	}
+	
+	
+	public WFOrder queryOrder(String orderNo) {
+		String sql = " from FranchiseeOrder where orderSn =?";
+		Session sess = getSession();
+		Query query = sess.createQuery(sql);
+		query.setString(0, orderNo);
+		List<FranchiseeOrder> foList = query.list();
+		if (foList == null || foList.size() <= 0) {
+			return null;
+		}
+		FranchiseeOrder fo = foList.iterator().next();
+		WFOrder wfo = new WFOrder();
+		wfo.setId(fo.getId());
+		wfo.setCreateTime(fo.getCreateTime());
+		wfo.setPayTime(fo.getPayTime());
+		wfo.setOrderSn(wfo.getOrderSn());
+		wfo.setOs(fo.getOs());
+		wfo.setPrice(fo.getPrice());
+		wfo.setShop(this.getShop(fo.getShopId()));
+		wfo.setManager(this.getUserService().getUser(fo.getUserId()));
+		if (wfo.getOs() == OrderState.PAID || wfo.getOs() == OrderState.DELIVERING || wfo.getOs() == OrderState.DELIVERED) {
+			//TODO poulate payment
+		}
+		return wfo;
+		
+	}
+	
+	public WFOrder queryOrder(long id) {
+		Session sess = getSession();
+		FranchiseeOrder fo= (FranchiseeOrder)sess.get(FranchiseeOrder.class, id);
+		WFOrder wfo = new WFOrder();
+		wfo.setId(fo.getId());
+		wfo.setCreateTime(fo.getCreateTime());
+		wfo.setPayTime(fo.getPayTime());
+		wfo.setOrderSn(wfo.getOrderSn());
+		wfo.setOs(fo.getOs());
+		wfo.setPrice(fo.getPrice());
+		wfo.setShop(this.getShop(fo.getShopId()));
+		wfo.setManager(this.getUserService().getUser(fo.getUserId()));
+		if (wfo.getOs() == OrderState.PAID || wfo.getOs() == OrderState.DELIVERING || wfo.getOs() == OrderState.DELIVERED) {
+			//TODO poulate payment
+		}
+		return wfo;
+	}
+	
+	public Result payOrder(WFOrder order, PaymentState state) {
+		return Result.SUCCESS;
 	}
 	
 }

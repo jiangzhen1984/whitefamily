@@ -49,7 +49,6 @@ public class InventoryRequestRecord extends Record {
 	@Column(name = "WF_ORDER_SN", columnDefinition = "VARCHAR(32)")
 	private String orderSn;
 	
-	
 	private Date requestDate;
 	
 	@Transient
@@ -243,9 +242,6 @@ public class InventoryRequestRecord extends Record {
 	public void setOrderSn(String orderSn) {
 		this.orderSn = orderSn;
 	}
-	
-	
-	
-	
+
 
 }

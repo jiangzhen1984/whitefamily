@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.whitefamily.po.DamageStatus;
+import com.whitefamily.po.payment.PaymentInfo.PaymentState;
 import com.whitefamily.service.vo.WFDamageReport;
 import com.whitefamily.service.vo.WFDelivery;
 import com.whitefamily.service.vo.WFIncoming;
 import com.whitefamily.service.vo.WFInventoryRequest;
 import com.whitefamily.service.vo.WFManager;
 import com.whitefamily.service.vo.WFOperationCost;
+import com.whitefamily.service.vo.WFOrder;
 import com.whitefamily.service.vo.WFShop;
 import com.whitefamily.service.vo.WFShopInventory;
 import com.whitefamily.service.vo.WFShopInventoryCost;
@@ -107,5 +109,9 @@ public interface IShopService {
 	
 	public Result reportShopInventory(WFShopInventory report, WFShop shop, WFUser manager);
 	
+	
+	public WFOrder queryOrder(String orderNo);
+	
+	public WFOrder queryOrder(long id);
 
 }

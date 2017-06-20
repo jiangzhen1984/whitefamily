@@ -14,7 +14,6 @@
 <meta name="format-detection" content="telephone=no" />
 <link href="style/css.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 </head>
 
 
@@ -94,6 +93,7 @@
 			 		<input type="hidden" name="back_data" value="#{shopBean.inventoryRequest.id}" />
 			 		<input type="hidden" name="back_url" value="#{shopBean.prAddress}" />
 			 		<input type="hidden" name="order_fee" value="#{shopBean.inventoryRequest.totalPriceInt1}" />
+			 		<input type="hidden" name="notification_url" value="#{shopBean.pnAddress}" />
                     <input type="submit"    value="去支付" />
            	</div>
          </c:if>

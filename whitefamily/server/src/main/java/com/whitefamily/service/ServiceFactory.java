@@ -18,6 +18,8 @@ public class ServiceFactory {
 	
 	private static IInventoryService  iisReal;
 	
+	public static IPaymentService  ipsReal;
+	
 	
 	public static ICategoryService ics;
 	
@@ -30,6 +32,8 @@ public class ServiceFactory {
 	public static IUserService ius;
 	
 	public static ISupplierService isups;
+	
+	public static IPaymentService  ips;
 	
 	public static SessionFactory sessionFactory;
 	
@@ -112,11 +116,30 @@ public class ServiceFactory {
 		return isups;
 	}
 	
+	
+	public static IPaymentService  getPaymentService() {
+		if (ips == null) {
+			if (ips == null) {
+				getInventoryService();
+			}
+			ips = (IPaymentService)getProxy(IPaymentService.class.getClassLoader(), IPaymentService.class, getRealPaymentService());
+		}
+		return ips;
+	}
+	
+	
 	public static IInventoryService  getRealInventoryService() {
 		if (iisReal == null) {
 			iisReal =  new InventoryService();
 		}
 		return iisReal;
+	}
+	
+	public static IPaymentService  getRealPaymentService() {
+		if (ipsReal == null) {
+			ipsReal =  new PaymentService();
+		}
+		return ipsReal;
 	}
 	
 	
@@ -159,6 +182,9 @@ public class ServiceFactory {
 		}
 		return isupsReal;
 	}
+	
+	
+	
 	
 	private static Object getProxy(ClassLoader loder, Class cls, Object obj) {
 		return Proxy.newProxyInstance(loder, 

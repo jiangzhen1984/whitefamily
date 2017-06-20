@@ -22,6 +22,8 @@ public class ServerConstants {
 	
 	private String paymentSubmitAddress;
 	
+	private String paymentNotificationAddress;
+	
 	public static ServerConstants getInstance() {
 		if (instance == null) {
 			instance = new ServerConstants();
@@ -43,6 +45,9 @@ public class ServerConstants {
 		
 		paymentSubmitAddress = prop.getProperty("payment_submit_address");
 		logger.info("===> paymentSubmitAddress:" + paymentSubmitAddress);
+		
+		paymentNotificationAddress = prop.getProperty("payment_notification_address");
+		logger.info("===> paymentNotificationAddress:" + paymentNotificationAddress);
 	}
 	
 	
@@ -69,5 +74,12 @@ public class ServerConstants {
 		return paymentSubmitAddress;
 	}
 
+
+	public String getPaymentNotificationAddress() {
+		return paymentNotificationAddress;
+	}
+
+	
+	
 	
 }

@@ -87,6 +87,7 @@ public class ShopBean {
 	
 	private  String prAddress;
 	private  String psAddress;
+	private  String pnAddress;
 	
 	
 	private boolean[] saveFlag = new boolean[5];
@@ -107,6 +108,7 @@ public class ShopBean {
 		
 		prAddress = ServerConstants.getInstance().getPaymentResultAddress();
 		psAddress = ServerConstants.getInstance().getPaymentSubmitAddress();
+		pnAddress = ServerConstants.getInstance().getPaymentNotificationAddress();
 	}
 
 	public List<WFShop> getShopList() {
@@ -880,4 +882,10 @@ public class ShopBean {
 	public  String getPsAddress() {
 		return psAddress;
 	}
+
+	public String getPnAddress() {
+		return pnAddress;
+	}
+	
+	
 }
