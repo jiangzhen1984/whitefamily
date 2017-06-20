@@ -3,6 +3,7 @@ package com.whitefamily.service;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -414,7 +415,7 @@ public class ShopService extends BaseService implements IShopService {
 		
 	}
 	
-	
+	private static DateFormat df = new SimpleDateFormat("YYYYMMddHHmmSS");
 	public Result requestInventory(WFInventoryRequest inventory, WFShop shop, WFUser manager) {
 		InventoryRequestRecord record = null;
 		
@@ -433,7 +434,7 @@ public class ShopService extends BaseService implements IShopService {
 				record.setStatus(InventoryStatus.REQUEST);
 				record.setShop(shop);
 				record.setRequestDate(inventory.getDatetime());
-				
+				record.setOrderSn(shop.getId()+df.format(new Date()));
 				sess.save(record);
 				sess.flush();
 			} else {
@@ -447,7 +448,7 @@ public class ShopService extends BaseService implements IShopService {
 			record.setStatus(InventoryStatus.REQUEST);
 			record.setShop(shop);
 			record.setRequestDate(inventory.getDatetime());
-			
+			record.setOrderSn(shop.getId()+df.format(new Date()));
 			sess.save(record);
 			sess.flush();
 		}
@@ -482,6 +483,7 @@ public class ShopService extends BaseService implements IShopService {
 
 		commitTrans();
 		inventory.setId(record.getId());
+		inventory.setOrderSn(record.getOrderSn());
 		return Result.SUCCESS;
 	}
 	

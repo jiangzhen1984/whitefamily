@@ -46,6 +46,9 @@ public class InventoryRequestRecord extends Record {
 	@Column(name = "WF_USER_NAME", columnDefinition = "VARCHAR(100)")
 	private String userName;
 	
+	@Column(name = "WF_ORDER_SN", columnDefinition = "VARCHAR(32)")
+	private String orderSn;
+	
 	
 	private Date requestDate;
 	
@@ -232,6 +235,16 @@ public class InventoryRequestRecord extends Record {
 	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
 	}
+
+	public String getOrderSn() {
+		return orderSn;
+	}
+
+	public void setOrderSn(String orderSn) {
+		this.orderSn = orderSn;
+	}
+	
+	
 	
 	
 

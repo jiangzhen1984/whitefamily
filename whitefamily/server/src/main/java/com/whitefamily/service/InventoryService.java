@@ -2,6 +2,7 @@ package com.whitefamily.service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -154,6 +155,8 @@ public class InventoryService extends BaseService implements IInventoryService {
 		commitTrans();
 
 	}
+	
+	private static DateFormat df = new SimpleDateFormat("YYYYMMddHHmmSS");
 
 	public Result createInventoryRequest(WFInventoryRequest request) {
 		if (request.getShop() == null) {
@@ -164,6 +167,8 @@ public class InventoryService extends BaseService implements IInventoryService {
 		record.setDatetime(request.getDatetime());
 		record.setOperator(request.getOperator());
 		record.setShop(request.getShop());
+		record.setOrderSn(request.getShop().getId()+df.format(new Date()));
+		request.setOrderSn(record.getOrderSn());
 
 		List<WFSupplierMapping> mappingList = supplierService.getMappingList();
 		Map<WFSupplierMapping, LocalMappingSubRecord> mapping = new HashMap<WFSupplierMapping, LocalMappingSubRecord>();
@@ -380,6 +385,7 @@ public class InventoryService extends BaseService implements IInventoryService {
 			}
 			wf.setIs(iur.getStatus());
 			wf.setShop(shopService.getShop(iur.getId()));
+			wf.setOrderSn(iur.getOrderSn());
 			inventoryList.add(wf);
 		}
 		sess.close();

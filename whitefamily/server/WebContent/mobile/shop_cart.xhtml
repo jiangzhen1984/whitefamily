@@ -55,10 +55,10 @@
                          <div class="left">
                             <span class="red big">￥
                             <c:if test="#{userBean.user.franchiseeType == true}">
-				        	#{o.goods.price1}
+                            <h:outputText value="#{o.goods.price1}"><f:convertNumber groupingUsed="true" minFractionDigits="1" pattern="#0" /></h:outputText>
 				        	</c:if>
 				        	<c:if test="#{userBean.user.franchiseeType == false}">
-				        	#{o.goods.price}
+				        	 <h:outputText value="#{o.goods.price}"><f:convertNumber groupingUsed="true" minFractionDigits="1" pattern="#0" /></h:outputText>
 				        	</c:if>
 				        	 </span>/ #{o.goods.unit}<br />
                             <!-- <span class="small">￥15.9/袋</span><br /> -->
@@ -80,10 +80,10 @@
     <div class="shopCart_pay">
     	<div class="shocart_pay_left">
     	    <c:if test="#{userBean.user.franchiseeType == true}">
-        	<span class="sum">总价:<span class="red big"  id="gprice">￥<h:outputText value="#{cartBean.cart.totalPrice1}"/></span></span>
+        	<span class="sum">总价:<span class="red big"  id="gprice">￥<h:outputText value="#{cartBean.cart.totalPrice1}"><f:convertNumber groupingUsed="true" minFractionDigits="1" pattern="#0" /></h:outputText></span></span>
         	</c:if>
         	 <c:if test="#{userBean.user.franchiseeType == false}">
-        	<span class="sum">总价:<span class="red big"  id="gprice" >￥<h:outputText value="#{cartBean.cart.totalPrice}"/></span></span>
+        	<span class="sum">总价:<span class="red big"  id="gprice" >￥<h:outputText value="#{cartBean.cart.totalPrice}"><f:convertNumber groupingUsed="true" minFractionDigits="1" pattern="#0" /></h:outputText></span></span>
         	</c:if>
         </div>
         <h:commandButton  action="order_submit.xhtml" value="下一步"></h:commandButton>  

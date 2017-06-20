@@ -28,7 +28,12 @@ public class WFInventoryRequest {
 	
 	protected boolean isLoadItem;
 	
+	protected String orderSn;
 	
+	
+	private float totalPrice1;
+	
+	private float totalPrice;
 	
 	private float sum;
 	
@@ -97,6 +102,8 @@ public class WFInventoryRequest {
 
 	public void addInventoryItem(WFGoods goods, float count, boolean persiste) {
 		addInventoryItem(goods, count, 0, 0, persiste);
+		totalPrice += goods.getPrice();
+		totalPrice1 += goods.getPrice1();
 	}
 	
 	
@@ -288,5 +295,34 @@ public class WFInventoryRequest {
 		
 
 	}
+
+
+	public float getTotalPrice() {
+		return totalPrice;
+	}
+	
+	public float getTotalPrice1() {
+		return totalPrice1;
+	}
+	
+	public int getTotalPriceInt() {
+		return (int)(totalPrice * 100);
+	}
+	
+	public int getTotalPriceInt1() {
+		return (int)(totalPrice1 * 100);
+	}
+
+
+	public String getOrderSn() {
+		return orderSn;
+	}
+
+
+	public void setOrderSn(String orderSn) {
+		this.orderSn = orderSn;
+	}
+	
+	
 
 }

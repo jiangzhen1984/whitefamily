@@ -16,7 +16,11 @@ public class ServerConstants {
 	
 	private String deliveryFromContext;
 	
-	private String paymentAddress;
+	private String paymentBaseAddress;
+	
+	private String paymentResultAddress;
+	
+	private String paymentSubmitAddress;
 	
 	public static ServerConstants getInstance() {
 		if (instance == null) {
@@ -31,8 +35,14 @@ public class ServerConstants {
 		logger.info("===> deliveryFormPath:" + deliveryFormPath);
 		deliveryFromContext = prop.getProperty("dr_form_context");
 		logger.info("===> deliveryFromContext:" + deliveryFromContext);
-		paymentAddress = prop.getProperty("payment_address");
-		logger.info("===> paymentAddress:" + paymentAddress);
+		paymentBaseAddress = prop.getProperty("payment_base_address");
+		logger.info("===> paymentAddress:" + paymentBaseAddress);
+		
+		paymentResultAddress = prop.getProperty("payment_result_address");
+		logger.info("===> paymentResultAddress:" + paymentResultAddress);
+		
+		paymentSubmitAddress = prop.getProperty("payment_submit_address");
+		logger.info("===> paymentSubmitAddress:" + paymentSubmitAddress);
 	}
 	
 	
@@ -47,7 +57,17 @@ public class ServerConstants {
 	
 	
 	public String getPaymentAddress() {
-		return paymentAddress;
+		return paymentBaseAddress;
 	}
+	
+	public String getPaymentResultAddress() {
+		return paymentResultAddress;
+	}
+
+
+	public String getPaymentSubmitAddress() {
+		return paymentSubmitAddress;
+	}
+
 	
 }

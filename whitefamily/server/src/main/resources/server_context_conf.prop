@@ -1,3 +1,5 @@
 delivery_form_path=/tmp/
 dr_form_context=/ir/
-payment_address=http://payment.wxphome.cn/
+payment_base_address=http://payment.wxphome.cn/
+payment_submit_address=http://payment.wxphome.cn/order/pay
+payment_result_address=http://wf.wxphome.cn/WhilteFamily/payment/result.xhtml

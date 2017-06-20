@@ -85,6 +85,9 @@ public class ShopBean {
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 	
+	private  String prAddress;
+	private  String psAddress;
+	
 	
 	private boolean[] saveFlag = new boolean[5];
 	private String[] errorSaveMsg = new String[]{"营收没有保存", "支出没有保存", "外卖饿了吗没有保存", "外卖百度没有保存", "外卖没团没有保存"};
@@ -101,6 +104,9 @@ public class ShopBean {
 		shopTypes = new SelectItem[] {
 				new SelectItem(ShopType.DIRECT_SALE.ordinal() + "", "直营店"),
 				new SelectItem(ShopType.FRANCHISE_SALE.ordinal() + "", "加盟店") };
+		
+		prAddress = ServerConstants.getInstance().getPaymentResultAddress();
+		psAddress = ServerConstants.getInstance().getPaymentSubmitAddress();
 	}
 
 	public List<WFShop> getShopList() {
@@ -865,7 +871,13 @@ public class ShopBean {
 	public void setReportResultType(String reportResultType) {
 		this.reportResultType = reportResultType;
 	}
+
+	public  String getPrAddress() {
+		return prAddress;
+	}
 	
 
-	
+	public  String getPsAddress() {
+		return psAddress;
+	}
 }
