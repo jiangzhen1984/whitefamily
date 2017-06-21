@@ -216,16 +216,15 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var sn string = r.FormValue("state")
-	LI("=====> state_code (%s)\n", sn)
 	var uo * UserOrder
 	var ok bool
 	if sn == "" {
 		uo = new (UserOrder)
-		uo.OrderNo = glwapi.R(32)//r.FormValue("order_no")
-		uo.Fee     = "1"//r.FormValue("order_fee")
-		uo.OrderD  = "aaa"//r.FormValue("order_desc")
-		uo.BackD   = "bbb"//r.FormValue("back_data")
-		uo.BackU   = ""//r.FormValue("back_url")
+		uo.OrderNo = r.FormValue("order_no")
+		uo.Fee     = r.FormValue("order_fee")
+		uo.OrderD  = r.FormValue("order_desc")
+		uo.BackD   = r.FormValue("back_data")
+		uo.BackU   = r.FormValue("back_url")
 		uo.Ip      = strings.Split(r.RemoteAddr, ":")[0]
 		uo.OrderSn = glwapi.R(32)
 		transUserholder[uo.OrderSn] = uo
@@ -302,7 +301,7 @@ func order_query_handler(w http.ResponseWriter, r * http.Request) {
 	order := &glwapi.WeChatOrder{WeChat : g.WeChat}
 	order.OrderNo = r.FormValue("orderno")
 	data, e:= glwapi.EncodeQueryOrderXml(order)
-	LI("%s\n", string(data))
+	LV(VDebug,"%s\n", string(data))
 	if e != nil {
 		LE("%s\n", e)
 		return
