@@ -53,6 +53,7 @@ type PayTpl struct {
 	BackU	string
 	BackD	string
 	SN	string
+	Fee	string
 }
 
 
@@ -225,6 +226,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 		uo.OrderD  = r.FormValue("order_desc")
 		uo.BackD   = r.FormValue("back_data")
 		uo.BackU   = r.FormValue("back_url")
+		uo.NotiU   = r.FormValue("notification_url")
 		uo.Ip      = strings.Split(r.RemoteAddr, ":")[0]
 		uo.OrderSn = glwapi.R(32)
 		transUserholder[uo.OrderSn] = uo
@@ -237,6 +239,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	LI("%s\n", uo)
 
 	fee,_ := strconv.Atoi(uo.Fee)
 	o, e := g.WeChat.CreateOrder1(&glwapi.WeChatUser{OpenId : uo.OpenId}, uo.OrderNo, uo.OrderD, uo.OrderD, uo.OrderSn,  uo.Ip, "http://payment.wxphome.cn/wechat/paymentresult", fee)
@@ -288,6 +291,7 @@ func order_pay_handler(w http.ResponseWriter, r *http.Request) {
 	pt.SN = uo.OrderSn
 	pt.BackD = uo.BackD
 	pt.BackU = uo.BackU
+	pt.Fee   = uo.Fee 
 	transholder[pt.SN] = &pt
 
 	t, _ := template.ParseFiles("web/payment.html")

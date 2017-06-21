@@ -26,6 +26,12 @@ func wechat_paymentresult_handler(w http.ResponseWriter, r * http.Request) {
 		}
 		//TODO remove cache
 		LI("====>order sn:%s   trans Id:%s\n", order.OrderNo, order.TransId)
-		delete(transholder, order.Attach)
+		tp := transUserholder[order.Attach]
+		if tp != nil {
+			LI(" Post payment result %s\n", tp.NotiU)
+			LI(tp.NotiU+"?back_data="+ tp.BackD+"&order_no="+tp.OrderNo+"&payment_result=0")
+			http.Get(tp.NotiU+"?back_data="+ tp.BackD+"&order_no="+tp.OrderNo+"&payment_result=0")
+		}
+		delete(transUserholder, order.Attach)
 	}
 }
