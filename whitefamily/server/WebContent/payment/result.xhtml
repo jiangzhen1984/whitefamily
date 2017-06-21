@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://java.sun.com/jsf/html">
+<head>
+<title>大白-支付结果</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<link href="style/css.css" rel="stylesheet" type="text/css" />
+</head>
+
+
+<body>
+<form action="#{shopBean.psAddress}" method="post">
+<div class="orderPayFor">
+    <div class="shopCart_top">
+        订单支付成功
+	</div>    
+    <div class="orderPayFor_content">
+    	<div class="orderPayFor_address">
+            <div class="orderPayFor_address_content">
+                <div class="name"><h:outputText value="#{userBean.user.shop.name}" /><span><h:outputText value="#{userBean.user.username}" /></span></div>
+                <div class="address">               		
+                    <p><img src="images/address.png" class="icon_address" /><h:outputText value="#{userBean.user.shop.address}" /></p>
+                     <img src="images/arrow_right.png" class="icon_21" />
+                     <div class="clear"></div>
+                </div>
+            </div>
+            <i class="icon_line"></i>
+            <div class="clear"></div>
+        </div>
+        <div class="orderPayFor_order">
+          <div class="orderPayFor_order_imgs">
+        </div>
+      </div>
+        <div class="orderPayFor_order">  
+            <div class="orderPayFor_order_send">
+            	预计配送时间
+				  <div class="orderPayFor_send_right arrow_2">
+           	    <p class="small_2 red">明天</p>
+                </div>                
+			</div>
+      </div>
+
+
+    <div class="orderPayFor_order total">  
+            <div class="orderPayFor_order_send grey">
+            	支付成功
+			</div> 
+    </div>	
+		<div class="submit_block">
+        </div>
+        
+        
+       
+        <div class="clear"></div>
+    </div>
+
+</div>
+</form>
+ <div class="menu">
+         <ul>
+            <li><a class="menu_1" href="../mobile/clasify.xhtml"></a></li>
+             <li><a class="menu_2" href="../mobile/shop_cart.xhtml"></a></li>
+            <li><a class="menu_3" href="#"></a></li>
+            <li><a class="menu_4  self"  href="../mobile/user_info.xhtml"></a></li>     
+         </ul>
+     <div class="clear"></div>
+   </div>
+
+</body>
+</html>

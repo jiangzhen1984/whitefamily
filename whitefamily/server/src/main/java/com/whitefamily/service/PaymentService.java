@@ -6,6 +6,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.whitefamily.po.order.FranchiseeOrder;
+import com.whitefamily.po.order.OrderState;
 import com.whitefamily.po.payment.PaymentInfo;
 import com.whitefamily.po.payment.PaymentInfo.PaymentState;
 import com.whitefamily.po.payment.PaymentInventoryRecord;
@@ -34,7 +36,7 @@ public class PaymentService extends BaseService implements IPaymentService {
 		if (pi.getPs() == PaymentState.PAIED) {
 			pi.setPaymentTime(new Date());
 		}
-		sess.save(tr);
+		sess.save(pi);
 		
 		PaymentInventoryRecord  pir = null;
 		if (list != null && list.size() > 0) {
@@ -45,7 +47,12 @@ public class PaymentService extends BaseService implements IPaymentService {
 				sess.save(pir);
 			}
 		}
-		//TODO update order and payment information
+		
+		
+		FranchiseeOrder fo =(FranchiseeOrder)sess.get(FranchiseeOrder.class, order.getId());
+		fo.setOs(OrderState.PAID);
+		sess.update(fo);;
+		
 		
 		this.commitTrans();
 		wfi.setId(pi.getId());

@@ -57,6 +57,41 @@ public class PaymentNotificationHandler extends HttpServlet {
 		}
 		
 	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String backData = req.getParameter("back_data");
+		String fee = req.getParameter("order_fee");
+		String orderSn = req.getParameter("order_no");
+		String result = req.getParameter("payment_result");
+		if (orderSn != null && !"".equals(orderSn)) {
+			IShopService iss = ServiceFactory.getShopService();
+			IPaymentService ips = ServiceFactory.getPaymentService();
+			WFOrder order = iss.queryOrder(orderSn);
+			//TODO check sign
+			PaymentState ps;
+			if ("0".equals(result)) {
+				ps = PaymentState.PAIED;
+			} else if ("1".equals(result)) {
+				ps = PaymentState.CANCEL;
+			} else {
+				ps = PaymentState.PAY_ERROR;
+			}
+			
+			WFPaymentInfo wfpi = new WFPaymentInfo();
+			wfpi.setPs(ps);
+			wfpi.setPid(backData);
+			wfpi.setPid1(orderSn);
+			ips.createPaymentTransaction(wfpi, order);
+			
+			logger.info(" orderSn:" + orderSn+"  backData:"+backData+"  update payment result:"+ ps);
+		} else {
+			logger.error(" No orderSn:" + orderSn+"  backData:"+backData);
+		}
+	}
+	
+	
+	
 	
 	
 

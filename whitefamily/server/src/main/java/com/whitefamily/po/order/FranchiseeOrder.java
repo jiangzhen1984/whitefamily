@@ -20,25 +20,25 @@ import com.whitefamily.po.customer.User;
 public class FranchiseeOrder extends Record {
 	
 	
-	@Column(name = "WF_ORDER_PRICE", columnDefinition = "NUMERIC(32)")
+	
 	private Integer price;
 	
-	@Enumerated(EnumType.ORDINAL)
+	
 	private OrderState os;
 	
-	@Column(name = "WF_ORDER_SN", columnDefinition = "VARCHAR(32)")
+	
 	private String orderSn;
 	
-	@Column(name = "WF_ORDER_SHOP_ID", columnDefinition = "NUMERIC(32)")
+	
 	private Long shopId;
 	
-	@Column(name = "WF_ORDER_USER_ID", columnDefinition = "NUMERIC(32)")
+	
 	private Long userId;
 	
-	@Column(name = "WF_CREATE_TIMESTAMP", columnDefinition = "datetime")
+	
 	private Date createTime;
 	
-	@Column(name = "WF_PAY_TIMESTAMP", columnDefinition = "datetime")
+	
 	private Date payTime;
 
 	@Id
@@ -75,6 +75,7 @@ public class FranchiseeOrder extends Record {
 		super.setOperator(operator);
 	}
 
+	@Column(name = "WF_ORDER_PRICE", columnDefinition = "NUMERIC(32)")
 	public Integer getPrice() {
 		return price;
 	}
@@ -83,6 +84,8 @@ public class FranchiseeOrder extends Record {
 		this.price = price;
 	}
 
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "WF_ORDER_STATE")
 	public OrderState getOs() {
 		return os;
 	}
@@ -91,6 +94,7 @@ public class FranchiseeOrder extends Record {
 		this.os = os;
 	}
 
+	@Column(name = "WF_ORDER_SN", columnDefinition = "VARCHAR(32)")
 	public String getOrderSn() {
 		return orderSn;
 	}
@@ -99,6 +103,7 @@ public class FranchiseeOrder extends Record {
 		this.orderSn = orderSn;
 	}
 
+	@Column(name = "WF_ORDER_SHOP_ID", columnDefinition = "NUMERIC(32)")
 	public Long getShopId() {
 		return shopId;
 	}
@@ -107,6 +112,7 @@ public class FranchiseeOrder extends Record {
 		this.shopId = shopId;
 	}
 
+	@Column(name = "WF_ORDER_USER_ID", columnDefinition = "NUMERIC(32)")
 	public Long getUserId() {
 		return userId;
 	}
@@ -115,6 +121,7 @@ public class FranchiseeOrder extends Record {
 		this.userId = userId;
 	}
 
+	@Column(name = "WF_PAY_TIMESTAMP", columnDefinition = "datetime")
 	public Date getPayTime() {
 		return payTime;
 	}
@@ -123,6 +130,7 @@ public class FranchiseeOrder extends Record {
 		this.payTime = payTime;
 	}
 
+	@Column(name = "WF_CREATE_TIMESTAMP", columnDefinition = "datetime")
 	public Date getCreateTime() {
 		return createTime;
 	}

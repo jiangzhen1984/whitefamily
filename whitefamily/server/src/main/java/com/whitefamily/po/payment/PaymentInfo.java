@@ -35,10 +35,10 @@ public class PaymentInfo {
 	@Column(name = "WF_INVEN_REC_IDS", columnDefinition = "VARCHAR(500)")
 	private String inventoryIds;
 	
-	@Column(name = "WF_CREATE_TIME", columnDefinition = "timestamp")
+	@Column(name = "WF_CREATE_TIME", columnDefinition = "datetime")
 	private Date   createTime;	
 	
-	@Column(name = "WF_PAY_TIME", columnDefinition = "timestamp")
+	@Column(name = "WF_PAY_TIME", columnDefinition = "datetime")
 	private Date   paymentTime;
 	
 	@Enumerated(EnumType.ORDINAL)
